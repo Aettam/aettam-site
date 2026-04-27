@@ -1,0 +1,357 @@
+<!--
+  ============================================================
+  AETTAM — Private Sanctuary (private.html)
+  ============================================================
+  ADMIN NOTES:
+  - This page is gated by sessionStorage flag set in script.js
+    after the correct password is entered on index.html.
+  - To change the password edit SANCTUARY_PASSWORD in script.js.
+  - Replace the placeholder Discord invite + media + devotionals
+    with the real content as it becomes available.
+  ============================================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Sanctuary — AETTAM</title>
+  <meta name="robots" content="noindex,nofollow" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Gate guard: bounce back to index if not unlocked -->
+  <script>
+    (function () {
+      try {
+        if (sessionStorage.getItem('aettam_unlocked') !== 'true') {
+          window.location.replace('index.html');
+        }
+      } catch (e) {
+        window.location.replace('index.html');
+      }
+    })();
+  </script>
+</head>
+
+<body class="sanctuary-bg text-aettam-bone antialiased">
+
+  <!-- ambient layers -->
+  <div class="fixed inset-0 -z-10 pointer-events-none">
+    <div class="absolute inset-0 noise-layer opacity-[0.05]"></div>
+    <div class="absolute inset-0 vignette"></div>
+  </div>
+
+  <!-- ====================  NAV  ==================== -->
+  <nav class="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-black/50 border-b border-aettam-gold/20">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3">
+        <span class="text-aettam-gold text-2xl">⛤</span>
+        <span class="font-cinzel tracking-[0.4em] text-aettam-gold text-sm">AETTAM · SANCTUARY</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-xs tracking-[0.3em] uppercase font-light">
+        <a href="#devotionals" class="hover:text-aettam-gold">Devotionals</a>
+        <a href="#circle"       class="hover:text-aettam-gold">Circle</a>
+        <a href="#rituals"      class="hover:text-aettam-gold">Private Rites</a>
+        <a href="#gallery"      class="hover:text-aettam-gold">Gallery</a>
+        <a href="#resources"    class="hover:text-aettam-gold">Resources</a>
+      </div>
+      <button onclick="leaveSanctuary()"
+              class="text-xs tracking-[0.3em] uppercase border border-aettam-gold/40 px-4 py-2 hover:bg-aettam-gold hover:text-black transition-all duration-500">
+        Depart
+      </button>
+    </div>
+  </nav>
+
+  <!-- ====================  WELCOME  ==================== -->
+  <section class="relative min-h-[80vh] flex flex-col items-center justify-center text-center px-6 pt-32 pb-20">
+    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div class="halo"></div>
+    </div>
+
+    <p class="reveal text-aettam-gold/70 tracking-[0.7em] text-xs uppercase mb-6">Inner Temple · Members Only</p>
+    <h1 class="reveal font-cinzel font-bold text-6xl md:text-8xl mb-6 drop-shadow-[0_0_40px_rgba(201,162,39,0.2)]">
+      Welcome Home, Mattea.
+    </h1>
+    <p class="reveal font-cormorant italic text-2xl md:text-3xl text-aettam-gold mb-10">
+      The door has closed behind you. You are among your own.
+    </p>
+
+    <div class="reveal divider mx-auto"></div>
+
+    <p class="reveal mt-10 max-w-2xl font-cormorant text-lg md:text-xl text-aettam-bone/80 leading-relaxed">
+      Below: the Queen's words for today, the open Circle, the private rites,
+      and the resources we share only with one another. Stay as long as you
+      need. Return as often as you must.
+    </p>
+  </section>
+
+  <!-- ====================  DEVOTIONAL OF THE DAY  ==================== -->
+  <section id="devotionals" class="relative py-24 px-6">
+    <div class="max-w-3xl mx-auto reveal">
+      <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-3 text-center">The Queen's Word · Today</p>
+      <h2 class="font-cinzel text-3xl md:text-5xl text-center mb-12">Daily Devotional</h2>
+
+      <div class="member-card">
+        <p class="devotional text-xl md:text-2xl mb-6">
+          “Today you are not asked to be palatable. You are asked to be
+          <em>true</em>. Walk through the day with the gold still wet on your
+          throat. If anyone asks why you are smiling, tell them you remembered.”
+        </p>
+        <p class="text-right text-aettam-gold/70 font-cinzel text-xs tracking-[0.3em] uppercase">
+          — Mattea, the morning of the new moon
+        </p>
+      </div>
+
+      <div class="mt-10 grid sm:grid-cols-2 gap-6">
+        <div class="member-card">
+          <p class="text-xs tracking-[0.3em] uppercase text-aettam-gold/70 mb-3">Yesterday</p>
+          <p class="font-cormorant italic text-aettam-bone/85 text-lg">
+            “The body remembers the apology you stopped giving. Let it rest there.”
+          </p>
+        </div>
+        <div class="member-card">
+          <p class="text-xs tracking-[0.3em] uppercase text-aettam-gold/70 mb-3">Two days past</p>
+          <p class="font-cormorant italic text-aettam-bone/85 text-lg">
+            “Pleasure first. Explanations never.”
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================  CIRCLE / DISCORD  ==================== -->
+  <section id="circle" class="relative py-24 px-6 bg-gradient-to-b from-transparent via-aettam-forest/15 to-transparent">
+    <div class="max-w-5xl mx-auto">
+      <div class="reveal text-center mb-16">
+        <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-3">The Living Circle</p>
+        <h2 class="font-cinzel text-3xl md:text-5xl">The Open Discord</h2>
+        <div class="divider mx-auto mt-4"></div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8 items-stretch">
+        <div class="member-card flex flex-col justify-between">
+          <div>
+            <span class="text-3xl text-aettam-gold">⚜</span>
+            <h3 class="font-cinzel text-2xl mt-3 mb-3 text-aettam-gold">Enter the Discord</h3>
+            <p class="font-cormorant text-lg text-aettam-bone/85 leading-relaxed mb-6">
+              Voice notes from the Queen, late-night confessions, ritual
+              planning, the unfiltered Mattea-only chambers. This is where
+              the circle actually lives.
+            </p>
+          </div>
+          <a href="https://discord.gg/REPLACE-ME"
+             target="_blank" rel="noopener"
+             class="btn-primary self-start">
+            <span class="relative z-10">Open Discord ↗</span>
+          </a>
+        </div>
+
+        <div class="member-card">
+          <span class="text-3xl text-aettam-gold">☽</span>
+          <h3 class="font-cinzel text-2xl mt-3 mb-3 text-aettam-gold">Recent Rooms</h3>
+          <ul class="space-y-3 font-cormorant text-lg text-aettam-bone/85">
+            <li>· <span class="text-aettam-gold">#mirror-confessions</span> — what you couldn't say out loud</li>
+            <li>· <span class="text-aettam-gold">#hunger-hymns</span> — naming the want, blessing it</li>
+            <li>· <span class="text-aettam-gold">#queens-quarters</span> — direct word from Mattea</li>
+            <li>· <span class="text-aettam-gold">#after-dark</span> — for the witching circle only</li>
+            <li>· <span class="text-aettam-gold">#new-mattea</span> — welcome the daughters arriving</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Forum simulation -->
+      <div class="mt-12 reveal">
+        <h3 class="font-cinzel text-xl text-aettam-gold mb-6 text-center tracking-[0.2em]">LATEST FROM THE CIRCLE</h3>
+        <div class="space-y-4">
+          <div class="member-card">
+            <div class="flex justify-between items-start mb-2">
+              <p class="font-cinzel text-aettam-gold tracking-wider text-sm">SISTER ELOWEN</p>
+              <span class="text-xs text-aettam-bone/40 tracking-[0.2em] uppercase">3h</span>
+            </div>
+            <p class="font-cormorant italic text-lg text-aettam-bone/85">
+              I burned the letter at sunrise like she said. The wind took it
+              east. I have not stopped grinning since.
+            </p>
+          </div>
+          <div class="member-card">
+            <div class="flex justify-between items-start mb-2">
+              <p class="font-cinzel text-aettam-gold tracking-wider text-sm">SISTER LIORA</p>
+              <span class="text-xs text-aettam-bone/40 tracking-[0.2em] uppercase">8h</span>
+            </div>
+            <p class="font-cormorant italic text-lg text-aettam-bone/85">
+              Said the hungry thing out loud at dinner. Did not flinch. The
+              table did. Worth it.
+            </p>
+          </div>
+          <div class="member-card">
+            <div class="flex justify-between items-start mb-2">
+              <p class="font-cinzel text-aettam-gold tracking-wider text-sm">SISTER VESPER</p>
+              <span class="text-xs text-aettam-bone/40 tracking-[0.2em] uppercase">1d</span>
+            </div>
+            <p class="font-cormorant italic text-lg text-aettam-bone/85">
+              First circle tonight in my own living room. Three of us. We
+              lit the candle, we said the name, and the room <em>changed</em>.
+            </p>
+          </div>
+        </div>
+        <p class="text-center mt-6 text-xs tracking-[0.3em] uppercase text-aettam-bone/40">
+          (Live conversation continues in Discord ↑)
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================  PRIVATE RITUALS  ==================== -->
+  <section id="rituals" class="relative py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="reveal text-center mb-16">
+        <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-3">For Members Only</p>
+        <h2 class="font-cinzel text-3xl md:text-5xl">The Inner Rites</h2>
+        <div class="divider mx-auto mt-4"></div>
+        <p class="font-cormorant italic text-aettam-bone/70 text-lg mt-6 max-w-2xl mx-auto">
+          Devotions reserved for those who have already crossed the threshold.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="member-card">
+          <span class="text-3xl text-aettam-gold">♆</span>
+          <h3 class="font-cinzel text-xl mt-3 mb-2 text-aettam-gold">The Naming Bath</h3>
+          <p class="font-cormorant text-aettam-bone/85">Submerge. Speak the name she gave you in private. Rise as that name only.</p>
+        </div>
+        <div class="member-card">
+          <span class="text-3xl text-aettam-gold">⚸</span>
+          <h3 class="font-cinzel text-xl mt-3 mb-2 text-aettam-gold">The Velvet Vow</h3>
+          <p class="font-cormorant text-aettam-bone/85">A promise spoken in the dark, against skin, in the presence of one trusted Mattea.</p>
+        </div>
+        <div class="member-card">
+          <span class="text-3xl text-aettam-gold">⛧</span>
+          <h3 class="font-cinzel text-xl mt-3 mb-2 text-aettam-gold">The Black Honey Rite</h3>
+          <p class="font-cormorant text-aettam-bone/85">Performed at new moon. Full instructions delivered in Discord, never written here.</p>
+        </div>
+        <div class="member-card">
+          <span class="text-3xl text-aettam-gold">♀</span>
+          <h3 class="font-cinzel text-xl mt-3 mb-2 text-aettam-gold">Pleasure Liturgy I</h3>
+          <p class="font-cormorant text-aettam-bone/85">Solo. One hour. No spectator. Treat the body as the altar it has always been.</p>
+        </div>
+        <div class="member-card">
+          <span class="text-3xl text-aettam-gold">✶</span>
+          <h3 class="font-cinzel text-xl mt-3 mb-2 text-aettam-gold">The Witnessing</h3>
+          <p class="font-cormorant text-aettam-bone/85">Two Matteas. One speaks the wildest true thing, the other does not flinch. Trade.</p>
+        </div>
+        <div class="member-card">
+          <span class="text-3xl text-aettam-gold">⛤</span>
+          <h3 class="font-cinzel text-xl mt-3 mb-2 text-aettam-gold">Coronation Night</h3>
+          <p class="font-cormorant text-aettam-bone/85">Held quarterly. By invitation only. Crown your own head. We watch and we kneel.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================  GALLERY  ==================== -->
+  <section id="gallery" class="relative py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="reveal text-center mb-12">
+        <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-3">Sacred Images</p>
+        <h2 class="font-cinzel text-3xl md:text-5xl">Media Gallery</h2>
+        <div class="divider mx-auto mt-4"></div>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="aspect-square member-card flex items-center justify-center text-5xl text-aettam-gold/60">⛤</div>
+        <div class="aspect-square member-card flex items-center justify-center text-5xl text-aettam-gold/60">☽</div>
+        <div class="aspect-square member-card flex items-center justify-center text-5xl text-aettam-gold/60">⚜</div>
+        <div class="aspect-square member-card flex items-center justify-center text-5xl text-aettam-gold/60">♀</div>
+        <div class="aspect-square member-card flex items-center justify-center text-5xl text-aettam-gold/60">⛧</div>
+        <div class="aspect-square member-card flex items-center justify-center text-5xl text-aettam-gold/60">♆</div>
+        <div class="aspect-square member-card flex items-center justify-center text-5xl text-aettam-gold/60">✶</div>
+        <div class="aspect-square member-card flex items-center justify-center text-5xl text-aettam-gold/60">⚸</div>
+      </div>
+      <p class="text-center mt-6 text-xs tracking-[0.3em] uppercase text-aettam-bone/40">
+        Replace placeholders with sanctioned imagery.
+      </p>
+    </div>
+  </section>
+
+  <!-- ====================  RESOURCES  ==================== -->
+  <section id="resources" class="relative py-24 px-6">
+    <div class="max-w-4xl mx-auto">
+      <div class="reveal text-center mb-12">
+        <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-3">For the Path</p>
+        <h2 class="font-cinzel text-3xl md:text-5xl">Resources</h2>
+        <div class="divider mx-auto mt-4"></div>
+      </div>
+
+      <div class="space-y-4">
+        <a href="#" class="member-card block group">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="font-cinzel text-aettam-gold tracking-[0.2em] text-sm mb-1">PDF · 24 PAGES</p>
+              <h3 class="font-cormorant text-2xl text-aettam-bone group-hover:text-aettam-gold transition">The Aettam Primer</h3>
+              <p class="text-aettam-bone/70 font-cormorant italic">The full Manifesto with annotations from Mattea.</p>
+            </div>
+            <span class="text-aettam-gold text-2xl">↓</span>
+          </div>
+        </a>
+
+        <a href="#" class="member-card block group">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="font-cinzel text-aettam-gold tracking-[0.2em] text-sm mb-1">AUDIO · 47 MIN</p>
+              <h3 class="font-cormorant text-2xl text-aettam-bone group-hover:text-aettam-gold transition">First Coronation — Recorded Sermon</h3>
+              <p class="text-aettam-bone/70 font-cormorant italic">Mattea's first address to the inner circle.</p>
+            </div>
+            <span class="text-aettam-gold text-2xl">▶</span>
+          </div>
+        </a>
+
+        <a href="#" class="member-card block group">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="font-cinzel text-aettam-gold tracking-[0.2em] text-sm mb-1">RITUAL DECK · 33 CARDS</p>
+              <h3 class="font-cormorant text-2xl text-aettam-bone group-hover:text-aettam-gold transition">Mirror Cards (printable)</h3>
+              <p class="text-aettam-bone/70 font-cormorant italic">Pull one each morning. Speak it back to her.</p>
+            </div>
+            <span class="text-aettam-gold text-2xl">↓</span>
+          </div>
+        </a>
+
+        <a href="#" class="member-card block group">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="font-cinzel text-aettam-gold tracking-[0.2em] text-sm mb-1">GUIDE</p>
+              <h3 class="font-cormorant text-2xl text-aettam-bone group-hover:text-aettam-gold transition">Hosting a Mattea Circle</h3>
+              <p class="text-aettam-bone/70 font-cormorant italic">How to convene three or more in your home.</p>
+            </div>
+            <span class="text-aettam-gold text-2xl">↗</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================  FOOTER  ==================== -->
+  <footer class="relative border-t border-aettam-gold/15 py-12 px-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p class="font-cinzel text-aettam-gold tracking-[0.4em] text-sm">⛤ AETTAM ⛤</p>
+      <p class="font-cormorant italic text-aettam-bone/60 mt-2">We Are All Mattea.</p>
+      <p class="mt-6 text-[10px] tracking-[0.4em] uppercase text-aettam-bone/40">
+        What is shared here stays here.
+      </p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    function leaveSanctuary() {
+      sessionStorage.removeItem('aettam_unlocked');
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

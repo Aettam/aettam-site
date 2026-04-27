@@ -1,0 +1,370 @@
+<!--
+  ============================================================
+  AETTAM — Public Recruiting Page (index.html)
+  ============================================================
+  ADMIN NOTES:
+  - Change the gateway password inside script.js  (search:  SANCTUARY_PASSWORD)
+  - Replace placeholder Manifesto / Ritual text below with the real copy.
+  - Update Discord/external links in private.html when ready.
+  - Drop this folder into a GitHub repo, enable Pages on the main branch
+    (root), and the site is live.  No build step.
+  ============================================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AETTAM — We Are All Mattea</title>
+  <meta name="description" content="Aettam. A reflection. A reckoning. We are all Mattea. Find us." />
+
+  <!-- Tailwind via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!-- Site styles -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body class="bg-aettam-black text-aettam-bone antialiased overflow-x-hidden">
+
+  <!-- ====================  AMBIENT BACKDROP  ==================== -->
+  <div class="fixed inset-0 -z-10 pointer-events-none">
+    <div class="absolute inset-0 bg-gradient-radial"></div>
+    <div class="absolute inset-0 noise-layer opacity-[0.06]"></div>
+    <div class="absolute inset-0 vignette"></div>
+  </div>
+
+  <!-- ====================  NAV  ==================== -->
+  <nav class="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-black/40 border-b border-aettam-gold/10">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#top" class="flex items-center gap-3 group">
+        <span class="sigil text-aettam-gold text-2xl group-hover:rotate-12 transition-transform duration-700">⛤</span>
+        <span class="font-cinzel tracking-[0.4em] text-aettam-gold text-sm">AETTAM</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-xs tracking-[0.3em] uppercase font-light">
+        <a href="#manifesto" class="hover:text-aettam-gold transition-colors">Manifesto</a>
+        <a href="#rituals" class="hover:text-aettam-gold transition-colors">Rituals</a>
+        <a href="#teachings" class="hover:text-aettam-gold transition-colors">Teachings</a>
+        <a href="#enter" class="hover:text-aettam-gold transition-colors">Sanctuary</a>
+      </div>
+      <button onclick="openGate()" class="text-xs tracking-[0.3em] uppercase border border-aettam-gold/40 px-4 py-2 hover:bg-aettam-gold hover:text-black transition-all duration-500">
+        Find Us
+      </button>
+    </div>
+  </nav>
+
+  <!-- ====================  HERO  ==================== -->
+  <section id="top" class="relative min-h-screen flex flex-col items-center justify-center text-center px-6 pt-32 pb-24">
+    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div class="halo"></div>
+    </div>
+
+    <p class="reveal text-aettam-gold/70 tracking-[0.7em] text-xs uppercase mb-8">A Reflection · A Reckoning</p>
+
+    <h1 class="reveal font-cinzel font-bold text-aettam-bone leading-none mb-6
+               text-7xl sm:text-8xl md:text-9xl lg:text-[12rem]
+               drop-shadow-[0_0_40px_rgba(201,162,39,0.15)]">
+      AETTAM
+    </h1>
+
+    <p class="reveal font-cormorant italic text-2xl md:text-4xl text-aettam-gold mb-12 tracking-wide">
+      We Are All Mattea.
+    </p>
+
+    <div class="reveal flex flex-col sm:flex-row gap-4">
+      <button onclick="openGate('reflections')"
+              class="btn-primary group">
+        <span class="relative z-10">Join the Reflections</span>
+      </button>
+      <button onclick="openGate('sanctuary')"
+              class="btn-ghost group">
+        <span class="relative z-10">Enter the Sanctuary</span>
+      </button>
+    </div>
+
+    <p class="reveal mt-16 text-aettam-bone/40 tracking-[0.5em] uppercase text-[10px]">Find Us ↓</p>
+  </section>
+
+  <!-- ====================  MANIFESTO  ==================== -->
+  <section id="manifesto" class="relative py-32 px-6">
+    <div class="max-w-3xl mx-auto">
+      <div class="reveal text-center mb-16">
+        <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-4">I.</p>
+        <h2 class="font-cinzel text-4xl md:text-6xl text-aettam-bone mb-4">The Manifesto</h2>
+        <div class="divider mx-auto"></div>
+      </div>
+
+      <div class="reveal space-y-8 font-cormorant text-xl md:text-2xl leading-relaxed text-aettam-bone/90">
+        <p class="first-letter:font-cinzel first-letter:text-7xl first-letter:text-aettam-gold first-letter:float-left first-letter:mr-3 first-letter:leading-none first-letter:mt-1">
+          We did not come here to be small. We came here to remember. The
+          mirror is not glass — it is mouth, it is name, it is the woman
+          standing at the edge of every threshold whispering <em>begin again</em>.
+        </p>
+
+        <p>
+          Aettam is not a religion. It is a reflection. We do not gather to
+          obey — we gather to <em>recognize</em>. Every Mattea is the queen,
+          every queen is the mirror, every mirror is the door. To kneel at her
+          altar is to kneel at your own.
+        </p>
+
+        <p>
+          We refuse the small life. We refuse the apology. We refuse the
+          flattened body, the muted want, the tidy shame. Pleasure is sacrament.
+          Hunger is liturgy. The body is the first cathedral and the last one
+          standing.
+        </p>
+
+        <p>
+          The world tried to make her quiet. The world tried to make <em>you</em>
+          quiet. We answer with bare teeth and gold-rimmed laughter. We answer
+          with one another. We answer with <em>her</em>.
+        </p>
+
+        <p class="text-center font-cinzel text-aettam-gold tracking-[0.3em] text-base md:text-lg pt-8">
+          ⛤  WE ARE ALL MATTEA  ⛤
+        </p>
+
+        <p class="text-aettam-bone/60 italic text-center text-lg">
+          — placeholder text. Replace with the full Manifesto when ready.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================  RITUALS  ==================== -->
+  <section id="rituals" class="relative py-32 px-6 bg-gradient-to-b from-transparent via-aettam-forest/20 to-transparent">
+    <div class="max-w-6xl mx-auto">
+      <div class="reveal text-center mb-20">
+        <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-4">II.</p>
+        <h2 class="font-cinzel text-4xl md:text-6xl text-aettam-bone mb-4">Queen Worship Rituals</h2>
+        <div class="divider mx-auto"></div>
+        <p class="font-cormorant italic text-aettam-bone/70 text-xl mt-6 max-w-2xl mx-auto">
+          Devotions for the daughters of fire. Practice them alone. Practice
+          them in circle. Practice them and watch the room change.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="reveal ritual-card">
+          <span class="ritual-glyph">☽</span>
+          <h3 class="font-cinzel text-2xl text-aettam-gold mb-4">Mirror at Dusk</h3>
+          <p class="font-cormorant text-lg text-aettam-bone/85 leading-relaxed">
+            Light one candle. Speak her name aloud — <em>Mattea</em> — until
+            your reflection answers. Whatever rises is the prayer.
+          </p>
+        </div>
+
+        <div class="reveal ritual-card">
+          <span class="ritual-glyph">⚜</span>
+          <h3 class="font-cinzel text-2xl text-aettam-gold mb-4">The Gold Anointing</h3>
+          <p class="font-cormorant text-lg text-aettam-bone/85 leading-relaxed">
+            Oil the throat, the sternum, the soft underside of the wrist.
+            Walk through the day as the temple you already are. Refuse
+            apology in any form.
+          </p>
+        </div>
+
+        <div class="reveal ritual-card">
+          <span class="ritual-glyph">⛤</span>
+          <h3 class="font-cinzel text-2xl text-aettam-gold mb-4">The Hunger Hymn</h3>
+          <p class="font-cormorant text-lg text-aettam-bone/85 leading-relaxed">
+            Name three desires you were taught to be ashamed of. Bless each
+            one out loud. Eat slowly tonight. Tip extravagantly. Take up
+            every inch.
+          </p>
+        </div>
+
+        <div class="reveal ritual-card">
+          <span class="ritual-glyph">♆</span>
+          <h3 class="font-cinzel text-2xl text-aettam-gold mb-4">Circle of Reflections</h3>
+          <p class="font-cormorant text-lg text-aettam-bone/85 leading-relaxed">
+            Gather two or more. Each Mattea speaks the wildest true thing.
+            No flinching. No saving. The room becomes the altar.
+          </p>
+        </div>
+
+        <div class="reveal ritual-card">
+          <span class="ritual-glyph">♀</span>
+          <h3 class="font-cinzel text-2xl text-aettam-gold mb-4">Pleasure as Liturgy</h3>
+          <p class="font-cormorant text-lg text-aettam-bone/85 leading-relaxed">
+            Touch is devotion. Yours, hers, theirs. The body is the first
+            cathedral. Worship there without permission, without rehearsal,
+            without the spectator's eye.
+          </p>
+        </div>
+
+        <div class="reveal ritual-card">
+          <span class="ritual-glyph">✶</span>
+          <h3 class="font-cinzel text-2xl text-aettam-gold mb-4">The Burning Letter</h3>
+          <p class="font-cormorant text-lg text-aettam-bone/85 leading-relaxed">
+            Write what kept you small. Burn it before sunrise. Watch the ash
+            travel. Whatever you do next is the new doctrine.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================  TEACHINGS  ==================== -->
+  <section id="teachings" class="relative py-32 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="reveal text-center mb-20">
+        <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-4">III.</p>
+        <h2 class="font-cinzel text-4xl md:text-6xl text-aettam-bone mb-4">Core Teachings</h2>
+        <div class="divider mx-auto"></div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-x-16 gap-y-12">
+        <div class="reveal teaching">
+          <span class="teaching-num">01</span>
+          <h3 class="font-cinzel text-xl text-aettam-gold mb-3">She is the Mirror.</h3>
+          <p class="font-cormorant text-lg text-aettam-bone/80">
+            What you worship in Mattea, you find in yourself. There is no
+            queen above you. Only the queen <em>through</em> you.
+          </p>
+        </div>
+
+        <div class="reveal teaching">
+          <span class="teaching-num">02</span>
+          <h3 class="font-cinzel text-xl text-aettam-gold mb-3">Pleasure is Permission.</h3>
+          <p class="font-cormorant text-lg text-aettam-bone/80">
+            Every want you bury becomes a wall. Every want you honor becomes
+            a door. Walk through them all.
+          </p>
+        </div>
+
+        <div class="reveal teaching">
+          <span class="teaching-num">03</span>
+          <h3 class="font-cinzel text-xl text-aettam-gold mb-3">Freedom over Approval.</h3>
+          <p class="font-cormorant text-lg text-aettam-bone/80">
+            We do not pretty ourselves into acceptable shapes. We do not
+            apologize for taking up the room.
+          </p>
+        </div>
+
+        <div class="reveal teaching">
+          <span class="teaching-num">04</span>
+          <h3 class="font-cinzel text-xl text-aettam-gold mb-3">Devotion is Mutual.</h3>
+          <p class="font-cormorant text-lg text-aettam-bone/80">
+            Every Mattea kneels. Every Mattea is knelt before. The circle
+            keeps no center because every center is holy.
+          </p>
+        </div>
+
+        <div class="reveal teaching">
+          <span class="teaching-num">05</span>
+          <h3 class="font-cinzel text-xl text-aettam-gold mb-3">The Body is the First Temple.</h3>
+          <p class="font-cormorant text-lg text-aettam-bone/80">
+            Before the chapel, the cathedral, the kingdom — there was the
+            body. We return there. We never left.
+          </p>
+        </div>
+
+        <div class="reveal teaching">
+          <span class="teaching-num">06</span>
+          <h3 class="font-cinzel text-xl text-aettam-gold mb-3">Chaos is Sacred.</h3>
+          <p class="font-cormorant text-lg text-aettam-bone/80">
+            What is wild in you was never the problem. The taming was the
+            problem. Rewild. Burn neatly nothing.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================  CTA / ENTER  ==================== -->
+  <section id="enter" class="relative py-32 px-6">
+    <div class="max-w-3xl mx-auto text-center reveal">
+      <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-4">IV.</p>
+      <h2 class="font-cinzel text-4xl md:text-6xl text-aettam-bone mb-6">The Threshold</h2>
+      <div class="divider mx-auto mb-10"></div>
+
+      <p class="font-cormorant italic text-2xl md:text-3xl text-aettam-bone/90 mb-12 leading-relaxed">
+        If the words have moved something in you — that is not coincidence.
+        That is recognition. Step closer.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button onclick="openGate('reflections')" class="btn-primary">
+          <span class="relative z-10">Join the Reflections</span>
+        </button>
+        <button onclick="openGate('sanctuary')" class="btn-ghost">
+          <span class="relative z-10">Enter the Sanctuary</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================  FOOTER  ==================== -->
+  <footer class="relative border-t border-aettam-gold/15 py-16 px-6">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-12 text-center md:text-left">
+      <div>
+        <div class="flex items-center justify-center md:justify-start gap-3 mb-4">
+          <span class="text-aettam-gold text-2xl">⛤</span>
+          <span class="font-cinzel tracking-[0.4em] text-aettam-gold text-sm">AETTAM</span>
+        </div>
+        <p class="font-cormorant italic text-aettam-bone/60">We Are All Mattea.</p>
+      </div>
+
+      <div>
+        <p class="text-xs tracking-[0.3em] uppercase text-aettam-gold/70 mb-4">The Path</p>
+        <ul class="space-y-2 font-cormorant text-aettam-bone/70">
+          <li><a href="#manifesto" class="hover:text-aettam-gold transition">Manifesto</a></li>
+          <li><a href="#rituals" class="hover:text-aettam-gold transition">Rituals</a></li>
+          <li><a href="#teachings" class="hover:text-aettam-gold transition">Teachings</a></li>
+          <li><a href="#enter" class="hover:text-aettam-gold transition">Enter the Sanctuary</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="text-xs tracking-[0.3em] uppercase text-aettam-gold/70 mb-4">Find Her</p>
+        <ul class="space-y-2 font-cormorant text-aettam-bone/70">
+          <li><a href="#" class="hover:text-aettam-gold transition">Discord (private)</a></li>
+          <li><a href="#" class="hover:text-aettam-gold transition">Instagram</a></li>
+          <li><a href="#" class="hover:text-aettam-gold transition">Whisper Network</a></li>
+          <li><a href="mailto:hello@aettam.org" class="hover:text-aettam-gold transition">Letters to the Queen</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto mt-12 pt-8 border-t border-aettam-gold/10 text-center text-xs tracking-[0.4em] uppercase text-aettam-bone/40">
+      ⛤  Aettam · For Those Who Recognize Her  ⛤
+    </div>
+  </footer>
+
+  <!-- ====================  GATE MODAL  ==================== -->
+  <div id="gate" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/85 backdrop-blur-md p-6">
+    <div class="gate-card relative max-w-md w-full p-10 text-center">
+      <button onclick="closeGate()" class="absolute top-3 right-4 text-aettam-bone/40 hover:text-aettam-gold text-xl">×</button>
+
+      <div class="mb-6 text-aettam-gold text-5xl">⛤</div>
+      <h3 class="font-cinzel text-2xl text-aettam-bone tracking-[0.2em] mb-2">THE THRESHOLD</h3>
+      <p class="font-cormorant italic text-aettam-bone/70 mb-8">
+        Speak the word. Only those who already know it may pass.
+      </p>
+
+      <form onsubmit="tryEnter(event)" class="space-y-4">
+        <input id="gate-input" type="password" autocomplete="off"
+               placeholder="• • • • • •"
+               class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-center tracking-[0.5em] text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition" />
+        <p id="gate-error" class="text-red-400/80 text-xs tracking-[0.3em] uppercase h-4"></p>
+        <button type="submit" class="btn-primary w-full">
+          <span class="relative z-10">Enter</span>
+        </button>
+      </form>
+
+      <p class="mt-8 text-[10px] tracking-[0.4em] uppercase text-aettam-bone/30">
+        She knows who she is.
+      </p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
