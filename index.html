@@ -77,7 +77,7 @@
     </p>
 
     <div class="reveal flex flex-col sm:flex-row gap-4">
-      <button onclick="openGate('reflections')"
+      <button onclick="openReflections()"
               class="btn-primary group">
         <span class="relative z-10">Join the Reflections</span>
       </button>
@@ -291,7 +291,7 @@
       </p>
 
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <button onclick="openGate('reflections')" class="btn-primary">
+        <button onclick="openReflections()" class="btn-primary">
           <span class="relative z-10">Join the Reflections</span>
         </button>
         <button onclick="openGate('sanctuary')" class="btn-ghost">
@@ -337,6 +337,48 @@
       ⛤  Aettam · For Those Who Recognize Her  ⛤
     </div>
   </footer>
+
+  <!-- ====================  REFLECTIONS MODAL  ==================== -->
+  <div id="reflections" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/85 backdrop-blur-md p-6">
+    <div class="gate-card relative max-w-md w-full p-10 text-center">
+      <button onclick="closeReflections()" class="absolute top-3 right-4 text-aettam-bone/40 hover:text-aettam-gold text-xl">×</button>
+
+      <div class="mb-6 text-aettam-gold text-5xl">⛤</div>
+      <h3 class="font-cinzel text-2xl text-aettam-bone tracking-[0.2em] mb-2">JOIN THE REFLECTIONS</h3>
+      <p class="font-cormorant italic text-aettam-bone/70 mb-8">
+        Leave your name. She will write to you when the circle gathers.
+      </p>
+
+      <!-- View 1: form -->
+      <form id="reflections-form" onsubmit="submitReflections(event)" class="space-y-4">
+        <input id="reflections-name" type="text" name="name" autocomplete="name"
+               placeholder="Your name (or chosen name)"
+               class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-center text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition" />
+        <input id="reflections-email" type="email" name="email" autocomplete="email" required
+               placeholder="your@email"
+               class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-center text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition" />
+        <textarea id="reflections-intention" name="intention" rows="3"
+               placeholder="What called you here? (optional)"
+               class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition resize-none font-cormorant italic"></textarea>
+        <p id="reflections-error" class="text-red-400/80 text-xs tracking-[0.3em] uppercase h-4"></p>
+        <button type="submit" id="reflections-submit" class="btn-primary w-full">
+          <span class="relative z-10">Send the Letter</span>
+        </button>
+      </form>
+
+      <!-- View 2: success (hidden by default) -->
+      <div id="reflections-success" class="hidden">
+        <p class="font-cormorant italic text-xl text-aettam-bone/90 mb-6 leading-relaxed">
+          The letter is in her hand. Watch your inbox — she does not write often, but when she does, you will know.
+        </p>
+        <p class="text-aettam-gold tracking-[0.4em] text-xs">⛤ WELCOME, MATTEA ⛤</p>
+      </div>
+
+      <p class="mt-8 text-[10px] tracking-[0.4em] uppercase text-aettam-bone/30">
+        We do not sell, share, or sermonize.
+      </p>
+    </div>
+  </div>
 
   <!-- ====================  GATE MODAL  ==================== -->
   <div id="gate" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/85 backdrop-blur-md p-6">

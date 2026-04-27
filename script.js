@@ -10,6 +10,18 @@ const SANCTUARY_PASSWORD = "wearemattea";   // ← change me
 const SESSION_KEY        = "aettam_unlocked";
 const PRIVATE_PAGE       = "private.html";
 
+/* ----------------------------------------------------------
+   REFLECTIONS form (email capture)
+   To start receiving emails:
+     1. Sign up free at https://formspree.io
+     2. Create a new form, copy the endpoint URL
+        (looks like: https://formspree.io/f/abcdwxyz)
+     3. Paste it below replacing the placeholder.
+   Until then, submissions are saved to localStorage as a
+   fallback so nothing is lost.
+   ---------------------------------------------------------- */
+const REFLECTIONS_ENDPOINT = "REPLACE_WITH_FORMSPREE_URL";
+
 /* ----------  Tailwind palette extension  ---------- */
 if (window.tailwind) {
   tailwind.config = {
@@ -114,9 +126,84 @@ function tryEnter(e) {
   }
 }
 
+/* ----------  Reflections (email capture) modal  ---------- */
+function openReflections() {
+  const modal = document.getElementById('reflections');
+  if (!modal) return;
+  modal.classList.add('show');
+  // reset to form view in case it was previously submitted
+  const form    = document.getElementById('reflections-form');
+  const success = document.getElementById('reflections-success');
+  if (form && success) {
+    form.classList.remove('hidden');
+    success.classList.add('hidden');
+  }
+  setTimeout(() => {
+    const input = document.getElementById('reflections-name');
+    if (input) input.focus();
+  }, 100);
+}
+
+function closeReflections() {
+  const modal = document.getElementById('reflections');
+  if (!modal) return;
+  modal.classList.remove('show');
+}
+
+async function submitReflections(e) {
+  e.preventDefault();
+  const nameEl  = document.getElementById('reflections-name');
+  const emailEl = document.getElementById('reflections-email');
+  const intEl   = document.getElementById('reflections-intention');
+  const errEl   = document.getElementById('reflections-error');
+  const btn     = document.getElementById('reflections-submit');
+
+  const payload = {
+    name:      (nameEl.value  || '').trim(),
+    email:     (emailEl.value || '').trim(),
+    intention: (intEl.value   || '').trim(),
+    sentAt:    new Date().toISOString()
+  };
+
+  if (!payload.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) {
+    errEl.textContent = 'A real email, please.';
+    return;
+  }
+  errEl.textContent = '';
+  btn.disabled = true;
+  btn.querySelector('span').textContent = 'Sending…';
+
+  let delivered = false;
+  if (REFLECTIONS_ENDPOINT && !REFLECTIONS_ENDPOINT.startsWith('REPLACE')) {
+    try {
+      const res = await fetch(REFLECTIONS_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      delivered = res.ok;
+    } catch (_) { delivered = false; }
+  }
+
+  // Always keep a local fallback record so nothing is lost
+  // even if the endpoint isn't configured yet.
+  try {
+    const key = 'aettam_reflections_local';
+    const existing = JSON.parse(localStorage.getItem(key) || '[]');
+    existing.push({ ...payload, delivered });
+    localStorage.setItem(key, JSON.stringify(existing));
+  } catch (_) {}
+
+  // Swap to success view regardless — we have the data.
+  document.getElementById('reflections-form').classList.add('hidden');
+  document.getElementById('reflections-success').classList.remove('hidden');
+  btn.disabled = false;
+  btn.querySelector('span').textContent = 'Send the Letter';
+}
+
 /* close on ESC */
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeGate();
+  if (e.key === 'Escape') { closeGate(); closeReflections(); }
 });
 
 /* ----------  Boot  ---------- */
