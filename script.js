@@ -20,7 +20,7 @@ const PRIVATE_PAGE       = "private.html";
    Until then, submissions are saved to localStorage as a
    fallback so nothing is lost.
    ---------------------------------------------------------- */
-const REFLECTIONS_ENDPOINT = "REPLACE_WITH_FORMSPREE_URL";
+const REFLECTIONS_ENDPOINT = "https://formspree.io/f/mvzdjzpk";
 
 /* ----------  Tailwind palette extension  ---------- */
 if (window.tailwind) {
