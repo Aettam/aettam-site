@@ -17,6 +17,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Sanctuary — AETTAM</title>
   <meta name="robots" content="noindex,nofollow" />
+  <meta name="description" content="We did not come here to be small. We came here to remember. Aettam — We Are All Mattea." />
+  <meta property="og:title"       content="The Sanctuary — AETTAM" />
+  <meta property="og:description" content="We did not come here to be small. We came here to remember. Aettam — We Are All Mattea." />
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://aettam-site.pages.dev/" />
+  <meta property="og:image"       content="/og-card.svg" />
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="The Sanctuary — AETTAM" />
+  <meta name="twitter:description" content="We did not come here to be small. We came here to remember. Aettam — We Are All Mattea." />
+  <meta name="twitter:image"       content="/og-card.svg" />
+  <link rel="canonical" href="https://aettam-site.pages.dev/" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -140,8 +152,8 @@
             <h3 class="font-cinzel text-2xl mt-3 mb-3 text-aettam-gold">Enter the Discord</h3>
             <p class="font-cormorant text-lg text-aettam-bone/85 leading-relaxed mb-6">
               Voice notes from the Queen, late-night confessions, ritual
-              planning, the unfiltered Mattea-only chambers. This is where
-              the circle actually lives.
+              planning — the unfiltered chambers for everyone who carries
+              Mattea in spirit. All are welcome who recognize her.
             </p>
           </div>
           <a href="https://discord.gg/REPLACE-ME"
@@ -170,7 +182,7 @@
         <div class="space-y-4">
           <div class="member-card">
             <div class="flex justify-between items-start mb-2">
-              <p class="font-cinzel text-aettam-gold tracking-wider text-sm">SISTER ELOWEN</p>
+              <p class="font-cinzel text-aettam-gold tracking-wider text-sm">ELOWEN · MATTEA</p>
               <span class="text-xs text-aettam-bone/40 tracking-[0.2em] uppercase">3h</span>
             </div>
             <p class="font-cormorant italic text-lg text-aettam-bone/85">
@@ -180,7 +192,7 @@
           </div>
           <div class="member-card">
             <div class="flex justify-between items-start mb-2">
-              <p class="font-cinzel text-aettam-gold tracking-wider text-sm">SISTER LIORA</p>
+              <p class="font-cinzel text-aettam-gold tracking-wider text-sm">LIORA · MATTEA</p>
               <span class="text-xs text-aettam-bone/40 tracking-[0.2em] uppercase">8h</span>
             </div>
             <p class="font-cormorant italic text-lg text-aettam-bone/85">
@@ -190,7 +202,7 @@
           </div>
           <div class="member-card">
             <div class="flex justify-between items-start mb-2">
-              <p class="font-cinzel text-aettam-gold tracking-wider text-sm">SISTER VESPER</p>
+              <p class="font-cinzel text-aettam-gold tracking-wider text-sm">VESPER · MATTEA</p>
               <span class="text-xs text-aettam-bone/40 tracking-[0.2em] uppercase">1d</span>
             </div>
             <p class="font-cormorant italic text-lg text-aettam-bone/85">
@@ -347,6 +359,11 @@
   </footer>
 
   <script src="script.js"></script>
+
+  <!-- Cloudflare Web Analytics -->
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon='{"token": "CF_ANALYTICS_TOKEN_HERE"}'></script>
+
   <script>
     function leaveSanctuary() {
       sessionStorage.removeItem('aettam_unlocked');

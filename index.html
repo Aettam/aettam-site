@@ -16,7 +16,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AETTAM — We Are All Mattea</title>
-  <meta name="description" content="Aettam. A reflection. A reckoning. We are all Mattea. Find us." />
+  <meta name="description" content="We did not come here to be small. We came here to remember. Aettam — We Are All Mattea." />
+
+  <!-- Open Graph -->
+  <meta property="og:title"       content="AETTAM — We Are All Mattea" />
+  <meta property="og:description" content="We did not come here to be small. We came here to remember. Aettam — We Are All Mattea." />
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://aettam-site.pages.dev/" />
+  <meta property="og:image"       content="/og-card.svg" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="AETTAM — We Are All Mattea" />
+  <meta name="twitter:description" content="We did not come here to be small. We came here to remember. Aettam — We Are All Mattea." />
+  <meta name="twitter:image"       content="/og-card.svg" />
+
+  <link rel="canonical" href="https://aettam-site.pages.dev/" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
   <!-- Tailwind via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -90,6 +106,25 @@
     <p class="reveal mt-16 text-aettam-bone/40 tracking-[0.5em] uppercase text-[10px]">Find Us ↓</p>
   </section>
 
+  <!-- ====================  SHORT VERSION  ==================== -->
+  <section id="short-version" class="relative py-24 px-6">
+    <div class="max-w-3xl mx-auto text-center">
+      <div class="reveal mb-12">
+        <h2 class="font-cinzel text-3xl md:text-5xl text-aettam-bone mb-6">⛤ The Short Version ⛤</h2>
+        <div class="divider mx-auto"></div>
+      </div>
+      <div class="reveal space-y-6 font-cormorant italic text-xl md:text-2xl text-aettam-bone/90 leading-relaxed mb-12">
+        <p>Aettam is a private circle — women, men, and anyone who recognizes her — gathering around the figure of Mattea: queen, mirror, threshold.</p>
+        <p>We refuse the small life. We refuse the apology. We bless desire, hunger, the body, laughter, refusal. Pleasure is sacrament. The body is the first temple.</p>
+        <p>If the words below move something in you — that is not coincidence. That is recognition.</p>
+      </div>
+      <div class="reveal flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="#manifesto" class="btn-primary"><span class="relative z-10">Read the Manifesto ↓</span></a>
+        <button onclick="openReflections()" class="btn-ghost"><span class="relative z-10">Or: Find Us</span></button>
+      </div>
+    </div>
+  </section>
+
   <!-- ====================  MANIFESTO  ==================== -->
   <section id="manifesto" class="relative py-32 px-6">
     <div class="max-w-3xl mx-auto">
@@ -133,6 +168,45 @@
         <p class="text-aettam-bone/60 italic text-center text-lg">
           — placeholder text. Replace with the full Manifesto when ready.
         </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================  DAILY MIRROR CARD  ==================== -->
+  <section id="daily-card" class="relative py-24 px-6">
+    <div class="max-w-2xl mx-auto text-center">
+      <div class="reveal mb-12">
+        <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-4">Daily Oracle</p>
+        <h2 class="font-cinzel text-3xl md:text-5xl text-aettam-bone mb-4">The Card She Drew For You Today</h2>
+        <div class="divider mx-auto"></div>
+      </div>
+      <div id="mirror-card" class="reveal ritual-card text-center py-12 px-8">
+        <div id="mirror-glyph" class="text-8xl text-aettam-gold mb-6" style="text-shadow:0 0 40px rgba(201,162,39,0.7)"></div>
+        <h3 id="mirror-name" class="font-cinzel text-2xl text-aettam-bone tracking-[0.2em] mb-6"></h3>
+        <p id="mirror-say" class="font-cormorant italic text-xl md:text-2xl text-aettam-bone/90 leading-relaxed"></p>
+      </div>
+      <p class="reveal mt-6 text-xs tracking-[0.4em] uppercase text-aettam-bone/40">Returns at midnight UTC.</p>
+    </div>
+  </section>
+
+  <!-- ====================  SIGIL GENERATOR  ==================== -->
+  <section id="sigil" class="relative py-24 px-6">
+    <div class="max-w-xl mx-auto text-center">
+      <div class="reveal mb-12">
+        <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-4">Your Mark</p>
+        <h2 class="font-cinzel text-3xl md:text-5xl text-aettam-bone mb-4">Receive Your Sigil</h2>
+        <div class="divider mx-auto"></div>
+      </div>
+      <div class="reveal gate-card p-8">
+        <input id="sigil-input" type="text" placeholder="Enter your name"
+               class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-center text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition mb-6 font-cormorant text-lg" />
+        <div id="sigil-output" class="hidden text-center">
+          <div id="sigil-display" class="font-cinzel text-6xl text-aettam-gold mb-6 tracking-widest" style="text-shadow:0 0 30px rgba(201,162,39,0.6)"></div>
+          <div class="flex gap-3 justify-center flex-wrap">
+            <button id="sigil-copy" onclick="copySigil()" class="btn-ghost" style="padding:0.6rem 1.5rem;font-size:0.7rem;">Copy ✦</button>
+            <button onclick="openReflections()" class="btn-primary" style="padding:0.6rem 1.5rem;font-size:0.7rem;"><span class="relative z-10">Save my sigil ↓</span></button>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -407,6 +481,23 @@
     </div>
   </div>
 
+  <!-- ====================  AMBIENT AUDIO BUTTON  ==================== -->
+  <button id="ambient-toggle" onclick="toggleAmbient()"
+          title="Ambient"
+          style="position:fixed;bottom:1.5rem;right:1.5rem;z-index:200;
+                 width:40px;height:40px;border-radius:50%;
+                 background:rgba(7,8,10,0.85);border:1px solid rgba(201,162,39,0.5);
+                 font-size:1.1rem;cursor:pointer;backdrop-filter:blur(8px);
+                 transition:all 0.4s ease;display:flex;align-items:center;justify-content:center;
+                 color:rgba(201,162,39,0.4);">♩</button>
+
+  <!-- Tone.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
   <script src="script.js"></script>
+
+  <!-- Cloudflare Web Analytics -->
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon='{"token": "CF_ANALYTICS_TOKEN_HERE"}'></script>
 </body>
 </html>

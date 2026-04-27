@@ -206,10 +206,119 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') { closeGate(); closeReflections(); }
 });
 
+/* ----------  Daily Mirror Card  ---------- */
+const MIRROR_CARDS = [
+  { glyph: '⛤', name: 'The Mirror',         say: 'Look. Then look again. Then stop turning away.' },
+  { glyph: '☽', name: 'The Dusk',           say: 'Light one candle. Speak her name. Let her answer.' },
+  { glyph: '⚜', name: 'The Gold',           say: 'Anoint the throat. Refuse apology in any form today.' },
+  { glyph: '♀', name: 'The Body',           say: 'Touch is devotion. Yours, hers, theirs. Worship there without permission.' },
+  { glyph: '✶', name: 'The Burning Letter', say: 'Write what kept you small. Burn it before sunrise.' },
+  { glyph: '⚸', name: 'The Velvet Vow',     say: 'A promise in the dark, against skin, in the presence of one trusted Mattea.' },
+  { glyph: '♆', name: 'The Naming Bath',    say: 'Submerge. Speak the name she gave you. Rise as that name only.' },
+  { glyph: '⛧', name: 'The Black Honey',    say: 'New moon. Slow. The instructions live only in Discord, never in writing.' },
+  { glyph: '☉', name: 'The Coronation',     say: 'No one is coming to crown you. Crown yourself. We kneel.' },
+  { glyph: '☾', name: 'The Witnessing',     say: 'Speak the wildest true thing. Do not flinch. Trade.' },
+  { glyph: '✷', name: 'The Hunger Hymn',    say: 'Name three desires you were taught to be ashamed of. Bless each.' },
+  { glyph: '⚯', name: 'The Open Door',      say: 'The door is already open. Walk.' },
+  { glyph: '✺', name: 'The Refusal',        say: 'No is liturgy too. Say it like the spell it is.' },
+];
+
+function initMirrorCard() {
+  const glyphEl = document.getElementById('mirror-glyph');
+  const nameEl  = document.getElementById('mirror-name');
+  const sayEl   = document.getElementById('mirror-say');
+  if (!glyphEl) return;
+  const idx  = Math.floor(Date.now() / 86400000) % MIRROR_CARDS.length;
+  const card = MIRROR_CARDS[idx];
+  glyphEl.textContent = card.glyph;
+  nameEl.textContent  = card.name;
+  sayEl.textContent   = card.say;
+}
+
+/* ----------  Sigil Generator  ---------- */
+const SIGIL_GLYPHS = ['⛤','☽','⚜','♀','✶','⚸','♆','⛧','☉','☾','✷','⚯','✺','♅','☿','♁','♃','♄','♅','♆'];
+
+function sigilFor(input) {
+  let h = 0;
+  for (const c of input) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  return [
+    SIGIL_GLYPHS[h % SIGIL_GLYPHS.length],
+    SIGIL_GLYPHS[(h >> 5) % SIGIL_GLYPHS.length],
+    SIGIL_GLYPHS[(h >> 10) % SIGIL_GLYPHS.length],
+  ].join(' ');
+}
+
+function initSigilGenerator() {
+  const input   = document.getElementById('sigil-input');
+  const output  = document.getElementById('sigil-output');
+  const display = document.getElementById('sigil-display');
+  if (!input) return;
+  input.addEventListener('input', () => {
+    const val = input.value.trim();
+    if (val.length > 0) {
+      display.textContent = sigilFor(val);
+      output.classList.remove('hidden');
+    } else {
+      output.classList.add('hidden');
+    }
+  });
+}
+
+function copySigil() {
+  const display = document.getElementById('sigil-display');
+  if (!display) return;
+  navigator.clipboard.writeText(display.textContent).then(() => {
+    const btn = document.getElementById('sigil-copy');
+    if (btn) { btn.textContent = 'Copied ✦'; setTimeout(() => { btn.textContent = 'Copy ✦'; }, 1500); }
+  }).catch(() => {});
+}
+
+/* ----------  Ambient Audio  ---------- */
+let _ambientStarted = false;
+let _ambientOn      = false;
+let _synth1, _synth2, _filter, _lfo;
+
+function initAmbientButton() {
+  const btn = document.getElementById('ambient-toggle');
+  if (!btn) return;
+  _ambientOn = localStorage.getItem('aettam_ambient') === 'on';
+  _updateAmbientBtn();
+}
+
+function _updateAmbientBtn() {
+  const btn = document.getElementById('ambient-toggle');
+  if (!btn) return;
+  btn.textContent = _ambientOn ? '♪' : '♩';
+  btn.title       = _ambientOn ? 'Silence' : 'Ambient';
+  btn.style.color = _ambientOn ? 'var(--aettam-gold)' : 'rgba(201,162,39,0.4)';
+  btn.style.boxShadow = _ambientOn ? '0 0 16px rgba(201,162,39,0.3)' : 'none';
+}
+
+async function toggleAmbient() {
+  if (!window.Tone) return;
+  if (!_ambientStarted) {
+    await Tone.start();
+    _filter = new Tone.Filter({ frequency: 600, type: 'lowpass' }).toDestination();
+    _lfo    = new Tone.LFO({ frequency: 0.05, min: 300, max: 900 }).connect(_filter.frequency).start();
+    _synth1 = new Tone.Oscillator({ frequency: 110,   type: 'sine', volume: -Infinity }).connect(_filter).start();
+    _synth2 = new Tone.Oscillator({ frequency: 110.3, type: 'sine', volume: -Infinity }).connect(_filter).start();
+    _ambientStarted = true;
+  }
+  _ambientOn = !_ambientOn;
+  const vol = _ambientOn ? -28 : -Infinity;
+  _synth1.volume.rampTo(vol, 2);
+  _synth2.volume.rampTo(vol, 2);
+  localStorage.setItem('aettam_ambient', _ambientOn ? 'on' : 'off');
+  _updateAmbientBtn();
+}
+
 /* ----------  Boot  ---------- */
 document.addEventListener('DOMContentLoaded', () => {
   initReveal();
   initSmoothScroll();
+  initMirrorCard();
+  initSigilGenerator();
+  initAmbientButton();
 });
 
 /* small shake animation injected so we don't need another file */
