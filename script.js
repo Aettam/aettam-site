@@ -21,7 +21,7 @@ const PRIVATE_PAGE       = "private.html";
    fallback so nothing is lost.
    ---------------------------------------------------------- */
 // After deploying the Cloudflare Worker (aettam-worker/), replace this with your worker URL.
-const REFLECTIONS_ENDPOINT = "https://aettam-worker.PLACEHOLDER.workers.dev/reflect";
+const REFLECTIONS_ENDPOINT = "https://aettam-worker.firstbloodanivia.workers.dev/reflect";
 // Sanctuary key must match the SANCTUARY_KEY worker secret (default: mattea-sanctuary-2026)
 const SANCTUARY_KEY = "mattea-sanctuary-2026";
 const MEMBERS_URL   = "https://146-190-119-77.sslip.io/aettam-members";
