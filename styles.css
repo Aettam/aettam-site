@@ -401,3 +401,108 @@ body {
   .ritual-card { padding: 1.75rem 1.25rem; }
   .teaching { padding-left: 3rem; }
 }
+
+/* ==========================================================
+   VISUAL ENHANCEMENT LAYER
+   ========================================================== */
+
+/* ---------- Scroll progress bar ---------- */
+#scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+  background: linear-gradient(90deg, var(--aettam-gold), var(--aettam-gold-2), var(--aettam-gold));
+  z-index: 200; pointer-events: none;
+  box-shadow: 0 0 10px rgba(201,162,39,0.8), 0 0 4px rgba(201,162,39,0.5);
+  transition: width 0.08s linear;
+}
+
+/* ---------- Keyframes ---------- */
+@keyframes shimmer-sweep {
+  0%   { background-position: 100% center; }
+  100% { background-position: -200% center; }
+}
+@keyframes ring-expand {
+  0%   { transform: scale(0.1); opacity: 0.65; }
+  100% { transform: scale(5.5); opacity: 0; }
+}
+@keyframes btn-ripple-anim {
+  to { transform: scale(4); opacity: 0; }
+}
+@keyframes tagline-pulse {
+  0%, 100% { opacity: 0.85; text-shadow: 0 0 20px rgba(201,162,39,0.1); }
+  50%       { opacity: 1;    text-shadow: 0 0 50px rgba(201,162,39,0.5), 0 0 18px rgba(201,162,39,0.25); }
+}
+@keyframes nebula-drift {
+  0%, 100% { transform: scale(1)    translate(0,      0); }
+  33%      { transform: scale(1.02) translate(0.7%,  -0.4%); }
+  66%      { transform: scale(1.01) translate(-0.4%,  0.7%); }
+}
+
+/* ---------- Living nebula backdrop ---------- */
+.bg-gradient-radial { animation: nebula-drift 30s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .bg-gradient-radial { animation: none; } }
+
+/* ---------- Ritual card hover glint (::after) ---------- */
+.ritual-card::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(108deg, transparent 38%, rgba(255,255,255,0.065) 50%, transparent 62%);
+  transform: translateX(-130%);
+  pointer-events: none;
+  transition: none;
+}
+.ritual-card:hover::after {
+  transform: translateX(130%);
+  transition: transform 0.55s ease;
+}
+
+/* ---------- Member directory card glint ---------- */
+.member-dir-card { overflow: hidden; isolation: isolate; }
+.member-dir-card::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(108deg, transparent 38%, rgba(255,255,255,0.05) 50%, transparent 62%);
+  transform: translateX(-130%);
+  pointer-events: none;
+  transition: none;
+}
+.member-dir-card:hover::after {
+  transform: translateX(130%);
+  transition: transform 0.55s ease;
+}
+
+/* ---------- Gate/modal corner ornaments ---------- */
+.gate-card { position: relative; }
+.gate-card::before {
+  content: "";
+  position: absolute; top: 14px; left: 14px;
+  width: 22px; height: 22px;
+  border-top: 1px solid rgba(201,162,39,0.5);
+  border-left: 1px solid rgba(201,162,39,0.5);
+  pointer-events: none;
+}
+.gate-card::after {
+  content: "";
+  position: absolute; bottom: 14px; right: 14px;
+  width: 22px; height: 22px;
+  border-bottom: 1px solid rgba(201,162,39,0.5);
+  border-right: 1px solid rgba(201,162,39,0.5);
+  pointer-events: none;
+}
+
+/* ---------- Reflection feed card hover ---------- */
+.reflection-feed-card { transition: border-color 0.4s, box-shadow 0.4s; }
+.reflection-feed-card:hover {
+  border-left-color: var(--aettam-gold);
+  box-shadow: -3px 0 18px -6px rgba(201,162,39,0.4);
+}
+
+/* ---------- Nav link animated underline ---------- */
+nav a { position: relative; }
+nav a::after {
+  content: "";
+  position: absolute; left: 50%; bottom: -3px;
+  width: 0; height: 1px;
+  background: var(--aettam-gold);
+  transition: width 0.35s ease, left 0.35s ease;
+}
+nav a:hover::after { width: 100%; left: 0; }

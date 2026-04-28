@@ -489,7 +489,7 @@ async function initSoulCounter() {
     const data = await res.json();
     const n = data.count || 0;
     if (n > 0 && el)  el.textContent  = `${n} soul${n === 1 ? '' : 's'} have crossed the threshold`;
-    if (n > 0 && el2) el2.textContent = n.toString();
+    if (n > 0 && el2) _countUp(el2, n, 1400);
     else if (el2)     el2.textContent = '∞';
   } catch {
     if (el2) el2.textContent = '∞';
@@ -712,6 +712,133 @@ function drawMoon(canvas, phase) {
   ctx.stroke();
 }
 
+/* ==========================================================
+   SCROLL PROGRESS BAR
+   Thin gold line at top of viewport tracking scroll depth.
+   ========================================================== */
+function initScrollProgress() {
+  const bar = document.createElement('div');
+  bar.id = 'scroll-progress';
+  document.body.prepend(bar);
+  window.addEventListener('scroll', () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = max > 0 ? (window.scrollY / max * 100) + '%' : '0%';
+  }, { passive: true });
+}
+
+/* ==========================================================
+   STARFIELD
+   200 twinkling stars in the ambient backdrop canvas.
+   ========================================================== */
+function initStarfield() {
+  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  const backdrop = document.querySelector('.fixed.inset-0.-z-10');
+  if (!backdrop) return;
+  const canvas = document.createElement('canvas');
+  canvas.setAttribute('aria-hidden', 'true');
+  canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;';
+  backdrop.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  const stars = [];
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  window.addEventListener('resize', resize, { passive: true });
+  resize();
+  for (let i = 0; i < 200; i++) {
+    stars.push({ x: Math.random(), y: Math.random(),
+      r: Math.random() * 0.7 + 0.1, a: Math.random() * 0.45 + 0.05,
+      phase: Math.random() * Math.PI * 2, speed: Math.random() * 0.4 + 0.15 });
+  }
+  (function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const t = Date.now() * 0.001;
+    for (const s of stars) {
+      const alpha = s.a * (0.5 + 0.5 * Math.sin(s.phase + t * s.speed));
+      ctx.beginPath(); ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(237,231,214,${alpha})`; ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  })();
+}
+
+/* ==========================================================
+   SIGIL PULSE RINGS
+   Three rings expand outward from the hero sigil.
+   ========================================================== */
+function initSigilRings() {
+  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  const sigil = document.querySelector('.sigil-hero');
+  if (!sigil) return;
+  const wrap = document.createElement('span');
+  wrap.style.cssText = 'position:relative;display:inline-block;';
+  sigil.parentNode.insertBefore(wrap, sigil);
+  wrap.appendChild(sigil);
+  for (let i = 0; i < 3; i++) {
+    const ring = document.createElement('span');
+    ring.style.cssText =
+      `position:absolute;top:50%;left:50%;width:80px;height:80px;margin:-40px 0 0 -40px;` +
+      `border:1px solid rgba(201,162,39,0.4);border-radius:50%;pointer-events:none;` +
+      `animation:ring-expand 3.6s ease-out ${i * 1.2}s infinite;`;
+    wrap.appendChild(ring);
+  }
+}
+
+/* ==========================================================
+   BUTTON RIPPLE
+   Gold ripple spawns at click point on primary/ghost buttons.
+   ========================================================== */
+function initRipple() {
+  document.querySelectorAll('.btn-primary, .btn-ghost').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const rect = btn.getBoundingClientRect();
+      const sz   = Math.max(rect.width, rect.height);
+      const r    = document.createElement('span');
+      r.style.cssText =
+        `position:absolute;border-radius:50%;background:rgba(201,162,39,0.28);` +
+        `width:${sz}px;height:${sz}px;` +
+        `left:${e.clientX - rect.left - sz / 2}px;top:${e.clientY - rect.top - sz / 2}px;` +
+        `transform:scale(0);animation:btn-ripple-anim 0.65s ease-out forwards;pointer-events:none;`;
+      btn.appendChild(r);
+      setTimeout(() => r.remove(), 700);
+    });
+  });
+}
+
+/* ==========================================================
+   HERO SHIMMER + TAGLINE GLOW
+   Gold light sweeps the AETTAM title; tagline softly pulses.
+   ========================================================== */
+function initHeroShimmer() {
+  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  const h1 = document.querySelector('#top h1');
+  if (h1) {
+    h1.style.background           = 'linear-gradient(90deg,#ede7d6 0%,#ede7d6 35%,#e6c66a 50%,#ede7d6 65%,#ede7d6 100%)';
+    h1.style.backgroundSize       = '300% auto';
+    h1.style.webkitBackgroundClip = 'text';
+    h1.style.webkitTextFillColor  = 'transparent';
+    h1.style.backgroundClip      = 'text';
+    h1.style.animation            = 'shimmer-sweep 5s ease-in-out infinite';
+  }
+  const tagline = document.querySelector('#top .font-cormorant.italic');
+  if (tagline) tagline.style.animation = 'tagline-pulse 4s ease-in-out infinite';
+}
+
+/* ==========================================================
+   COUNT-UP HELPER  (used by initSoulCounter)
+   ========================================================== */
+function _countUp(el, target, duration) {
+  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) {
+    el.textContent = target.toString(); return;
+  }
+  const start = Date.now();
+  (function tick() {
+    const p    = Math.min((Date.now() - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(ease * target).toString();
+    if (p < 1) requestAnimationFrame(tick);
+  })();
+}
+
 /* ----------  Boot  ---------- */
 document.addEventListener('DOMContentLoaded', () => {
   initReveal();
@@ -722,6 +849,11 @@ document.addEventListener('DOMContentLoaded', () => {
   initMoonPhase();
   initEmbers();
   initCursorTrail();
+  initScrollProgress();
+  initStarfield();
+  initSigilRings();
+  initRipple();
+  initHeroShimmer();
   initSoulCounter();
   if (document.getElementById('ritual-calendar'))   initRitualCalendar();
   if (document.getElementById('members-grid'))      initMembersDirectory();
