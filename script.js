@@ -366,11 +366,13 @@ function getMoonPhase() {
 function initMoonPhase() {
   const moon = getMoonPhase();
   const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
-  set('moon-glyph-hero',             moon.glyph);
   set('moon-name-hero',              moon.name);
-  set('moon-glyph-sanctuary',        moon.glyph);
   set('moon-name-sanctuary',         moon.name);
   set('moon-illumination-sanctuary', moon.illumination + '% illuminated');
+  const heroCanvas      = document.getElementById('moon-canvas-hero');
+  const sanctuaryCanvas = document.getElementById('moon-canvas-sanctuary');
+  if (heroCanvas)      drawMoon(heroCanvas,      moon.phase);
+  if (sanctuaryCanvas) drawMoon(sanctuaryCanvas, moon.phase);
 }
 
 /* ----------  Ritual Calendar (Task 16)  ---------- */
@@ -558,6 +560,158 @@ async function submitOath(e) {
   if (btn) { btn.disabled = false; btn.querySelector('span').textContent = 'Seal the Vow ⛤'; }
 }
 
+/* ==========================================================
+   EMBER PARTICLES
+   Floating gold sparks injected into every hero section.
+   Respects prefers-reduced-motion.
+   ========================================================== */
+function initEmbers() {
+  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  document.querySelectorAll('.halo').forEach(halo => {
+    const section = halo.closest('section');
+    if (!section || section.querySelector('.ember-canvas')) return;
+    const canvas = document.createElement('canvas');
+    canvas.className = 'ember-canvas';
+    canvas.setAttribute('aria-hidden', 'true');
+    canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;';
+    section.insertBefore(canvas, section.firstChild);
+    _startEmbers(canvas);
+  });
+}
+
+function _startEmbers(canvas) {
+  const ctx = canvas.getContext('2d');
+  let W = 0, H = 0;
+  const pts = [];
+
+  function resize() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; }
+  new ResizeObserver(resize).observe(canvas);
+  resize();
+
+  function mk(pre) {
+    return {
+      x: Math.random() * (W || 800),
+      y: pre ? Math.random() * (H || 600) : (H || 600) + 5,
+      r:    Math.random() * 1.5 + 0.3,
+      vy:   Math.random() * 0.55 + 0.15,
+      vx:   (Math.random() - 0.5) * 0.35,
+      a:    Math.random() * 0.5 + 0.15,
+      life: pre ? Math.random() : 1,
+      decay: Math.random() * 0.0022 + 0.001,
+    };
+  }
+
+  for (let i = 0; i < 55; i++) pts.push(mk(true));
+
+  (function tick() {
+    if (W && H) {
+      ctx.clearRect(0, 0, W, H);
+      if (pts.length < 75) pts.push(mk(false));
+      for (let i = pts.length - 1; i >= 0; i--) {
+        const p = pts[i];
+        p.x += p.vx; p.y -= p.vy; p.life -= p.decay;
+        if (p.life <= 0 || p.y < -10) { pts.splice(i, 1); continue; }
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(201,162,39,${p.a * p.life})`;
+        ctx.fill();
+      }
+    }
+    requestAnimationFrame(tick);
+  })();
+}
+
+/* ==========================================================
+   CURSOR SIGIL TRAIL
+   Gold glyphs appear and fade as the mouse moves.
+   Desktop only (hover:hover + pointer:fine).
+   ========================================================== */
+function initCursorTrail() {
+  if (!window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  const GLYPHS = ['⛤','☽','✶','⚜','♀','⚸','✺','☉','♆','⛧','☾'];
+  let lx = -999, ly = -999;
+  document.addEventListener('mousemove', e => {
+    const dx = e.clientX - lx, dy = e.clientY - ly;
+    if (dx * dx + dy * dy < 400) return;
+    lx = e.clientX; ly = e.clientY;
+    const el = document.createElement('span');
+    const sz = Math.random() * 8 + 10;
+    el.textContent = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+    el.style.cssText = `position:fixed;left:${e.clientX - sz / 2}px;top:${e.clientY - sz / 2}px;` +
+      `font-size:${sz}px;color:rgba(201,162,39,0.65);pointer-events:none;z-index:9999;` +
+      `transition:opacity 0.9s ease,transform 0.9s ease;user-select:none;will-change:opacity,transform;`;
+    document.body.appendChild(el);
+    requestAnimationFrame(() => {
+      el.style.opacity = '0';
+      el.style.transform = `translateY(-${10 + Math.random() * 8}px) scale(0.5)`;
+    });
+    setTimeout(() => el.remove(), 950);
+  });
+}
+
+/* ==========================================================
+   MOON CANVAS RENDERER
+   Draws a geometrically accurate moon phase on a <canvas>.
+   Called from initMoonPhase() for any moon-canvas-* elements.
+   ========================================================== */
+function drawMoon(canvas, phase) {
+  const dpr  = Math.min(window.devicePixelRatio || 1, 2);
+  const size = (canvas.offsetWidth || parseInt(canvas.getAttribute('width')) || 44);
+  canvas.width  = size * dpr;
+  canvas.height = size * dpr;
+  canvas.style.width  = size + 'px';
+  canvas.style.height = size + 'px';
+
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const cx = size / 2, cy = size / 2, r = size * 0.38;
+
+  // Ambient glow, strongest at full moon
+  const fullness = Math.max(0, 1 - 2 * Math.abs(phase - 0.5));
+  if (fullness > 0.05) {
+    const g = ctx.createRadialGradient(cx, cy, r * 0.8, cx, cy, r * 1.9);
+    g.addColorStop(0, `rgba(201,162,39,${fullness * 0.18})`);
+    g.addColorStop(1, 'rgba(201,162,39,0)');
+    ctx.beginPath(); ctx.arc(cx, cy, r * 1.9, 0, Math.PI * 2);
+    ctx.fillStyle = g; ctx.fill();
+  }
+
+  // Clip path = moon disc
+  ctx.save();
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.clip();
+
+  // Dark background
+  ctx.fillStyle = '#0d0f12';
+  ctx.fillRect(0, 0, size, size);
+
+  // Lit area — terminator is an ellipse whose x-radius = r·|cos(phase·2π)|
+  // termX > 0 → crescent (bulges toward lit side)
+  // termX < 0 → gibbous (terminator crosses to dark side)
+  const termX    = r * Math.cos(phase * 2 * Math.PI);
+  const isWaxing = phase <= 0.5;
+
+  ctx.fillStyle = 'rgba(237,231,214,0.88)';
+  ctx.beginPath();
+  if (isWaxing) {
+    // Right side lit
+    ctx.arc(cx, cy, r, -Math.PI / 2, Math.PI / 2);                                    // right semicircle top→bottom
+    ctx.ellipse(cx, cy, Math.max(Math.abs(termX), 0.5), r, 0, Math.PI / 2, -Math.PI / 2, termX > 0); // terminator back
+  } else {
+    // Left side lit
+    ctx.arc(cx, cy, r, -Math.PI / 2, Math.PI / 2, true);                              // left semicircle top→bottom
+    ctx.ellipse(cx, cy, Math.max(Math.abs(termX), 0.5), r, 0, Math.PI / 2, -Math.PI / 2, termX < 0);
+  }
+  ctx.fill();
+  ctx.restore();
+
+  // Disc ring
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(201,162,39,0.35)';
+  ctx.lineWidth = 0.5;
+  ctx.stroke();
+}
+
 /* ----------  Boot  ---------- */
 document.addEventListener('DOMContentLoaded', () => {
   initReveal();
@@ -566,6 +720,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initSigilGenerator();
   initAmbientButton();
   initMoonPhase();
+  initEmbers();
+  initCursorTrail();
   initSoulCounter();
   if (document.getElementById('ritual-calendar'))   initRitualCalendar();
   if (document.getElementById('members-grid'))      initMembersDirectory();
