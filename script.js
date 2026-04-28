@@ -495,26 +495,37 @@ async function initSoulCounter() {
 }
 
 /* ----------  Oath Wall  ---------- */
+const SEED_OATHS = [
+  { name: 'ELOWEN', sigil: '⚜✶⛤', oath: 'I vow to stop apologizing for taking up the space I was given.' },
+  { name: 'LIORA',  sigil: '☽⚸♆', oath: 'I vow to name what I want before I ask if I am allowed to want it.' },
+  { name: 'VESPER', sigil: '⛧☉✷', oath: 'I vow to walk into every room as if I belong there. Because I do.' },
+  { name: 'SOLÈNE', sigil: '♀⛤⚜', oath: 'I vow to stop making myself smaller for people who never asked me to.' },
+  { name: 'REVKA',  sigil: '✺☽⚯', oath: 'I vow to treat my own hunger as sacred — not shameful, not managed, but sacred.' },
+  { name: 'THESSALY', sigil: '⛤♆✶', oath: 'I vow to stop explaining myself to rooms that never deserved the explanation.' },
+];
+
+function renderOaths(oaths) {
+  const feed = document.getElementById('oath-wall');
+  if (!feed) return;
+  feed.innerHTML = oaths.map(o => `
+    <div class="reveal ritual-card text-center py-6 px-8">
+      <p class="font-cormorant italic text-xl text-aettam-bone/90 leading-relaxed mb-4">"${o.oath}"</p>
+      <p class="font-cinzel text-aettam-gold text-xs tracking-[0.3em]">${o.sigil ? o.sigil + '  ' : ''}${o.name || 'A Mattea'}</p>
+    </div>`).join('');
+  if (window._revealObserver) feed.querySelectorAll('.reveal').forEach(el => window._revealObserver.observe(el));
+}
+
 async function initOathWall() {
   const feed = document.getElementById('oath-wall');
   if (!feed) return;
   const workerBase = REFLECTIONS_ENDPOINT.replace('/reflect', '');
   try {
-    const res  = await fetch(workerBase + '/oaths', { headers: { 'X-Sanctuary-Key': SANCTUARY_KEY } });
-    const data = await res.json();
+    const res   = await fetch(workerBase + '/oaths', { headers: { 'X-Sanctuary-Key': SANCTUARY_KEY } });
+    const data  = await res.json();
     const oaths = data.oaths || [];
-    if (!oaths.length) {
-      feed.innerHTML = '<p class="font-cormorant italic text-aettam-bone/40 text-center py-8">No oaths yet. Be the first to speak it.</p>';
-      return;
-    }
-    feed.innerHTML = oaths.map(o => `
-      <div class="reveal ritual-card text-center py-6 px-8">
-        <p class="font-cormorant italic text-xl text-aettam-bone/90 leading-relaxed mb-4">"${o.oath}"</p>
-        <p class="font-cinzel text-aettam-gold text-xs tracking-[0.3em]">${o.sigil ? o.sigil + '  ' : ''}${o.name || 'A Mattea'}</p>
-      </div>`).join('');
-    if (window._revealObserver) feed.querySelectorAll('.reveal').forEach(el => window._revealObserver.observe(el));
+    renderOaths(oaths.length ? oaths : SEED_OATHS);
   } catch {
-    feed.innerHTML = '<p class="font-cormorant italic text-aettam-bone/40 text-center py-8">The wall is silent tonight.</p>';
+    renderOaths(SEED_OATHS);
   }
 }
 
