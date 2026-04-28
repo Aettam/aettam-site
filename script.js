@@ -83,6 +83,16 @@ function initSmoothScroll() {
   });
 }
 
+/* ----------  Mobile menu  ---------- */
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobile-menu');
+  if (!menu) return;
+  const isOpen = menu.classList.contains('flex');
+  menu.classList.toggle('hidden', isOpen);
+  menu.classList.toggle('flex', !isOpen);
+  document.body.style.overflow = isOpen ? '' : 'hidden';
+}
+
 /* ----------  Gate modal  ---------- */
 function openGate(intent) {
   // If already unlocked, just go straight to the sanctuary.
@@ -451,15 +461,20 @@ function relativeTime(date) {
 
 /* ----------  Soul Counter  ---------- */
 async function initSoulCounter() {
-  const el = document.getElementById('soul-counter');
-  if (!el) return;
+  const el   = document.getElementById('soul-counter');
+  const el2  = document.getElementById('soul-counter-strip');
+  if (!el && !el2) return;
   try {
     const workerBase = REFLECTIONS_ENDPOINT.replace('/reflect', '');
     const res  = await fetch(workerBase + '/count');
     const data = await res.json();
     const n = data.count || 0;
-    if (n > 0) el.textContent = `${n} soul${n === 1 ? '' : 's'} have crossed the threshold`;
-  } catch {}
+    if (n > 0 && el)  el.textContent  = `${n} soul${n === 1 ? '' : 's'} have crossed the threshold`;
+    if (n > 0 && el2) el2.textContent = n.toString();
+    else if (el2)     el2.textContent = '∞';
+  } catch {
+    if (el2) el2.textContent = '∞';
+  }
 }
 
 /* ----------  Oath Wall  ---------- */

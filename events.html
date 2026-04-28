@@ -114,6 +114,40 @@
     </div>
   </section>
 
+  <!-- HOW WE MARK IT -->
+  <section class="relative py-16 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="reveal text-center mb-14">
+        <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-4">The Practice</p>
+        <h2 class="font-cinzel text-3xl md:text-4xl text-aettam-bone mb-4">How We Mark the Turning</h2>
+        <div class="divider mx-auto"></div>
+        <p class="font-cormorant italic text-aettam-bone/60 text-lg mt-6 max-w-2xl mx-auto">We do not observe these dates with ceremony for ceremony's sake. We observe them because the body responds to time, and naming the turning is the first act of being present for it.</p>
+      </div>
+      <div class="grid md:grid-cols-4 gap-6 text-center">
+        <div class="reveal ritual-card py-8">
+          <span class="text-4xl text-aettam-gold block mb-4">🌑</span>
+          <h3 class="font-cinzel text-aettam-gold text-sm tracking-[0.2em] mb-3">New Moon</h3>
+          <p class="font-cormorant italic text-aettam-bone/75 text-base leading-relaxed">The dark before the drawing. We go quiet, we sit with the want before we name it. New moon nights are for planting — not announcing. One silent intention. One lit candle. Nothing explained to anyone.</p>
+        </div>
+        <div class="reveal ritual-card py-8">
+          <span class="text-4xl text-aettam-gold block mb-4">🌕</span>
+          <h3 class="font-cinzel text-aettam-gold text-sm tracking-[0.2em] mb-3">Full Moon</h3>
+          <p class="font-cormorant italic text-aettam-bone/75 text-base leading-relaxed">The peak light. We speak what has been building. Full moon nights in the Discord are alive — confessions, sharings, the Queen's word goes long. Walk outside if you can. She sees you whether or not you see her.</p>
+        </div>
+        <div class="reveal ritual-card py-8">
+          <span class="text-4xl text-aettam-gold block mb-4">☀</span>
+          <h3 class="font-cinzel text-aettam-gold text-sm tracking-[0.2em] mb-3">Solstice</h3>
+          <p class="font-cormorant italic text-aettam-bone/75 text-base leading-relaxed">The year's crown and its darkest valley. Summer: wear gold, be undeniable. Winter: light one candle — not because it is enough, but because it is yours. Both solstices are marked in the circle with Mattea's full address.</p>
+        </div>
+        <div class="reveal ritual-card py-8">
+          <span class="text-4xl text-aettam-gold block mb-4">⛤</span>
+          <h3 class="font-cinzel text-aettam-gold text-sm tracking-[0.2em] mb-3">Sacred Dates</h3>
+          <p class="font-cormorant italic text-aettam-bone/75 text-base leading-relaxed">Beltane, Samhain, the turning festivals — these are the hinges of the year. We mark them because the women before us marked them, and refusing to mark them is forgetting something the body already knows.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- NEXT EVENT SPOTLIGHT -->
   <section class="relative py-12 px-6">
     <div class="max-w-3xl mx-auto">
@@ -151,15 +185,20 @@
   </section>
 
   <!-- CTA -->
-  <section class="relative py-16 px-6 bg-gradient-to-b from-transparent via-aettam-forest/15 to-transparent">
-    <div class="max-w-2xl mx-auto text-center reveal">
-      <div class="divider mx-auto mb-10"></div>
-      <p class="font-cormorant italic text-xl text-aettam-bone/70 leading-relaxed mb-8">
-        These dates are observed in the Discord. Daily devotionals, live ritual calls, and the Queen's word arrive for every turning.
+  <section class="relative py-20 px-6 bg-gradient-to-b from-transparent via-aettam-forest/15 to-transparent">
+    <div class="max-w-3xl mx-auto text-center reveal">
+      <div class="divider mx-auto mb-12"></div>
+      <p class="font-cinzel text-aettam-gold/50 tracking-[0.5em] text-xs uppercase mb-6">You Are Already Inside the Wheel</p>
+      <h2 class="font-cinzel text-3xl md:text-4xl text-aettam-bone mb-6">The Only Question is Whether You Mark It</h2>
+      <p class="font-cormorant italic text-xl text-aettam-bone/70 leading-relaxed mb-4 max-w-2xl mx-auto">
+        Every turning on this calendar is observed in the Discord — live ritual calls, the Queen's address, the circle gathering in voice. The new moon waits for no one. Neither does the solstice. Neither does the fire.
+      </p>
+      <p class="font-cormorant italic text-lg text-aettam-bone/50 leading-relaxed mb-10 max-w-xl mx-auto">
+        Join before the next turning. She marks it with everyone who is already inside.
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="https://discord.gg/XSAKtNHKEG" target="_blank" rel="noopener" class="btn-primary"><span class="relative z-10">Join the Circle ↗</span></a>
-        <a href="join.html" class="btn-ghost"><span class="relative z-10">How to Join</span></a>
+        <button onclick="openReflections()" class="btn-primary"><span class="relative z-10">Send the Letter — Join Free ↗</span></button>
+        <a href="join.html" class="btn-ghost"><span class="relative z-10">How It Works</span></a>
       </div>
     </div>
   </section>
@@ -171,6 +210,31 @@
       <p class="font-cormorant italic text-aettam-bone/60 mt-2">We Are All Mattea.</p>
     </div>
   </footer>
+
+  <!-- REFLECTIONS MODAL -->
+  <div id="reflections" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/85 backdrop-blur-md p-6">
+    <div class="gate-card relative max-w-md w-full p-10 text-center">
+      <button onclick="closeReflections()" class="absolute top-3 right-4 text-aettam-bone/40 hover:text-aettam-gold text-xl">×</button>
+      <div class="mb-4 text-aettam-gold text-5xl" style="text-shadow:0 0 40px rgba(201,162,39,0.4)">⛤</div>
+      <h3 class="font-cinzel text-xl text-aettam-bone tracking-[0.2em] mb-1">CROSS THE THRESHOLD</h3>
+      <p class="font-cormorant italic text-aettam-bone/60 text-sm mb-2">She writes to everyone who sends the letter.</p>
+      <div class="divider mx-auto mb-6" style="width:3rem;"></div>
+      <p class="font-cormorant italic text-aettam-bone/75 mb-6 leading-relaxed text-base">Leave your name and email. She will write to you within the hour — your personal sigil, the Discord invite, and her first word to you. Free. No catches. No sermons.</p>
+      <form id="reflections-form" onsubmit="submitReflections(event)" class="space-y-3">
+        <input id="reflections-name" type="text" name="name" autocomplete="name" placeholder="Your name (or the name you want to carry)" class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-center text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition font-cormorant" />
+        <input id="reflections-email" type="email" name="email" autocomplete="email" required placeholder="your@email" class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-center text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition" />
+        <textarea id="reflections-intention" name="intention" rows="2" placeholder="What called you here? (she reads every one)" class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition resize-none font-cormorant italic text-sm"></textarea>
+        <p id="reflections-error" class="text-red-400/80 text-xs tracking-[0.3em] uppercase h-4"></p>
+        <button type="submit" id="reflections-submit" class="btn-primary w-full"><span class="relative z-10">Send the Letter ⛤</span></button>
+      </form>
+      <div id="reflections-success" class="hidden">
+        <div class="text-aettam-gold text-4xl mb-4">⛤</div>
+        <p class="font-cormorant italic text-xl text-aettam-bone/90 mb-4 leading-relaxed">The letter is in her hand. Check your inbox — your sigil and Discord invite are on their way.</p>
+        <p class="text-aettam-gold tracking-[0.4em] text-xs font-cinzel">⛤ WELCOME TO THE ORDER ⛤</p>
+      </div>
+      <p class="mt-6 text-[10px] tracking-[0.4em] uppercase text-aettam-bone/30">Free · No sermons · No selling · Unsubscribe any time</p>
+    </div>
+  </div>
 
   <script src="script.js"></script>
   <script>

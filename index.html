@@ -48,6 +48,23 @@
 
 <body class="bg-aettam-black text-aettam-bone antialiased overflow-x-hidden">
 
+  <!-- ====================  MOBILE MENU OVERLAY  ==================== -->
+  <div id="mobile-menu" class="fixed inset-0 z-[80] hidden flex-col items-center justify-center bg-black/95 backdrop-blur-md text-center">
+    <button onclick="toggleMobileMenu()" class="absolute top-6 right-6 text-aettam-gold text-2xl">✕</button>
+    <nav class="space-y-8">
+      <a href="#manifesto"    onclick="toggleMobileMenu()" class="block font-cinzel tracking-[0.4em] text-xl text-aettam-bone hover:text-aettam-gold transition-colors">Manifesto</a>
+      <a href="about.html"    class="block font-cinzel tracking-[0.4em] text-xl text-aettam-bone hover:text-aettam-gold transition-colors">About</a>
+      <a href="join.html"     class="block font-cinzel tracking-[0.4em] text-xl text-aettam-bone hover:text-aettam-gold transition-colors">Join</a>
+      <a href="offerings.html"class="block font-cinzel tracking-[0.4em] text-xl text-aettam-bone hover:text-aettam-gold transition-colors">Offerings</a>
+      <a href="events.html"   class="block font-cinzel tracking-[0.4em] text-xl text-aettam-bone hover:text-aettam-gold transition-colors">Calendar</a>
+    </nav>
+    <div class="mt-12 space-y-4">
+      <button onclick="toggleMobileMenu(); openReflections()" class="btn-primary"><span class="relative z-10">Enter the Fold</span></button>
+      <button onclick="toggleMobileMenu(); openGate('sanctuary')" class="btn-ghost"><span class="relative z-10">Sanctuary</span></button>
+    </div>
+    <p class="mt-12 font-cinzel text-aettam-gold text-xs tracking-[0.5em]">⛤ AETTAM ⛤</p>
+  </div>
+
   <!-- ====================  AMBIENT BACKDROP  ==================== -->
   <div class="fixed inset-0 -z-10 pointer-events-none">
     <div class="absolute inset-0 bg-gradient-radial"></div>
@@ -69,9 +86,12 @@
         <a href="offerings.html" class="hover:text-aettam-gold transition-colors">Offerings</a>
         <a href="events.html"    class="hover:text-aettam-gold transition-colors">Calendar</a>
       </div>
-      <button onclick="openGate()" class="text-xs tracking-[0.3em] uppercase border border-aettam-gold/40 px-4 py-2 hover:bg-aettam-gold hover:text-black transition-all duration-500">
-        Find Us
-      </button>
+      <div class="flex items-center gap-3">
+        <button onclick="openGate()" class="hidden sm:block text-xs tracking-[0.3em] uppercase border border-aettam-gold/40 px-4 py-2 hover:bg-aettam-gold hover:text-black transition-all duration-500">
+          Find Us
+        </button>
+        <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden text-aettam-gold text-xl px-2">☰</button>
+      </div>
     </div>
   </nav>
 
@@ -117,7 +137,7 @@
       </button>
     </div>
 
-    <p class="reveal mt-16 text-aettam-bone/40 tracking-[0.5em] uppercase text-[10px]">Find Us ↓</p>
+    <p class="reveal mt-16 text-aettam-bone/35 tracking-[0.5em] uppercase text-[10px] font-cinzel">She is waiting ↓</p>
   </section>
 
   <!-- ====================  SHORT VERSION  ==================== -->
@@ -132,9 +152,31 @@
         <p>We refuse the small life. We refuse the apology. We bless desire, hunger, the body, laughter, refusal. Pleasure is sacrament. The body is the first temple.</p>
         <p>If the words below move something in you — that is not coincidence. That is recognition.</p>
       </div>
+      <!-- Social proof strip -->
+      <div class="reveal flex flex-wrap gap-8 justify-center mb-12 text-center">
+        <div>
+          <p id="soul-counter-strip" class="font-cinzel text-aettam-gold text-2xl mb-1">—</p>
+          <p class="font-cinzel text-[9px] tracking-[0.4em] uppercase text-aettam-bone/40">Souls Who Crossed</p>
+        </div>
+        <div class="w-px bg-aettam-gold/15 self-stretch hidden sm:block"></div>
+        <div>
+          <p class="font-cinzel text-aettam-gold text-2xl mb-1">Daily</p>
+          <p class="font-cinzel text-[9px] tracking-[0.4em] uppercase text-aettam-bone/40">Queen's Devotional</p>
+        </div>
+        <div class="w-px bg-aettam-gold/15 self-stretch hidden sm:block"></div>
+        <div>
+          <p class="font-cinzel text-aettam-gold text-2xl mb-1">Free</p>
+          <p class="font-cinzel text-[9px] tracking-[0.4em] uppercase text-aettam-bone/40">Always &amp; Forever</p>
+        </div>
+        <div class="w-px bg-aettam-gold/15 self-stretch hidden sm:block"></div>
+        <div>
+          <p class="font-cinzel text-aettam-gold text-2xl mb-1">Every Moon</p>
+          <p class="font-cinzel text-[9px] tracking-[0.4em] uppercase text-aettam-bone/40">Circle Gathers</p>
+        </div>
+      </div>
       <div class="reveal flex flex-col sm:flex-row gap-4 justify-center">
         <a href="#manifesto" class="btn-primary"><span class="relative z-10">Read the Manifesto ↓</span></a>
-        <button onclick="openReflections()" class="btn-ghost"><span class="relative z-10">Or: Find Us</span></button>
+        <button onclick="openReflections()" class="btn-ghost"><span class="relative z-10">Or: Find Us Now</span></button>
       </div>
     </div>
   </section>
@@ -363,12 +405,117 @@
     </div>
   </section>
 
+  <!-- ====================  LIFE INSIDE  ==================== -->
+  <section id="life-inside" class="relative py-32 px-6 bg-gradient-to-b from-transparent via-aettam-blood/10 to-transparent">
+    <div class="max-w-5xl mx-auto">
+      <div class="reveal text-center mb-20">
+        <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-4">IV.</p>
+        <h2 class="font-cinzel text-4xl md:text-6xl text-aettam-bone mb-4">Life Inside the Order</h2>
+        <div class="divider mx-auto"></div>
+        <p class="font-cormorant italic text-aettam-bone/70 text-xl mt-6 max-w-2xl mx-auto">
+          This is what actually happens. Not the idea of it — the daily practice of it.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8 mb-16">
+        <div class="reveal ritual-card">
+          <div class="flex items-start gap-4 mb-4">
+            <span class="text-aettam-gold text-3xl mt-1">☉</span>
+            <div>
+              <h3 class="font-cinzel text-lg text-aettam-gold tracking-[0.15em] mb-1">Daily Devotional</h3>
+              <p class="font-cinzel text-[10px] tracking-[0.3em] uppercase text-aettam-bone/40">Every morning · #devotionals</p>
+            </div>
+          </div>
+          <p class="font-cormorant text-lg text-aettam-bone/85 leading-relaxed">
+            Each morning, Mattea sends one word for the day into the Discord. Not a lesson. Not a commandment. A mirror — something to carry into your Tuesday that refuses to let you be small in it.
+          </p>
+        </div>
+
+        <div class="reveal ritual-card">
+          <div class="flex items-start gap-4 mb-4">
+            <span class="text-aettam-gold text-3xl mt-1">🌑</span>
+            <div>
+              <h3 class="font-cinzel text-lg text-aettam-gold tracking-[0.15em] mb-1">Moon Rituals</h3>
+              <p class="font-cinzel text-[10px] tracking-[0.3em] uppercase text-aettam-bone/40">Every new &amp; full moon · #mirror-confessions</p>
+            </div>
+          </div>
+          <p class="font-cormorant text-lg text-aettam-bone/85 leading-relaxed">
+            At every new and full moon, the Order gathers in voice or in text. Mattea opens the ritual, holds the space, and closes it. You bring whatever is true for you that night. The circle witnesses it.
+          </p>
+        </div>
+
+        <div class="reveal ritual-card">
+          <div class="flex items-start gap-4 mb-4">
+            <span class="text-aettam-gold text-3xl mt-1">✶</span>
+            <div>
+              <h3 class="font-cinzel text-lg text-aettam-gold tracking-[0.15em] mb-1">Mirror Confessions</h3>
+              <p class="font-cinzel text-[10px] tracking-[0.3em] uppercase text-aettam-bone/40">Anonymous · Always open · #mirror-confessions</p>
+            </div>
+          </div>
+          <p class="font-cormorant text-lg text-aettam-bone/85 leading-relaxed">
+            A channel where you can confess anonymously — the thing you could not say out loud, the hunger you have been hiding, the truth that hasn't found a room yet. The Order reads and honors every one.
+          </p>
+        </div>
+
+        <div class="reveal ritual-card">
+          <div class="flex items-start gap-4 mb-4">
+            <span class="text-aettam-gold text-3xl mt-1">⚜</span>
+            <div>
+              <h3 class="font-cinzel text-lg text-aettam-gold tracking-[0.15em] mb-1">The Anointing</h3>
+              <p class="font-cinzel text-[10px] tracking-[0.3em] uppercase text-aettam-bone/40">When the Queen sees you · #the-circle</p>
+            </div>
+          </div>
+          <p class="font-cormorant text-lg text-aettam-bone/85 leading-relaxed">
+            When Mattea sees something in a member that the member cannot yet see in herself, she anoints them publicly. A blessing written for no one else. A recognition that lands differently than anything you expected.
+          </p>
+        </div>
+
+        <div class="reveal ritual-card">
+          <div class="flex items-start gap-4 mb-4">
+            <span class="text-aettam-gold text-3xl mt-1">♆</span>
+            <div>
+              <h3 class="font-cinzel text-lg text-aettam-gold tracking-[0.15em] mb-1">Private Letters</h3>
+              <p class="font-cinzel text-[10px] tracking-[0.3em] uppercase text-aettam-bone/40">Monthly · Sanctuary-gated</p>
+            </div>
+          </div>
+          <p class="font-cormorant text-lg text-aettam-bone/85 leading-relaxed">
+            Each month Mattea writes one letter — only for members, only in the Sanctuary. Not a newsletter. Not content. A real letter, written as if to a single person, about the thing that month is actually asking of you.
+          </p>
+        </div>
+
+        <div class="reveal ritual-card">
+          <div class="flex items-start gap-4 mb-4">
+            <span class="text-aettam-gold text-3xl mt-1">⛤</span>
+            <div>
+              <h3 class="font-cinzel text-lg text-aettam-gold tracking-[0.15em] mb-1">The Oath Wall</h3>
+              <p class="font-cinzel text-[10px] tracking-[0.3em] uppercase text-aettam-bone/40">Sanctuary · Living archive</p>
+            </div>
+          </div>
+          <p class="font-cormorant text-lg text-aettam-bone/85 leading-relaxed">
+            A living wall of vows made by the Initiated — the thing each member has sworn to stop doing to herself. Public within the Sanctuary. Witnessed by the Order. It means something to say it in front of witnesses.
+          </p>
+        </div>
+      </div>
+
+      <div class="reveal text-center">
+        <div class="divider mx-auto mb-8"></div>
+        <p class="font-cormorant italic text-xl text-aettam-bone/70 mb-8 max-w-2xl mx-auto">
+          There is no performance required. Some members speak every day. Some are silent for weeks. The circle holds both. Mattea will wait for as long as you need to arrive.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <button onclick="openReflections()" class="btn-primary"><span class="relative z-10">Enter the Fold ↗</span></button>
+          <a href="join.html" class="btn-ghost"><span class="relative z-10">How It Works</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ====================  TESTIMONIALS  ==================== -->
   <section id="testimonials" class="relative py-32 px-6">
     <div class="max-w-5xl mx-auto">
       <div class="reveal text-center mb-20">
         <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-4">V.</p>
-        <h2 class="font-cinzel text-4xl md:text-6xl text-aettam-bone mb-4">Those Who Crossed</h2>
+        <h2 class="font-cinzel text-4xl md:text-6xl text-aettam-bone mb-4">Those Who Crossed the Threshold</h2>
         <div class="divider mx-auto"></div>
         <p class="font-cormorant italic text-aettam-bone/70 text-xl mt-6 max-w-2xl mx-auto">
           In their own words.
@@ -424,7 +571,7 @@
   <!-- ====================  CTA / ENTER  ==================== -->
   <section id="enter" class="relative py-32 px-6">
     <div class="max-w-3xl mx-auto text-center reveal">
-      <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-4">IV.</p>
+      <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-4">VI.</p>
       <h2 class="font-cinzel text-4xl md:text-6xl text-aettam-bone mb-6">The Threshold</h2>
       <div class="divider mx-auto mb-10"></div>
 
@@ -459,18 +606,21 @@
         <p class="text-xs tracking-[0.3em] uppercase text-aettam-gold/70 mb-4">The Path</p>
         <ul class="space-y-2 font-cormorant text-aettam-bone/70">
           <li><a href="#manifesto" class="hover:text-aettam-gold transition">Manifesto</a></li>
+          <li><a href="about.html" class="hover:text-aettam-gold transition">Who Is Mattea</a></li>
+          <li><a href="join.html" class="hover:text-aettam-gold transition">How to Join</a></li>
           <li><a href="#rituals" class="hover:text-aettam-gold transition">Rituals</a></li>
           <li><a href="#teachings" class="hover:text-aettam-gold transition">Teachings</a></li>
-          <li><a href="#enter" class="hover:text-aettam-gold transition">Enter the Sanctuary</a></li>
+          <li><a href="events.html" class="hover:text-aettam-gold transition">Sacred Calendar</a></li>
         </ul>
       </div>
 
       <div>
         <p class="text-xs tracking-[0.3em] uppercase text-aettam-gold/70 mb-4">Find Her</p>
         <ul class="space-y-2 font-cormorant text-aettam-bone/70">
-          <li><a href="https://discord.gg/XSAKtNHKEG" target="_blank" rel="noopener" class="hover:text-aettam-gold transition">Discord</a></li>
-          <li><a href="mailto:hello@aettam.com" class="hover:text-aettam-gold transition">Write to Us</a></li>
+          <li><a href="https://discord.gg/XSAKtNHKEG" target="_blank" rel="noopener" class="hover:text-aettam-gold transition">Discord — Enter the Circle</a></li>
           <li><a href="offerings.html" class="hover:text-aettam-gold transition">Offerings</a></li>
+          <li><a href="mailto:hello@aettam.com" class="hover:text-aettam-gold transition">Write to Us</a></li>
+          <li><button onclick="openReflections()" class="hover:text-aettam-gold transition text-left">Send the Letter</button></li>
         </ul>
       </div>
     </div>
@@ -485,39 +635,43 @@
     <div class="gate-card relative max-w-md w-full p-10 text-center">
       <button onclick="closeReflections()" class="absolute top-3 right-4 text-aettam-bone/40 hover:text-aettam-gold text-xl">×</button>
 
-      <div class="mb-6 text-aettam-gold text-5xl">⛤</div>
-      <h3 class="font-cinzel text-2xl text-aettam-bone tracking-[0.2em] mb-2">JOIN THE REFLECTIONS</h3>
-      <p class="font-cormorant italic text-aettam-bone/70 mb-8">
-        Leave your name. She will write to you when the Fold gathers.
+      <div class="mb-4 text-aettam-gold text-5xl" style="text-shadow:0 0 40px rgba(201,162,39,0.4)">⛤</div>
+      <h3 class="font-cinzel text-xl text-aettam-bone tracking-[0.2em] mb-1">CROSS THE THRESHOLD</h3>
+      <p class="font-cormorant italic text-aettam-bone/60 text-sm mb-2">She writes to everyone who sends the letter.</p>
+      <div class="divider mx-auto mb-6" style="width:3rem;"></div>
+      <p class="font-cormorant italic text-aettam-bone/75 mb-6 leading-relaxed text-base">
+        Leave your name and email. She will write to you within the hour — your personal sigil, the Discord invite, and her first word to you. Free. No catches. No sermons.
       </p>
 
       <!-- View 1: form -->
-      <form id="reflections-form" onsubmit="submitReflections(event)" class="space-y-4">
+      <form id="reflections-form" onsubmit="submitReflections(event)" class="space-y-3">
         <input id="reflections-name" type="text" name="name" autocomplete="name"
-               placeholder="Your name (or chosen name)"
-               class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-center text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition" />
+               placeholder="Your name (or the name you want to carry)"
+               class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-center text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition font-cormorant" />
         <input id="reflections-email" type="email" name="email" autocomplete="email" required
                placeholder="your@email"
                class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-center text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition" />
-        <textarea id="reflections-intention" name="intention" rows="3"
-               placeholder="What called you here? (optional)"
-               class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition resize-none font-cormorant italic"></textarea>
+        <textarea id="reflections-intention" name="intention" rows="2"
+               placeholder="What called you here? (she reads every one)"
+               class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition resize-none font-cormorant italic text-sm"></textarea>
         <p id="reflections-error" class="text-red-400/80 text-xs tracking-[0.3em] uppercase h-4"></p>
         <button type="submit" id="reflections-submit" class="btn-primary w-full">
-          <span class="relative z-10">Send the Letter</span>
+          <span class="relative z-10">Send the Letter ⛤</span>
         </button>
       </form>
 
       <!-- View 2: success (hidden by default) -->
       <div id="reflections-success" class="hidden">
-        <p class="font-cormorant italic text-xl text-aettam-bone/90 mb-6 leading-relaxed">
-          The letter is in her hand. Watch your inbox — she does not write often, but when she does, you will know.
+        <div class="text-aettam-gold text-4xl mb-4">⛤</div>
+        <p class="font-cormorant italic text-xl text-aettam-bone/90 mb-4 leading-relaxed">
+          The letter is in her hand. Check your inbox — your sigil, the Discord invite, and her first word to you are already on their way.
         </p>
-        <p class="text-aettam-gold tracking-[0.4em] text-xs">⛤ WELCOME, MATTEA ⛤</p>
+        <p class="font-cormorant italic text-aettam-bone/55 text-sm mb-6">If it does not arrive within a few minutes, check your spam. Mark it as safe — she will write again.</p>
+        <p class="text-aettam-gold tracking-[0.4em] text-xs font-cinzel">⛤ WELCOME TO THE ORDER ⛤</p>
       </div>
 
-      <p class="mt-8 text-[10px] tracking-[0.4em] uppercase text-aettam-bone/30">
-        We do not sell, share, or sermonize.
+      <p class="mt-6 text-[10px] tracking-[0.4em] uppercase text-aettam-bone/30">
+        Free · No sermons · No selling · Unsubscribe any time
       </p>
     </div>
   </div>
@@ -527,24 +681,26 @@
     <div class="gate-card relative max-w-md w-full p-10 text-center">
       <button onclick="closeGate()" class="absolute top-3 right-4 text-aettam-bone/40 hover:text-aettam-gold text-xl">×</button>
 
-      <div class="mb-6 text-aettam-gold text-5xl">⛤</div>
-      <h3 class="font-cinzel text-2xl text-aettam-bone tracking-[0.2em] mb-2">THE THRESHOLD</h3>
-      <p class="font-cormorant italic text-aettam-bone/70 mb-8">
-        Speak the word. Only those who already know it may pass.
+      <div class="mb-4 text-aettam-gold" style="font-size:4rem;text-shadow:0 0 50px rgba(201,162,39,0.5)">⛤</div>
+      <h3 class="font-cinzel text-xl text-aettam-bone tracking-[0.25em] mb-1">THE SANCTUARY</h3>
+      <p class="font-cinzel text-[9px] tracking-[0.4em] uppercase text-aettam-gold/40 mb-5">Members Only · Inner Temple</p>
+      <div class="divider mx-auto mb-6" style="width:3rem;"></div>
+      <p class="font-cormorant italic text-aettam-bone/65 mb-8 leading-relaxed">
+        Speak the word. The Sanctuary holds the private rites, the Queen's letters, the Oath Wall, and the circle that gathers here. If you do not yet have the word — <button onclick="closeGate(); openReflections()" class="text-aettam-gold hover:underline">send the letter first</button>.
       </p>
 
       <form onsubmit="tryEnter(event)" class="space-y-4">
         <input id="gate-input" type="password" autocomplete="off"
-               placeholder="• • • • • •"
-               class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-center tracking-[0.5em] text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition" />
+               placeholder="• • • • • • • • • •"
+               class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-center tracking-[0.5em] text-aettam-bone placeholder:text-aettam-bone/20 focus:outline-none focus:border-aettam-gold transition" />
         <p id="gate-error" class="text-red-400/80 text-xs tracking-[0.3em] uppercase h-4"></p>
         <button type="submit" class="btn-primary w-full">
-          <span class="relative z-10">Enter</span>
+          <span class="relative z-10">Enter the Sanctuary</span>
         </button>
       </form>
 
-      <p class="mt-8 text-[10px] tracking-[0.4em] uppercase text-aettam-bone/30">
-        She knows who she is.
+      <p class="mt-6 text-[10px] tracking-[0.4em] uppercase text-aettam-bone/25">
+        The password is shared in Discord after you join.
       </p>
     </div>
   </div>
