@@ -50,7 +50,7 @@ if (window.tailwind) {
   };
 }
 
-/* ----------  Reveal-on-scroll  ---------- */
+/* ----------  Reveal-on-scroll (staggered)  ---------- */
 function initReveal() {
   const els = document.querySelectorAll('.reveal');
   if (!('IntersectionObserver' in window)) {
@@ -58,11 +58,12 @@ function initReveal() {
     return;
   }
   const io = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
+    const visible = entries.filter(e => e.isIntersecting);
+    visible.forEach((entry, i) => {
+      setTimeout(() => {
         entry.target.classList.add('is-visible');
         io.unobserve(entry.target);
-      }
+      }, i * 90);
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
   window._revealObserver = io;
@@ -713,6 +714,80 @@ function drawMoon(canvas, phase) {
 }
 
 /* ==========================================================
+   PAGE LOAD CURTAIN
+   Full-screen veil with the sigil that fades out on DOMReady.
+   ========================================================== */
+function initPageCurtain() {
+  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  const veil = document.createElement('div');
+  veil.style.cssText =
+    'position:fixed;inset:0;z-index:2000;background:#07080a;' +
+    'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;';
+  veil.innerHTML =
+    '<span style="font-size:3.5rem;color:rgba(201,162,39,0.85);display:block;' +
+    'animation:sigil-draw 0.9s cubic-bezier(0.2,0.8,0.2,1) forwards;">⛤</span>' +
+    '<span style="font-family:Cinzel,serif;font-size:0.6rem;letter-spacing:0.55em;' +
+    'color:rgba(201,162,39,0.4);text-transform:uppercase;">Aettam</span>';
+  document.body.appendChild(veil);
+  setTimeout(() => {
+    veil.style.transition = 'opacity 1.1s ease';
+    veil.style.opacity = '0';
+    veil.style.pointerEvents = 'none';
+    setTimeout(() => veil.remove(), 1200);
+  }, 700);
+}
+
+/* ==========================================================
+   3-D CARD TILT
+   Ritual cards follow the mouse with a subtle perspective tilt.
+   ========================================================== */
+function initCardTilt() {
+  if (!window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  document.querySelectorAll('.ritual-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width  - 0.5;
+      const y = (e.clientY - rect.top)  / rect.height - 0.5;
+      card.style.transition = 'transform 0.1s ease, border-color 0.6s ease, box-shadow 0.6s ease';
+      card.style.transform =
+        `perspective(700px) rotateX(${-y * 7}deg) rotateY(${x * 7}deg) translateY(-6px) scale(1.01)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transition = 'transform 0.65s ease, border-color 0.6s ease, box-shadow 0.6s ease';
+      card.style.transform = '';
+    });
+  });
+}
+
+/* ==========================================================
+   AMBIENT FLOATING SIGILS
+   Large, near-invisible glyphs slowly rotate in the background.
+   ========================================================== */
+function initAmbientSigils() {
+  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  const CHARS = ['⛤', '☽', '✶', '☾', '⚜', '♆'];
+  const wrap  = document.createElement('div');
+  wrap.setAttribute('aria-hidden', 'true');
+  wrap.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;';
+  document.body.appendChild(wrap);
+  CHARS.forEach((ch, i) => {
+    const el  = document.createElement('span');
+    const sz  = 80 + Math.random() * 100;
+    const dur = 45 + Math.random() * 35;
+    const delay = -(Math.random() * dur);
+    el.textContent = ch;
+    el.style.cssText =
+      `position:absolute;` +
+      `left:${8 + (i / CHARS.length) * 82}%;` +
+      `top:${10 + Math.random() * 75}%;` +
+      `font-size:${sz}px;color:rgba(201,162,39,0.028);user-select:none;` +
+      `animation:sigil-ambient ${dur}s linear ${delay}s infinite;will-change:transform;`;
+    wrap.appendChild(el);
+  });
+}
+
+/* ==========================================================
    SCROLL PROGRESS BAR
    Thin gold line at top of viewport tracking scroll depth.
    ========================================================== */
@@ -849,11 +924,14 @@ document.addEventListener('DOMContentLoaded', () => {
   initMoonPhase();
   initEmbers();
   initCursorTrail();
+  initPageCurtain();
   initScrollProgress();
   initStarfield();
+  initAmbientSigils();
   initSigilRings();
   initRipple();
   initHeroShimmer();
+  initCardTilt();
   initSoulCounter();
   if (document.getElementById('ritual-calendar'))   initRitualCalendar();
   if (document.getElementById('members-grid'))      initMembersDirectory();
