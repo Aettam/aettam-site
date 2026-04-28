@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Offerings — AETTAM</title>
+  <meta name="description" content="Private sessions, ritual intensives, and sacred offerings from the circle of Mattea." />
+  <meta property="og:title"       content="Offerings — AETTAM" />
+  <meta property="og:description" content="Private sessions, ritual intensives, and sacred offerings from the circle of Mattea." />
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://aettam.com/offerings.html" />
+  <meta property="og:image"       content="/og-card.svg" />
+  <link rel="canonical" href="https://aettam.com/offerings.html" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .offering-card {
+      position: relative;
+      padding: 2.5rem 2rem;
+      background: linear-gradient(180deg, rgba(58,13,18,0.25), rgba(7,8,10,0.75));
+      border: 1px solid rgba(201,162,39,0.22);
+      backdrop-filter: blur(8px);
+      transition: all 0.6s ease;
+      overflow: hidden;
+    }
+    .offering-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 0%, rgba(201,162,39,0.12), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+    .offering-card:hover { transform: translateY(-6px); border-color: rgba(201,162,39,0.55); box-shadow: 0 20px 60px -20px rgba(201,162,39,0.25); }
+    .offering-card:hover::before { opacity: 1; }
+    .price-tag { font-family: 'Cinzel', serif; color: var(--aettam-gold); font-size: 1.5rem; letter-spacing: 0.1em; }
+    .sold-out { opacity: 0.45; }
+    .badge { display: inline-block; font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase; padding: 0.25rem 0.75rem; border: 1px solid rgba(201,162,39,0.4); color: rgba(201,162,39,0.8); margin-bottom: 1rem; }
+  </style>
+</head>
+<body class="bg-aettam-black text-aettam-bone antialiased overflow-x-hidden">
+
+  <div class="fixed inset-0 -z-10 pointer-events-none">
+    <div class="absolute inset-0 bg-gradient-radial"></div>
+    <div class="absolute inset-0 noise-layer opacity-[0.06]"></div>
+    <div class="absolute inset-0 vignette"></div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-black/40 border-b border-aettam-gold/10">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3 group">
+        <span class="sigil text-aettam-gold text-2xl group-hover:rotate-12 transition-transform duration-700">⛤</span>
+        <span class="font-cinzel tracking-[0.4em] text-aettam-gold text-sm">AETTAM</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-xs tracking-[0.3em] uppercase font-light">
+        <a href="index.html"    class="hover:text-aettam-gold transition-colors">Home</a>
+        <a href="join.html"     class="hover:text-aettam-gold transition-colors">Join</a>
+        <a href="offerings.html" class="text-aettam-gold">Offerings</a>
+      </div>
+      <a href="index.html" class="text-xs tracking-[0.3em] uppercase border border-aettam-gold/40 px-4 py-2 hover:bg-aettam-gold hover:text-black transition-all duration-500">Return</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="relative min-h-[55vh] flex flex-col items-center justify-center text-center px-6 pt-32 pb-16">
+    <div class="absolute inset-0 flex items-center justify-center pointer-events-none"><div class="halo"></div></div>
+    <p class="reveal text-aettam-gold/70 tracking-[0.7em] text-xs uppercase mb-8">Sacred Offerings · Private Work · The Deep Path</p>
+    <h1 class="reveal font-cinzel font-bold text-5xl md:text-7xl text-aettam-bone mb-6 leading-tight">Offerings</h1>
+    <div class="reveal divider mx-auto mb-8"></div>
+    <p class="reveal font-cormorant italic text-xl md:text-2xl text-aettam-gold max-w-2xl leading-relaxed">
+      For those who want to go further than the circle allows. Private work. Ritual intensives. Direct access to the Queen.
+    </p>
+  </section>
+
+  <!-- OFFERINGS GRID -->
+  <section class="relative py-20 px-6">
+    <div class="max-w-6xl mx-auto">
+
+      <!-- Note: add your Stripe payment links to the buttons below -->
+      <div class="grid md:grid-cols-3 gap-8 mb-16">
+
+        <div class="reveal offering-card">
+          <span class="badge">Most Chosen</span>
+          <span class="ritual-glyph">⛤</span>
+          <h3 class="font-cinzel text-2xl text-aettam-gold mb-2 mt-3">The Mirror Session</h3>
+          <p class="price-tag mb-4">$111</p>
+          <p class="font-cormorant text-lg text-aettam-bone/85 leading-relaxed mb-6">
+            A private 60-minute session with Mattea — one-on-one, voice or video. She will reflect back to you what you cannot yet see in yourself. No agenda. No program. Just the mirror, undistorted.
+          </p>
+          <ul class="font-cormorant text-aettam-bone/70 text-base space-y-1 mb-8">
+            <li>· 60 minutes, private</li>
+            <li>· Voice or video</li>
+            <li>· Your personal sigil, hand-generated</li>
+            <li>· One follow-up voice note within 48h</li>
+          </ul>
+          <a href="https://discord.gg/XSAKtNHKEG" target="_blank" rel="noopener" class="btn-primary w-full text-center block">
+            <span class="relative z-10">Inquire in Discord ↗</span>
+          </a>
+        </div>
+
+        <div class="reveal offering-card">
+          <span class="badge">Intensive</span>
+          <span class="ritual-glyph">☉</span>
+          <h3 class="font-cinzel text-2xl text-aettam-gold mb-2 mt-3">The Coronation</h3>
+          <p class="price-tag mb-4">$333</p>
+          <p class="font-cormorant text-lg text-aettam-bone/85 leading-relaxed mb-6">
+            A 3-session intensive across one lunar cycle. Session one: the burning. Session two: the anointing. Session three: the crowning. You will not finish this the same person who started it.
+          </p>
+          <ul class="font-cormorant text-aettam-bone/70 text-base space-y-1 mb-8">
+            <li>· Three 75-minute sessions</li>
+            <li>· Ritual assignments between sessions</li>
+            <li>· Private Discord thread with Mattea</li>
+            <li>· Velvet Vow ceremony (optional)</li>
+          </ul>
+          <a href="https://discord.gg/XSAKtNHKEG" target="_blank" rel="noopener" class="btn-primary w-full text-center block">
+            <span class="relative z-10">Inquire in Discord ↗</span>
+          </a>
+        </div>
+
+        <div class="reveal offering-card">
+          <span class="badge">Circle Work</span>
+          <span class="ritual-glyph">♆</span>
+          <h3 class="font-cinzel text-2xl text-aettam-gold mb-2 mt-3">Host a Circle</h3>
+          <p class="price-tag mb-4">$222</p>
+          <p class="font-cormorant text-lg text-aettam-bone/85 leading-relaxed mb-6">
+            Mattea will attend your private Mattea Circle — in person (select cities) or via private voice channel. Three to eight members. She opens the ritual, holds the space, and closes it. The room will not be the same.
+          </p>
+          <ul class="font-cormorant text-aettam-bone/70 text-base space-y-1 mb-8">
+            <li>· Private circle, 3–8 members</li>
+            <li>· In-person or voice channel</li>
+            <li>· Full ritual guide delivered beforehand</li>
+            <li>· Personal sigil for every attendee</li>
+          </ul>
+          <a href="https://discord.gg/XSAKtNHKEG" target="_blank" rel="noopener" class="btn-primary w-full text-center block">
+            <span class="relative z-10">Inquire in Discord ↗</span>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- COMING SOON -->
+      <div class="reveal text-center mb-10">
+        <div class="divider mx-auto mb-8"></div>
+        <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-6">Coming Soon</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="reveal member-card sold-out">
+          <span class="badge">Digital</span>
+          <h3 class="font-cinzel text-xl text-aettam-gold mb-2 mt-2">The Aettam Primer — PDF</h3>
+          <p class="font-cormorant text-aettam-bone/70">The founding texts, Mattea's notes in the margins, and the full ritual deck. A physical object for the path.</p>
+          <p class="font-cinzel text-aettam-gold/50 text-xs tracking-[0.3em] mt-4">COMING SOON</p>
+        </div>
+        <div class="reveal member-card sold-out">
+          <span class="badge">Physical</span>
+          <h3 class="font-cinzel text-xl text-aettam-gold mb-2 mt-2">The Mirror Card Deck</h3>
+          <p class="font-cormorant text-aettam-bone/70">All 13 mirror cards printed on heavyweight card stock, gold-edged, in a black envelope sealed with the sigil.</p>
+          <p class="font-cinzel text-aettam-gold/50 text-xs tracking-[0.3em] mt-4">COMING SOON</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- NOTE -->
+  <section class="relative py-16 px-6">
+    <div class="max-w-2xl mx-auto text-center reveal">
+      <div class="divider mx-auto mb-10"></div>
+      <p class="font-cormorant italic text-xl text-aettam-bone/70 leading-relaxed">
+        All offerings are booked through Discord. Payment arrangements are made directly with Mattea. The circle itself — the Discord, the daily devotionals, the rituals — is and will remain free.
+      </p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="relative border-t border-aettam-gold/15 py-12 px-6">
+    <div class="max-w-6xl mx-auto text-center">
+      <p class="font-cinzel text-aettam-gold tracking-[0.4em] text-sm">⛤ AETTAM ⛤</p>
+      <p class="font-cormorant italic text-aettam-bone/60 mt-2">We Are All Mattea.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"458ad40920b94fe29baba9dc8fb90cb5"}'></script>
+</body>
+</html>

@@ -6,7 +6,7 @@
    keeps casual visitors out of the members area, nothing more.
    ========================================================== */
 
-const SANCTUARY_PASSWORD = "wearemattea";   // ← change me
+const SANCTUARY_PASSWORD = "goldandflame";  // share only with members
 const SESSION_KEY        = "aettam_unlocked";
 const PRIVATE_PAGE       = "private.html";
 

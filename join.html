@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join the Circle — AETTAM</title>
+  <meta name="description" content="How to become part of Aettam. Three steps. No permission required." />
+  <meta property="og:title"       content="Join the Circle — AETTAM" />
+  <meta property="og:description" content="How to become part of Aettam. Three steps. No permission required." />
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://aettam.com/join.html" />
+  <meta property="og:image"       content="/og-card.svg" />
+  <link rel="canonical" href="https://aettam.com/join.html" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-aettam-black text-aettam-bone antialiased overflow-x-hidden">
+
+  <div class="fixed inset-0 -z-10 pointer-events-none">
+    <div class="absolute inset-0 bg-gradient-radial"></div>
+    <div class="absolute inset-0 noise-layer opacity-[0.06]"></div>
+    <div class="absolute inset-0 vignette"></div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-black/40 border-b border-aettam-gold/10">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3 group">
+        <span class="sigil text-aettam-gold text-2xl group-hover:rotate-12 transition-transform duration-700">⛤</span>
+        <span class="font-cinzel tracking-[0.4em] text-aettam-gold text-sm">AETTAM</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-xs tracking-[0.3em] uppercase font-light">
+        <a href="index.html#manifesto" class="hover:text-aettam-gold transition-colors">Manifesto</a>
+        <a href="about.html"           class="hover:text-aettam-gold transition-colors">About</a>
+        <a href="join.html"            class="text-aettam-gold">Join</a>
+      </div>
+      <a href="index.html" class="text-xs tracking-[0.3em] uppercase border border-aettam-gold/40 px-4 py-2 hover:bg-aettam-gold hover:text-black transition-all duration-500">
+        Return
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="relative min-h-[60vh] flex flex-col items-center justify-center text-center px-6 pt-32 pb-16">
+    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div class="halo"></div>
+    </div>
+    <p class="reveal text-aettam-gold/70 tracking-[0.7em] text-xs uppercase mb-8">The Path · The Practice · The Circle</p>
+    <h1 class="reveal font-cinzel font-bold text-5xl md:text-7xl text-aettam-bone mb-6 leading-tight">
+      How to Join
+    </h1>
+    <div class="reveal divider mx-auto mb-8"></div>
+    <p class="reveal font-cormorant italic text-xl md:text-2xl text-aettam-gold max-w-2xl leading-relaxed">
+      There is no application. No waiting list. No gatekeeping beyond the one question: do you recognize her?
+    </p>
+  </section>
+
+  <!-- THREE STEPS -->
+  <section class="relative py-20 px-6">
+    <div class="max-w-3xl mx-auto space-y-8">
+
+      <div class="reveal ritual-card flex gap-6 items-start">
+        <span class="font-cinzel text-aettam-gold text-4xl leading-none mt-1 opacity-60">01</span>
+        <div>
+          <h3 class="font-cinzel text-2xl text-aettam-gold mb-3">Read the Manifesto</h3>
+          <p class="font-cormorant text-lg text-aettam-bone/85 leading-relaxed mb-4">
+            Start at the beginning. Read slowly. If something moves in you — not excitement, not intrigue, but <em>recognition</em> — you are already in the right place.
+          </p>
+          <a href="index.html#manifesto" class="btn-ghost" style="padding:0.6rem 1.5rem;font-size:0.7rem;">
+            <span class="relative z-10">Read the Manifesto ↓</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="reveal ritual-card flex gap-6 items-start">
+        <span class="font-cinzel text-aettam-gold text-4xl leading-none mt-1 opacity-60">02</span>
+        <div>
+          <h3 class="font-cinzel text-2xl text-aettam-gold mb-3">Send the Letter</h3>
+          <p class="font-cormorant text-lg text-aettam-bone/85 leading-relaxed mb-4">
+            Leave your name and what called you here. You will receive a welcome letter from the Queen — your personal sigil, the Discord invite, and her first word to you. She writes to everyone who crosses.
+          </p>
+          <button onclick="openReflections()" class="btn-primary" style="padding:0.6rem 1.5rem;font-size:0.7rem;">
+            <span class="relative z-10">Send the Letter ↗</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="reveal ritual-card flex gap-6 items-start">
+        <span class="font-cinzel text-aettam-gold text-4xl leading-none mt-1 opacity-60">03</span>
+        <div>
+          <h3 class="font-cinzel text-2xl text-aettam-gold mb-3">Enter the Circle</h3>
+          <p class="font-cormorant text-lg text-aettam-bone/85 leading-relaxed mb-4">
+            The Discord is where the circle lives — daily devotionals, confessions, rituals, and the Queen's direct word. Once you are inside, you cross the threshold and receive the Mattea role. The door closes behind you. You are among your own.
+          </p>
+          <a href="https://discord.gg/XSAKtNHKEG" target="_blank" rel="noopener" class="btn-ghost" style="padding:0.6rem 1.5rem;font-size:0.7rem;">
+            <span class="relative z-10">Open Discord ↗</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="relative py-20 px-6 bg-gradient-to-b from-transparent via-aettam-forest/15 to-transparent">
+    <div class="max-w-3xl mx-auto">
+      <div class="reveal text-center mb-16">
+        <h2 class="font-cinzel text-3xl md:text-4xl text-aettam-bone mb-4">Questions at the Door</h2>
+        <div class="divider mx-auto"></div>
+      </div>
+      <div class="space-y-6">
+        <div class="reveal member-card">
+          <h3 class="font-cinzel text-aettam-gold text-sm tracking-[0.2em] mb-3">IS THIS FREE?</h3>
+          <p class="font-cormorant text-lg text-aettam-bone/85">The circle is free. The Discord is free. Offerings — rituals, intensives, private sessions — are available separately for those who want to go deeper.</p>
+        </div>
+        <div class="reveal member-card">
+          <h3 class="font-cinzel text-aettam-gold text-sm tracking-[0.2em] mb-3">IS THIS ONLY FOR WOMEN?</h3>
+          <p class="font-cormorant text-lg text-aettam-bone/85">No. Mattea lives in anyone who carries the hunger, the refusal, the gold. Members are women, men, and anyone who recognizes her. The circle has no gender requirement — only the willingness to stop making yourself small.</p>
+        </div>
+        <div class="reveal member-card">
+          <h3 class="font-cinzel text-aettam-gold text-sm tracking-[0.2em] mb-3">DO I HAVE TO PARTICIPATE?</h3>
+          <p class="font-cormorant text-lg text-aettam-bone/85">No. Some members lurk for months before speaking. The circle does not demand performance. Be here in whatever way you are able to be here. Mattea will wait.</p>
+        </div>
+        <div class="reveal member-card">
+          <h3 class="font-cinzel text-aettam-gold text-sm tracking-[0.2em] mb-3">WHAT IS THE SANCTUARY?</h3>
+          <p class="font-cormorant text-lg text-aettam-bone/85">A password-gated area of this site for members. Devotionals, private rites, the circle directory, the letters archive. The password is shared after you join the Discord and cross the threshold.</p>
+        </div>
+        <div class="reveal member-card">
+          <h3 class="font-cinzel text-aettam-gold text-sm tracking-[0.2em] mb-3">WHO IS MATTEA, REALLY?</h3>
+          <p class="font-cormorant text-lg text-aettam-bone/85">A real person, a real circle, a real practice. She built this because she needed it and it didn't exist. <a href="about.html" class="text-aettam-gold hover:underline">Read the full story here.</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="relative py-24 px-6">
+    <div class="max-w-2xl mx-auto text-center reveal">
+      <p class="font-cormorant italic text-2xl md:text-3xl text-aettam-bone/90 mb-10 leading-relaxed">
+        The door has been open this entire time.<br>You have just been deciding whether to walk through it.
+      </p>
+      <button onclick="openReflections()" class="btn-primary">
+        <span class="relative z-10">Send the Letter — Join the Circle</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="relative border-t border-aettam-gold/15 py-12 px-6">
+    <div class="max-w-6xl mx-auto text-center">
+      <p class="font-cinzel text-aettam-gold tracking-[0.4em] text-sm">⛤ AETTAM ⛤</p>
+      <p class="font-cormorant italic text-aettam-bone/60 mt-2">We Are All Mattea.</p>
+    </div>
+  </footer>
+
+  <!-- REFLECTIONS MODAL (same as index.html) -->
+  <div id="reflections" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/85 backdrop-blur-md p-6">
+    <div class="gate-card relative max-w-md w-full p-10 text-center">
+      <button onclick="closeReflections()" class="absolute top-3 right-4 text-aettam-bone/40 hover:text-aettam-gold text-xl">×</button>
+      <div class="mb-6 text-aettam-gold text-5xl">⛤</div>
+      <h3 class="font-cinzel text-2xl text-aettam-bone tracking-[0.2em] mb-2">JOIN THE REFLECTIONS</h3>
+      <p class="font-cormorant italic text-aettam-bone/70 mb-8">Leave your name. She will write to you when the circle gathers.</p>
+      <form id="reflections-form" onsubmit="submitReflections(event)" class="space-y-4">
+        <input id="reflections-name"      type="text"  name="name"      autocomplete="name"  placeholder="Your name (or chosen name)" class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-center text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition" />
+        <input id="reflections-email"     type="email" name="email"     autocomplete="email" required placeholder="your@email" class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-center text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition" />
+        <textarea id="reflections-intention" name="intention" rows="3" placeholder="What called you here? (optional)" class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition resize-none font-cormorant italic"></textarea>
+        <p id="reflections-error" class="text-red-400/80 text-xs tracking-[0.3em] uppercase h-4"></p>
+        <button type="submit" id="reflections-submit" class="btn-primary w-full"><span class="relative z-10">Send the Letter</span></button>
+      </form>
+      <div id="reflections-success" class="hidden">
+        <p class="font-cormorant italic text-xl text-aettam-bone/90 mb-6 leading-relaxed">The letter is in her hand. Watch your inbox — she does not write often, but when she does, you will know.</p>
+        <p class="text-aettam-gold tracking-[0.4em] text-xs">⛤ WELCOME, MATTEA ⛤</p>
+      </div>
+      <p class="mt-8 text-[10px] tracking-[0.4em] uppercase text-aettam-bone/30">We do not sell, share, or sermonize.</p>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+  <script src="script.js"></script>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"458ad40920b94fe29baba9dc8fb90cb5"}'></script>
+</body>
+</html>
