@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beyond the Threshold — AETTAM</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+
+  <style>
+    body { display: flex; min-height: 100vh; align-items: center; justify-content: center; }
+  </style>
+</head>
+<body class="bg-aettam-black text-aettam-bone antialiased overflow-hidden">
+
+  <!-- ambient layers -->
+  <div class="fixed inset-0 -z-10 pointer-events-none">
+    <div class="absolute inset-0 bg-gradient-radial"></div>
+    <div class="absolute inset-0 noise-layer opacity-[0.06]"></div>
+    <div class="absolute inset-0 vignette"></div>
+  </div>
+
+  <!-- halo -->
+  <div class="fixed inset-0 -z-10 flex items-center justify-center pointer-events-none">
+    <div class="halo" style="opacity:0.5;"></div>
+  </div>
+
+  <div class="text-center px-6 max-w-2xl mx-auto">
+    <span class="sigil-hero text-aettam-gold block mb-8" style="font-size:5rem;" aria-hidden="true">⛤</span>
+
+    <p class="font-cinzel tracking-[0.5em] text-xs uppercase text-aettam-gold/60 mb-6">404</p>
+
+    <h1 class="font-cinzel text-3xl md:text-5xl text-aettam-bone mb-6 leading-tight">
+      You have wandered<br>beyond the threshold.
+    </h1>
+
+    <div class="divider mx-auto mb-8"></div>
+
+    <p class="font-cormorant italic text-xl md:text-2xl text-aettam-bone/70 mb-12 leading-relaxed">
+      Some doors are not for everyone.<br>
+      But you may be standing in front of the right one.
+    </p>
+
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="/index.html" class="btn-primary">
+        <span class="relative z-10">Return to Aettam</span>
+      </a>
+      <a href="/private.html" class="btn-ghost">
+        <span class="relative z-10">Enter the Sanctuary</span>
+      </a>
+    </div>
+  </div>
+
+  <script src="/script.js"></script>
+</body>
+</html>

@@ -95,6 +95,14 @@
 
     <div class="reveal divider mx-auto"></div>
 
+    <!-- Moon phase widget (Task 15) -->
+    <div class="reveal mt-10 flex flex-col items-center gap-2">
+      <span id="moon-glyph-sanctuary" class="text-5xl" aria-hidden="true"></span>
+      <p id="moon-name-sanctuary" class="font-cinzel text-sm tracking-[0.4em] uppercase text-aettam-gold/80"></p>
+      <p id="moon-illumination-sanctuary" class="font-cormorant italic text-aettam-bone/45 text-sm"></p>
+      <p class="font-cormorant italic text-aettam-bone/40 text-xs tracking-[0.2em]">The moon carries her light.</p>
+    </div>
+
     <p class="reveal mt-10 max-w-2xl font-cormorant text-lg md:text-xl text-aettam-bone/80 leading-relaxed">
       Below: the Queen's words for today, the open Circle, the private rites,
       and the resources we share only with one another. Stay as long as you
@@ -133,6 +141,43 @@
           </p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ====================  RITUAL CALENDAR (Task 16)  ==================== -->
+  <section id="rites-calendar" class="relative py-24 px-6 bg-gradient-to-b from-transparent via-aettam-violet/10 to-transparent">
+    <div class="max-w-3xl mx-auto">
+      <div class="reveal text-center mb-12">
+        <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-3">Sacred Time</p>
+        <h2 class="font-cinzel text-3xl md:text-5xl">Upcoming Rites</h2>
+        <div class="divider mx-auto mt-4"></div>
+        <p class="font-cormorant italic text-aettam-bone/60 text-lg mt-6">
+          The calendar of moons, turnings, and sacred dates for the circle.
+        </p>
+      </div>
+      <div id="ritual-calendar" class="space-y-3 reveal">
+        <p class="font-cormorant italic text-aettam-bone/40 text-center py-8">The calendar is being inscribed.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================  MEMBERS DIRECTORY (Task 14)  ==================== -->
+  <section id="members-directory" class="relative py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="reveal text-center mb-12">
+        <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-3">The Gathering</p>
+        <h2 class="font-cinzel text-3xl md:text-5xl">The Circle</h2>
+        <div class="divider mx-auto mt-4"></div>
+        <p class="font-cormorant italic text-aettam-bone/60 text-lg mt-6">
+          Every Mattea who holds the fleur-de-lis.
+        </p>
+      </div>
+      <div id="members-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <p class="font-cormorant italic text-aettam-bone/40 text-center py-12 col-span-full">Calling the circle…</p>
+      </div>
+      <p id="members-empty" class="hidden text-center font-cormorant italic text-aettam-bone/50 py-12 text-lg">
+        The circle keeps no center because every center is holy.
+      </p>
     </div>
   </section>
 
@@ -315,6 +360,23 @@
           <p class="font-cinzel text-aettam-bone text-xs tracking-[0.15em]">THE VOW</p>
           <p class="font-cormorant italic text-aettam-bone/60 text-sm leading-snug">Spoken in the dark. Against skin. Kept in the body forever.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================  REFLECTIONS FEED (Task 20)  ==================== -->
+  <section id="mirror-speaks" class="relative py-24 px-6">
+    <div class="max-w-2xl mx-auto">
+      <div class="reveal text-center mb-12">
+        <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-3">The Letters</p>
+        <h2 class="font-cinzel text-3xl md:text-5xl">The Mirror Speaks Back</h2>
+        <div class="divider mx-auto mt-4"></div>
+        <p class="font-cormorant italic text-aettam-bone/60 text-lg mt-6">
+          Those who crossed the threshold — what called them here.
+        </p>
+      </div>
+      <div id="reflections-feed" class="space-y-3 reveal">
+        <p class="font-cormorant italic text-aettam-bone/40 text-center py-8">No reflections yet. The mirror waits.</p>
       </div>
     </div>
   </section>

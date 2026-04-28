@@ -20,7 +20,11 @@ const PRIVATE_PAGE       = "private.html";
    Until then, submissions are saved to localStorage as a
    fallback so nothing is lost.
    ---------------------------------------------------------- */
-const REFLECTIONS_ENDPOINT = "https://formspree.io/f/mvzdjzpk";
+// After deploying the Cloudflare Worker (aettam-worker/), replace this with your worker URL.
+const REFLECTIONS_ENDPOINT = "https://aettam-worker.PLACEHOLDER.workers.dev/reflect";
+// Sanctuary key must match the SANCTUARY_KEY worker secret (default: mattea-sanctuary-2026)
+const SANCTUARY_KEY = "mattea-sanctuary-2026";
+const MEMBERS_URL   = "https://146-190-119-77.sslip.io/aettam-members";
 
 /* ----------  Tailwind palette extension  ---------- */
 if (window.tailwind) {
@@ -61,6 +65,7 @@ function initReveal() {
       }
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  window._revealObserver = io;
   els.forEach(e => io.observe(e));
 }
 
@@ -312,6 +317,138 @@ async function toggleAmbient() {
   _updateAmbientBtn();
 }
 
+/* ----------  Moon Phase (Task 15)  ---------- */
+function getMoonPhase() {
+  const NEW_MOON_EPOCH = 947182440000; // Jan 6 2000 18:14 UTC
+  const CYCLE = 29.53059 * 86400000;
+  const elapsed = ((Date.now() - NEW_MOON_EPOCH) % CYCLE + CYCLE) % CYCLE;
+  const phase = elapsed / CYCLE;
+  const PHASES = [
+    { name: 'New Moon',        glyph: '🌑' },
+    { name: 'Waxing Crescent', glyph: '🌒' },
+    { name: 'First Quarter',   glyph: '🌓' },
+    { name: 'Waxing Gibbous',  glyph: '🌔' },
+    { name: 'Full Moon',       glyph: '🌕' },
+    { name: 'Waning Gibbous',  glyph: '🌖' },
+    { name: 'Last Quarter',    glyph: '🌗' },
+    { name: 'Waning Crescent', glyph: '🌘' },
+  ];
+  return { ...PHASES[Math.floor(phase * 8) % 8], illumination: Math.round(phase <= 0.5 ? phase * 200 : (1 - phase) * 200), phase };
+}
+
+function initMoonPhase() {
+  const moon = getMoonPhase();
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  set('moon-glyph-hero',             moon.glyph);
+  set('moon-name-hero',              moon.name);
+  set('moon-glyph-sanctuary',        moon.glyph);
+  set('moon-name-sanctuary',         moon.name);
+  set('moon-illumination-sanctuary', moon.illumination + '% illuminated');
+}
+
+/* ----------  Ritual Calendar (Task 16)  ---------- */
+async function initRitualCalendar() {
+  const container = document.getElementById('ritual-calendar');
+  if (!container) return;
+  try {
+    const res  = await fetch('/rituals.json');
+    const data = await res.json();
+    const now  = new Date();
+    now.setHours(0, 0, 0, 0);
+    const TYPE_ICONS = { 'new-moon': '🌑', 'full-moon': '🌕', 'solstice': '☀', 'equinox': '☯', 'custom': '⛤' };
+    const TYPE_LABELS = { 'new-moon': 'New Moon', 'full-moon': 'Full Moon', 'solstice': 'Solstice', 'equinox': 'Equinox', 'custom': 'Sacred Date' };
+    container.innerHTML = data.map(evt => {
+      const d    = new Date(evt.date + 'T00:00:00');
+      const past = d < now;
+      const dateStr = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+      return `<div class="ritual-event-card${past ? ' is-past' : ''} reveal">
+        <div class="flex items-start gap-4">
+          <span class="text-2xl mt-0.5" aria-hidden="true">${TYPE_ICONS[evt.type] || '⛤'}</span>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-baseline gap-3 flex-wrap mb-1">
+              <span class="font-cinzel text-aettam-gold text-sm tracking-[0.15em]">${evt.title}</span>
+              <span class="text-[10px] tracking-[0.3em] uppercase text-aettam-bone/40">${TYPE_LABELS[evt.type] || ''} · ${dateStr}</span>
+            </div>
+            <p class="font-cormorant italic text-aettam-bone/80 text-base leading-snug">${evt.description}</p>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+    // re-trigger reveal for newly inserted elements
+    if (window._revealObserver) container.querySelectorAll('.reveal').forEach(el => window._revealObserver.observe(el));
+  } catch {
+    container.innerHTML = '<p class="font-cormorant italic text-aettam-bone/40 text-center py-8">The calendar is being inscribed.</p>';
+  }
+}
+
+/* ----------  Members Directory (Task 14)  ---------- */
+async function initMembersDirectory() {
+  const grid  = document.getElementById('members-grid');
+  const empty = document.getElementById('members-empty');
+  if (!grid) return;
+  try {
+    const res  = await fetch(MEMBERS_URL, { cache: 'default' });
+    const data = await res.json();
+    const members = data.members || [];
+    if (!members.length) {
+      grid.classList.add('hidden');
+      if (empty) empty.classList.remove('hidden');
+      return;
+    }
+    grid.innerHTML = members.map(m => `
+      <div class="member-dir-card reveal">
+        <img src="${m.avatarURL}" alt="" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect width=%2264%22 height=%2264%22 fill=%22%230e2a22%22/><text x=%2232%22 y=%2242%22 font-size=%2230%22 text-anchor=%22middle%22 fill=%22%23c9a227%22>⛤</text></svg>'">
+        <p class="font-cinzel text-aettam-bone text-xs tracking-[0.15em] leading-tight">${m.displayName}</p>
+        <p class="font-cinzel text-aettam-gold text-sm tracking-widest" style="text-shadow:0 0 12px rgba(201,162,39,0.5)">${m.sigil}</p>
+        ${m.honorRoles && m.honorRoles.length ? `<p class="text-[9px] tracking-[0.2em] uppercase text-aettam-gold/50 leading-tight">${m.honorRoles[0]}</p>` : ''}
+      </div>`).join('');
+    if (window._revealObserver) grid.querySelectorAll('.reveal').forEach(el => window._revealObserver.observe(el));
+  } catch {
+    grid.innerHTML = '<p class="font-cormorant italic text-aettam-bone/40 text-center py-12 col-span-full">The circle keeps no center because every center is holy.</p>';
+  }
+}
+
+/* ----------  Reflections Feed (Task 20)  ---------- */
+async function initReflectionsFeed() {
+  const feed = document.getElementById('reflections-feed');
+  if (!feed) return;
+  if (REFLECTIONS_ENDPOINT.includes('PLACEHOLDER')) return;
+  const workerBase = REFLECTIONS_ENDPOINT.replace('/reflect', '');
+  try {
+    const res  = await fetch(workerBase + '/reflections', { headers: { 'X-Sanctuary-Key': SANCTUARY_KEY } });
+    const data = await res.json();
+    const list = data.reflections || [];
+    if (!list.length) {
+      feed.innerHTML = '<p class="font-cormorant italic text-aettam-bone/40 text-center py-8">No reflections yet. The mirror waits.</p>';
+      return;
+    }
+    feed.innerHTML = list.map(r => {
+      const ts  = r.timestamp ? new Date(r.timestamp) : null;
+      const ago = ts ? relativeTime(ts) : '';
+      return `<div class="reflection-feed-card reveal">
+        <div class="flex justify-between items-start mb-1">
+          <span class="font-cinzel text-aettam-gold text-xs tracking-[0.2em]">${r.name || 'Anonymous'}</span>
+          ${ago ? `<span class="text-[10px] tracking-[0.2em] uppercase text-aettam-bone/35">${ago}</span>` : ''}
+        </div>
+        ${r.intention ? `<p class="font-cormorant italic text-aettam-bone/80 text-base leading-relaxed">"${r.intention}"</p>` : '<p class="font-cormorant italic text-aettam-bone/40 text-sm">She crossed the threshold in silence.</p>'}
+      </div>`;
+    }).join('');
+    if (window._revealObserver) feed.querySelectorAll('.reveal').forEach(el => window._revealObserver.observe(el));
+  } catch {
+    feed.innerHTML = '<p class="font-cormorant italic text-aettam-bone/40 text-center py-8">The mirror is quiet tonight.</p>';
+  }
+}
+
+function relativeTime(date) {
+  const diff = Date.now() - date.getTime();
+  const m = Math.floor(diff / 60000);
+  if (m < 1)  return 'just now';
+  if (m < 60) return `${m}m`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h`;
+  return `${Math.floor(h / 24)}d`;
+}
+
 /* ----------  Boot  ---------- */
 document.addEventListener('DOMContentLoaded', () => {
   initReveal();
@@ -319,6 +456,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initMirrorCard();
   initSigilGenerator();
   initAmbientButton();
+  initMoonPhase();
+  if (document.getElementById('ritual-calendar'))   initRitualCalendar();
+  if (document.getElementById('members-grid'))      initMembersDirectory();
+  if (document.getElementById('reflections-feed'))  initReflectionsFeed();
 });
 
 /* small shake animation injected so we don't need another file */
