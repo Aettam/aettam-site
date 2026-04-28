@@ -245,19 +245,21 @@
   <!-- ====================  SIGIL GENERATOR  ==================== -->
   <section id="sigil" class="relative py-24 px-6">
     <div class="max-w-xl mx-auto text-center">
-      <div class="reveal mb-12">
+      <div class="reveal mb-10">
         <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-4">Your Mark</p>
         <h2 class="font-cinzel text-3xl md:text-5xl text-aettam-bone mb-4">Receive Your Sigil</h2>
-        <div class="divider mx-auto"></div>
+        <div class="divider mx-auto mb-6"></div>
+        <p class="font-cormorant italic text-aettam-bone/60 text-lg max-w-sm mx-auto leading-relaxed">Three glyphs drawn from your name alone. Unique to you. Carry it. Trace it before you walk into rooms that try to make you small.</p>
       </div>
       <div class="reveal gate-card p-8">
-        <input id="sigil-input" type="text" placeholder="Enter your name"
-               class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-center text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition mb-6 font-cormorant text-lg" />
+        <input id="sigil-input" type="text" placeholder="Your name (or the name you want to carry)"
+               class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-center text-aettam-bone placeholder:text-aettam-bone/25 focus:outline-none focus:border-aettam-gold transition mb-6 font-cormorant text-lg" />
         <div id="sigil-output" class="hidden text-center">
-          <div id="sigil-display" class="font-cinzel text-6xl text-aettam-gold mb-6 tracking-widest" style="text-shadow:0 0 30px rgba(201,162,39,0.6)"></div>
+          <div id="sigil-display" class="font-cinzel text-6xl text-aettam-gold mb-3 tracking-widest" style="text-shadow:0 0 40px rgba(201,162,39,0.7)"></div>
+          <p class="font-cormorant italic text-aettam-bone/45 text-sm mb-6">This is yours. No one else will receive these three glyphs in this order.</p>
           <div class="flex gap-3 justify-center flex-wrap">
             <button id="sigil-copy" onclick="copySigil()" class="btn-ghost" style="padding:0.6rem 1.5rem;font-size:0.7rem;">Copy ✦</button>
-            <button onclick="openReflections()" class="btn-primary" style="padding:0.6rem 1.5rem;font-size:0.7rem;"><span class="relative z-10">Save my sigil ↓</span></button>
+            <button onclick="openReflections()" class="btn-primary" style="padding:0.6rem 1.5rem;font-size:0.7rem;"><span class="relative z-10">Seal it with the letter ↓</span></button>
           </div>
         </div>
       </div>
@@ -269,11 +271,10 @@
     <div class="max-w-6xl mx-auto">
       <div class="reveal text-center mb-20">
         <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-4">II.</p>
-        <h2 class="font-cinzel text-4xl md:text-6xl text-aettam-bone mb-4">Queen Worship Rituals</h2>
+        <h2 class="font-cinzel text-4xl md:text-6xl text-aettam-bone mb-4">Six Practices of the Order</h2>
         <div class="divider mx-auto"></div>
         <p class="font-cormorant italic text-aettam-bone/70 text-xl mt-6 max-w-2xl mx-auto">
-          Devotions for those who carry fire. Practice them alone. Practice
-          them in circle. Practice them and watch the room change.
+          Not exercises. Not affirmations. Practices — meaning they ask something of you, and return something you did not expect. Do them alone. Do them in circle. Watch what changes.
         </p>
       </div>
 
@@ -563,6 +564,20 @@
             "My therapist noticed something changed before I even told her about Aettam. She asked what I was doing differently. I said: I started treating my own hunger like it was sacred."
           </p>
           <p class="font-cinzel text-aettam-gold text-xs tracking-[0.3em]">MAREN · MATTEA</p>
+        </div>
+
+        <div class="reveal ritual-card">
+          <p class="font-cormorant italic text-xl text-aettam-bone/90 leading-relaxed mb-6">
+            "I joined because I was exhausted from performing okayness. I stayed because I finally found a room where nobody needed me to. I have not been lonely in the same way since."
+          </p>
+          <p class="font-cinzel text-aettam-gold text-xs tracking-[0.3em]">ZARA · MATTEA</p>
+        </div>
+
+        <div class="reveal ritual-card">
+          <p class="font-cormorant italic text-xl text-aettam-bone/90 leading-relaxed mb-6">
+            "The Oath Wall changed something in me I cannot fully name. I wrote what I wanted to stop pretending. I came back the next day and read it back to myself. I have not looked away since."
+          </p>
+          <p class="font-cinzel text-aettam-gold text-xs tracking-[0.3em]">THESSALY · MATTEA</p>
         </div>
       </div>
     </div>
