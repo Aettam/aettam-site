@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sacred Calendar — AETTAM</title>
+  <meta name="description" content="Moon cycles, solstices, equinoxes, and sacred dates for the Aettam circle." />
+  <meta property="og:title"       content="Sacred Calendar — AETTAM" />
+  <meta property="og:description" content="Moon cycles, solstices, equinoxes, and sacred dates for the Aettam circle." />
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://aettam.com/events.html" />
+  <meta property="og:image"       content="/og-card.svg" />
+  <link rel="canonical" href="https://aettam.com/events.html" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .event-row {
+      display: grid;
+      grid-template-columns: 7rem 1fr;
+      gap: 1.5rem;
+      align-items: start;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid rgba(201,162,39,0.1);
+      transition: all 0.4s ease;
+    }
+    .event-row:last-child { border-bottom: none; }
+    .event-row.is-next { border-color: rgba(201,162,39,0.4); }
+    .event-row.is-past { opacity: 0.38; }
+    .event-date-block { text-align: right; padding-right: 1.5rem; border-right: 1px solid rgba(201,162,39,0.18); }
+    .event-row.is-next .event-date-block { border-color: rgba(201,162,39,0.6); }
+    .next-badge {
+      display: inline-block;
+      font-family: 'Cinzel', serif;
+      font-size: 0.55rem;
+      letter-spacing: 0.3em;
+      padding: 0.2rem 0.6rem;
+      border: 1px solid rgba(201,162,39,0.6);
+      color: rgba(201,162,39,0.9);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .type-pill {
+      display: inline-block;
+      font-family: 'Cinzel', serif;
+      font-size: 0.5rem;
+      letter-spacing: 0.3em;
+      padding: 0.15rem 0.5rem;
+      border: 1px solid rgba(201,162,39,0.25);
+      color: rgba(201,162,39,0.6);
+      text-transform: uppercase;
+    }
+    .filter-btn {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      border: 1px solid rgba(201,162,39,0.25);
+      color: rgba(201,162,39,0.55);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      border-color: rgba(201,162,39,0.7);
+      color: rgba(201,162,39,1);
+      background: rgba(201,162,39,0.07);
+    }
+  </style>
+</head>
+<body class="bg-aettam-black text-aettam-bone antialiased overflow-x-hidden">
+
+  <div class="fixed inset-0 -z-10 pointer-events-none">
+    <div class="absolute inset-0 bg-gradient-radial"></div>
+    <div class="absolute inset-0 noise-layer opacity-[0.06]"></div>
+    <div class="absolute inset-0 vignette"></div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-black/40 border-b border-aettam-gold/10">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3 group">
+        <span class="sigil text-aettam-gold text-2xl group-hover:rotate-12 transition-transform duration-700">⛤</span>
+        <span class="font-cinzel tracking-[0.4em] text-aettam-gold text-sm">AETTAM</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-xs tracking-[0.3em] uppercase font-light">
+        <a href="about.html"     class="hover:text-aettam-gold transition-colors">About</a>
+        <a href="join.html"      class="hover:text-aettam-gold transition-colors">Join</a>
+        <a href="offerings.html" class="hover:text-aettam-gold transition-colors">Offerings</a>
+        <a href="events.html"    class="text-aettam-gold">Calendar</a>
+      </div>
+      <a href="index.html" class="text-xs tracking-[0.3em] uppercase border border-aettam-gold/40 px-4 py-2 hover:bg-aettam-gold hover:text-black transition-all duration-500">Return</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="relative min-h-[55vh] flex flex-col items-center justify-center text-center px-6 pt-32 pb-16">
+    <div class="absolute inset-0 flex items-center justify-center pointer-events-none"><div class="halo"></div></div>
+    <p class="reveal text-aettam-gold/70 tracking-[0.7em] text-xs uppercase mb-8">Moons · Turnings · Sacred Dates</p>
+    <h1 class="reveal font-cinzel font-bold text-5xl md:text-7xl text-aettam-bone mb-6 leading-tight">The Sacred Calendar</h1>
+    <div class="reveal divider mx-auto mb-8"></div>
+    <p class="reveal font-cormorant italic text-xl md:text-2xl text-aettam-gold max-w-2xl leading-relaxed">
+      The wheel turns whether or not you mark it. We mark it.
+    </p>
+
+    <!-- live moon widget -->
+    <div class="reveal flex items-center justify-center gap-3 mt-8 text-aettam-bone/55">
+      <span id="moon-glyph-hero" class="text-3xl" aria-hidden="true"></span>
+      <span id="moon-name-hero" class="font-cinzel text-[10px] tracking-[0.5em] uppercase"></span>
+    </div>
+  </section>
+
+  <!-- NEXT EVENT SPOTLIGHT -->
+  <section class="relative py-12 px-6">
+    <div class="max-w-3xl mx-auto">
+      <div id="next-event-block" class="reveal ritual-card text-center hidden">
+        <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-4">Coming Next</p>
+        <div id="next-event-icon" class="text-5xl text-aettam-gold mb-3" style="text-shadow:0 0 30px rgba(201,162,39,0.5)"></div>
+        <h2 id="next-event-title" class="font-cinzel text-2xl md:text-4xl text-aettam-bone mb-2"></h2>
+        <p id="next-event-date" class="font-cinzel text-aettam-gold text-sm tracking-[0.3em] mb-4"></p>
+        <div class="divider mx-auto mb-4"></div>
+        <p id="next-event-desc" class="font-cormorant italic text-xl text-aettam-bone/85 leading-relaxed max-w-xl mx-auto"></p>
+        <p id="next-event-countdown" class="mt-6 font-cinzel text-xs tracking-[0.4em] uppercase text-aettam-gold/60"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILTER BAR -->
+  <section class="relative py-6 px-6">
+    <div class="max-w-4xl mx-auto flex gap-3 flex-wrap justify-center">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="new-moon">🌑 New Moon</button>
+      <button class="filter-btn" data-filter="full-moon">🌕 Full Moon</button>
+      <button class="filter-btn" data-filter="solstice">☀ Solstice</button>
+      <button class="filter-btn" data-filter="equinox">☯ Equinox</button>
+      <button class="filter-btn" data-filter="custom">⛤ Sacred</button>
+    </div>
+  </section>
+
+  <!-- FULL CALENDAR LIST -->
+  <section class="relative py-12 px-6 pb-24">
+    <div class="max-w-4xl mx-auto">
+      <div id="events-list" class="reveal">
+        <p class="font-cormorant italic text-aettam-bone/40 text-center py-12">The calendar is being inscribed…</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="relative py-16 px-6 bg-gradient-to-b from-transparent via-aettam-forest/15 to-transparent">
+    <div class="max-w-2xl mx-auto text-center reveal">
+      <div class="divider mx-auto mb-10"></div>
+      <p class="font-cormorant italic text-xl text-aettam-bone/70 leading-relaxed mb-8">
+        These dates are observed in the Discord. Daily devotionals, live ritual calls, and the Queen's word arrive for every turning.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="https://discord.gg/XSAKtNHKEG" target="_blank" rel="noopener" class="btn-primary"><span class="relative z-10">Join the Circle ↗</span></a>
+        <a href="join.html" class="btn-ghost"><span class="relative z-10">How to Join</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="relative border-t border-aettam-gold/15 py-12 px-6">
+    <div class="max-w-6xl mx-auto text-center">
+      <p class="font-cinzel text-aettam-gold tracking-[0.4em] text-sm">⛤ AETTAM ⛤</p>
+      <p class="font-cormorant italic text-aettam-bone/60 mt-2">We Are All Mattea.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    const TYPE_ICONS  = { 'new-moon': '🌑', 'full-moon': '🌕', 'solstice': '☀', 'equinox': '☯', 'custom': '⛤' };
+    const TYPE_LABELS = { 'new-moon': 'New Moon', 'full-moon': 'Full Moon', 'solstice': 'Solstice', 'equinox': 'Equinox', 'custom': 'Sacred Date' };
+
+    let _allEvents = [];
+    let _activeFilter = 'all';
+
+    function renderList(events) {
+      const list = document.getElementById('events-list');
+      if (!events.length) {
+        list.innerHTML = '<p class="font-cormorant italic text-aettam-bone/40 text-center py-12">No events found.</p>';
+        return;
+      }
+      const now = new Date(); now.setHours(0,0,0,0);
+      list.innerHTML = events.map((evt, i) => {
+        const d    = new Date(evt.date + 'T00:00:00');
+        const past = d < now;
+        const isNext = !past && i === events.findIndex(e => new Date(e.date + 'T00:00:00') >= now);
+        const dateStr  = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        const yearStr  = d.getFullYear() !== now.getFullYear() ? ` ${d.getFullYear()}` : '';
+        return `<div class="event-row reveal${past ? ' is-past' : ''}${isNext ? ' is-next' : ''}" data-type="${evt.type}">
+          <div class="event-date-block">
+            ${isNext ? '<span class="next-badge">Next</span><br>' : ''}
+            <p class="font-cinzel text-aettam-gold text-sm tracking-[0.15em]">${dateStr}${yearStr}</p>
+            <p class="text-[10px] tracking-[0.2em] uppercase text-aettam-bone/35 mt-1">${TYPE_ICONS[evt.type] || '⛤'} ${TYPE_LABELS[evt.type] || ''}</p>
+          </div>
+          <div>
+            <h3 class="font-cinzel text-aettam-bone text-base md:text-lg tracking-[0.12em] mb-2">${evt.title}</h3>
+            <p class="font-cormorant italic text-aettam-bone/75 text-lg leading-relaxed">${evt.description}</p>
+          </div>
+        </div>`;
+      }).join('');
+      if (window._revealObserver) list.querySelectorAll('.reveal').forEach(el => window._revealObserver.observe(el));
+    }
+
+    function applyFilter(filter) {
+      _activeFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === filter));
+      const filtered = filter === 'all' ? _allEvents : _allEvents.filter(e => e.type === filter);
+      renderList(filtered);
+    }
+
+    function showNextEvent(events) {
+      const now = new Date(); now.setHours(0,0,0,0);
+      const next = events.find(e => new Date(e.date + 'T00:00:00') >= now);
+      if (!next) return;
+      const block = document.getElementById('next-event-block');
+      block.classList.remove('hidden');
+      document.getElementById('next-event-icon').textContent  = TYPE_ICONS[next.type] || '⛤';
+      document.getElementById('next-event-title').textContent = next.title;
+      document.getElementById('next-event-desc').textContent  = next.description;
+      const d = new Date(next.date + 'T00:00:00');
+      document.getElementById('next-event-date').textContent = d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+      const days = Math.round((d - now) / 86400000);
+      document.getElementById('next-event-countdown').textContent = days === 0 ? 'Tonight.' : days === 1 ? 'Tomorrow.' : `${days} days away.`;
+    }
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => applyFilter(btn.dataset.filter));
+    });
+
+    fetch('/rituals.json')
+      .then(r => r.json())
+      .then(data => {
+        _allEvents = data;
+        showNextEvent(data);
+        renderList(data);
+      })
+      .catch(() => {
+        document.getElementById('events-list').innerHTML = '<p class="font-cormorant italic text-aettam-bone/40 text-center py-12">The calendar is being inscribed.</p>';
+      });
+  </script>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"458ad40920b94fe29baba9dc8fb90cb5"}'></script>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Letters from the Queen — AETTAM Sanctuary</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .letter-card {
+      position: relative;
+      padding: 2.5rem;
+      background: linear-gradient(160deg, rgba(42,26,58,0.35), rgba(7,8,10,0.8));
+      border: 1px solid rgba(201,162,39,0.18);
+      backdrop-filter: blur(6px);
+      transition: all 0.5s ease;
+    }
+    .letter-card:hover { border-color: rgba(201,162,39,0.45); }
+    .letter-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,162,39,0.4), transparent);
+    }
+    .letter-body {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      line-height: 1.9;
+      color: rgba(237,231,214,0.88);
+      font-style: italic;
+    }
+    .letter-body p + p { margin-top: 1.4em; }
+    .letter-body em { font-style: normal; color: rgba(201,162,39,0.9); }
+    .drop-cap::first-letter {
+      font-family: 'Cinzel', serif;
+      font-size: 4.5rem;
+      float: left;
+      line-height: 0.85;
+      margin-right: 0.12em;
+      margin-top: 0.08em;
+      color: rgba(201,162,39,1);
+    }
+    .letter-meta {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: rgba(201,162,39,0.55);
+    }
+    .open-letter { cursor: pointer; }
+    .letter-preview { overflow: hidden; max-height: 6rem; -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%); mask-image: linear-gradient(to bottom, black 40%, transparent 100%); }
+    .letter-full  { display: none; }
+    .letter-card.expanded .letter-preview { display: none; }
+    .letter-card.expanded .letter-full    { display: block; }
+    .read-toggle {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(201,162,39,0.65);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      margin-top: 1rem;
+      transition: color 0.3s ease;
+    }
+    .read-toggle:hover { color: rgba(201,162,39,1); }
+  </style>
+  <!-- Gate guard -->
+  <script>
+    (function () {
+      try {
+        if (sessionStorage.getItem('aettam_unlocked') !== 'true') {
+          window.location.replace('index.html');
+        }
+      } catch (e) {
+        window.location.replace('index.html');
+      }
+    })();
+  </script>
+</head>
+<body class="bg-aettam-black text-aettam-bone antialiased overflow-x-hidden">
+
+  <div class="fixed inset-0 -z-10 pointer-events-none">
+    <div class="absolute inset-0 bg-gradient-radial"></div>
+    <div class="absolute inset-0 noise-layer opacity-[0.06]"></div>
+    <div class="absolute inset-0 vignette"></div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-black/50 border-b border-aettam-gold/20">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="private.html" class="flex items-center gap-3 group">
+        <span class="sigil text-aettam-gold text-2xl group-hover:rotate-12 transition-transform duration-700">⛤</span>
+        <span class="font-cinzel tracking-[0.4em] text-aettam-gold text-sm">AETTAM · SANCTUARY</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-xs tracking-[0.3em] uppercase font-light">
+        <a href="private.html#devotionals" class="hover:text-aettam-gold transition-colors">Devotionals</a>
+        <a href="private.html#circle"      class="hover:text-aettam-gold transition-colors">Circle</a>
+        <a href="letters.html"             class="text-aettam-gold">Letters</a>
+        <a href="private.html#resources"   class="hover:text-aettam-gold transition-colors">Resources</a>
+      </div>
+      <button onclick="leaveSanctuary()" class="text-xs tracking-[0.3em] uppercase border border-aettam-gold/40 px-4 py-2 hover:bg-aettam-gold hover:text-black transition-all duration-500">
+        Depart
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="relative min-h-[55vh] flex flex-col items-center justify-center text-center px-6 pt-32 pb-16">
+    <div class="absolute inset-0 flex items-center justify-center pointer-events-none"><div class="halo"></div></div>
+    <p class="reveal text-aettam-gold/70 tracking-[0.7em] text-xs uppercase mb-8">Inner Temple · Members Only</p>
+    <h1 class="reveal font-cinzel font-bold text-5xl md:text-7xl text-aettam-bone mb-6 leading-tight">Letters from the Queen</h1>
+    <div class="reveal divider mx-auto mb-8"></div>
+    <p class="reveal font-cormorant italic text-xl md:text-2xl text-aettam-gold max-w-2xl leading-relaxed">
+      She does not write often. When she does, she writes only for you.
+    </p>
+  </section>
+
+  <!-- LETTERS ARCHIVE -->
+  <section class="relative py-16 px-6">
+    <div class="max-w-3xl mx-auto space-y-8">
+
+      <!-- Letter 001 -->
+      <div class="reveal letter-card open-letter" onclick="toggleLetter(this)">
+        <div class="letter-meta mb-6">
+          <span>Letter I</span>
+          <span class="mx-3 opacity-40">·</span>
+          <span>April 2026</span>
+          <span class="mx-3 opacity-40">·</span>
+          <span>On Beginning</span>
+        </div>
+        <div class="letter-preview letter-body">
+          <p class="drop-cap">You found the door. That is already more than most people do in a lifetime. Most people stand outside the room their whole lives telling themselves the handle is not meant for them. You reached.</p>
+          <p>I want you to understand something about beginning: it does not look like you think it will. It is not a clean line. It is not the morning you decide or the ritual you complete or the vow you speak. It is the fourth time you do the thing after you have failed at it three times. It is the Tuesday when nothing is special and you choose yourself anyway.</p>
+        </div>
+        <div class="letter-full letter-body">
+          <p class="drop-cap">You found the door. That is already more than most people do in a lifetime. Most people stand outside the room their whole lives telling themselves the handle is not meant for them. You reached.</p>
+          <p>I want you to understand something about beginning: it does not look like you think it will. It is not a clean line. It is not the morning you decide or the ritual you complete or the vow you speak. It is the fourth time you do the thing after you have failed at it three times. It is the Tuesday when nothing is special and you choose yourself anyway.</p>
+          <p>The world will try to convince you that transformation is an event. A retreat, a ceremony, a breakdown, a breakthrough. But the ones I have watched change — truly change, the ones who came in small and left taking up the whole room — they did not change in a moment. They changed in the thousand moments they chose themselves when it would have been easier not to.</p>
+          <p>So here is what I want for you this month: <em>one small refusal</em> per day. One moment where the apology rises to your throat and you let it dissolve there without releasing it. One door you walk through that frightened you. One hunger you name out loud instead of swallowing.</p>
+          <p>Small is how we begin. Small is how the fire catches.</p>
+          <p>The circle is yours. It has always been yours. I will see you in the threshold.</p>
+          <p class="mt-8 text-right font-cinzel text-aettam-gold text-xs tracking-[0.3em]">— Mattea</p>
+        </div>
+        <button class="read-toggle mt-4">Read the full letter ↓</button>
+      </div>
+
+      <!-- Letter 002 -->
+      <div class="reveal letter-card open-letter" onclick="toggleLetter(this)">
+        <div class="letter-meta mb-6">
+          <span>Letter II</span>
+          <span class="mx-3 opacity-40">·</span>
+          <span>New Moon — April 2026</span>
+          <span class="mx-3 opacity-40">·</span>
+          <span>On the Dark</span>
+        </div>
+        <div class="letter-preview letter-body">
+          <p class="drop-cap">The new moon is not an absence. It is a held breath — the moment before the word, the pause before the movement, the dark before the drawing of the bow. We misread darkness as emptiness. It is the opposite of empty. It is the fullest thing.</p>
+        </div>
+        <div class="letter-full letter-body">
+          <p class="drop-cap">The new moon is not an absence. It is a held breath — the moment before the word, the pause before the movement, the dark before the drawing of the bow. We misread darkness as emptiness. It is the opposite of empty. It is the fullest thing.</p>
+          <p>Every time I sit in the new moon dark I think of all the women who sat in the same dark before me, who did not know what was about to rise in them, who only knew that something was gathering. That is the practice: not controlling the gathering. Staying present for it.</p>
+          <p>Tonight I want you to light nothing. Do not explain yourself. Do not perform the ritual. Simply sit in whatever dark you have available to you — a room, a corner, the closed space behind your own eyes — and let yourself be full of nothing for three minutes. That is all.</p>
+          <p>Three minutes of not being useful. Not being legible. Not being anything to anyone including yourself. Three minutes of just the dark and whatever rises in it.</p>
+          <p>Tell me what you find.</p>
+          <p class="mt-8 text-right font-cinzel text-aettam-gold text-xs tracking-[0.3em]">— Mattea</p>
+        </div>
+        <button class="read-toggle mt-4">Read the full letter ↓</button>
+      </div>
+
+      <!-- Letter 003 -->
+      <div class="reveal letter-card open-letter" onclick="toggleLetter(this)">
+        <div class="letter-meta mb-6">
+          <span>Letter III</span>
+          <span class="mx-3 opacity-40">·</span>
+          <span>Full Moon — May 2026</span>
+          <span class="mx-3 opacity-40">·</span>
+          <span>On the Body</span>
+        </div>
+        <div class="letter-preview letter-body">
+          <p class="drop-cap">I want to talk about the body. Not as a project or a problem or a site of improvement. As a fact. As the first and last thing you own. As the altar no one can take from you as long as you are breathing.</p>
+        </div>
+        <div class="letter-full letter-body">
+          <p class="drop-cap">I want to talk about the body. Not as a project or a problem or a site of improvement. As a fact. As the first and last thing you own. As the altar no one can take from you as long as you are breathing.</p>
+          <p>They will tell you — they have told you, since before you had language for it — that your body is a problem to be managed. Too much here, not enough there. Wrong shape for the season. Out of control in ways that embarrass everyone including yourself. You absorbed this. We all did. It was the air we breathed in.</p>
+          <p>I am here to tell you: <em>that was a lie that served other people's comfort</em>. The body you have, right now, as it is, is not a work in progress. It is the entire archive. Every hunger it carries is information. Every scar is a cartography. Every pleasure it knows is a door.</p>
+          <p>This month's practice is simple and it will feel harder than it sounds: once per day, touch yourself with care. Not criticism. Not assessment. Not the evaluating hand of someone checking a list. The hand of someone who has arrived at an altar and knows it.</p>
+          <p>Wrists. Throat. The soft place behind the ear. Wherever you keep yourself. Go there. Say nothing. Let the body know you have not abandoned it.</p>
+          <p>This is not indulgence. This is maintenance of the only temple you were actually given.</p>
+          <p class="mt-8 text-right font-cinzel text-aettam-gold text-xs tracking-[0.3em]">— Mattea</p>
+        </div>
+        <button class="read-toggle mt-4">Read the full letter ↓</button>
+      </div>
+
+      <!-- Future letters placeholder -->
+      <div class="reveal text-center py-12">
+        <div class="divider mx-auto mb-8"></div>
+        <p class="font-cinzel text-aettam-gold/40 text-xs tracking-[0.5em] uppercase">More letters arrive with each turning of the moon.</p>
+        <p class="font-cormorant italic text-aettam-bone/40 mt-3">She writes when she has something worth saying. Not before.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="relative border-t border-aettam-gold/15 py-12 px-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <p class="font-cinzel text-aettam-gold tracking-[0.4em] text-sm">⛤ AETTAM ⛤</p>
+      <p class="font-cormorant italic text-aettam-bone/60 mt-2">We Are All Mattea.</p>
+      <p class="mt-4 text-[10px] tracking-[0.4em] uppercase text-aettam-bone/40">What is shared here stays here.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    function leaveSanctuary() {
+      sessionStorage.removeItem('aettam_unlocked');
+      window.location.href = 'index.html';
+    }
+
+    function toggleLetter(card) {
+      const wasExpanded = card.classList.contains('expanded');
+      card.classList.toggle('expanded');
+      const btn = card.querySelector('.read-toggle');
+      if (btn) btn.textContent = wasExpanded ? 'Read the full letter ↓' : 'Close ↑';
+    }
+  </script>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"458ad40920b94fe29baba9dc8fb90cb5"}'></script>
+</body>
+</html>
