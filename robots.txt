@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /private.html
+Disallow: /letters.html
+
+Sitemap: https://aettam.com/sitemap.xml
