@@ -381,6 +381,40 @@
     </div>
   </section>
 
+  <!-- ====================  OATH WALL  ==================== -->
+  <section id="oath-wall-section" class="relative py-24 px-6 bg-gradient-to-b from-transparent via-aettam-blood/10 to-transparent">
+    <div class="max-w-3xl mx-auto">
+      <div class="reveal text-center mb-12">
+        <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-3">The Vow Made Public</p>
+        <h2 class="font-cinzel text-3xl md:text-5xl">The Oath Wall</h2>
+        <div class="divider mx-auto mt-4"></div>
+        <p class="font-cormorant italic text-aettam-bone/60 text-lg mt-6 max-w-xl mx-auto">
+          Speak the one thing you will no longer do to yourself. Seal it here, before the Order, as witness.
+        </p>
+      </div>
+
+      <!-- Submit form -->
+      <div class="reveal member-card mb-8">
+        <form onsubmit="submitOath(event)" class="space-y-4">
+          <input id="oath-name" type="text" placeholder="Your name (or chosen name)"
+            class="w-full bg-transparent border border-aettam-gold/30 px-4 py-3 text-center text-aettam-bone placeholder:text-aettam-bone/25 focus:outline-none focus:border-aettam-gold transition font-cormorant text-lg" />
+          <textarea id="oath-input" rows="3" placeholder="I vow to…" required
+            class="w-full bg-transparent border border-aettam-gold/30 px-4 py-3 text-aettam-bone placeholder:text-aettam-bone/25 focus:outline-none focus:border-aettam-gold transition resize-none font-cormorant italic text-lg"></textarea>
+          <p id="oath-error" class="text-red-400/70 text-xs tracking-[0.3em] uppercase h-4"></p>
+          <button type="submit" id="oath-submit" class="btn-primary w-full">
+            <span class="relative z-10">Seal the Vow ⛤</span>
+          </button>
+        </form>
+        <p class="mt-4 text-[10px] tracking-[0.35em] uppercase text-aettam-bone/25 text-center">Your oath will appear below. The Order witnesses it.</p>
+      </div>
+
+      <!-- Oath feed -->
+      <div id="oath-wall" class="space-y-4">
+        <p class="font-cormorant italic text-aettam-bone/40 text-center py-8">Loading the wall…</p>
+      </div>
+    </div>
+  </section>
+
   <!-- ====================  RESOURCES  ==================== -->
   <section id="resources" class="relative py-24 px-6">
     <div class="max-w-4xl mx-auto">

@@ -449,6 +449,72 @@ function relativeTime(date) {
   return `${Math.floor(h / 24)}d`;
 }
 
+/* ----------  Soul Counter  ---------- */
+async function initSoulCounter() {
+  const el = document.getElementById('soul-counter');
+  if (!el) return;
+  try {
+    const workerBase = REFLECTIONS_ENDPOINT.replace('/reflect', '');
+    const res  = await fetch(workerBase + '/count');
+    const data = await res.json();
+    const n = data.count || 0;
+    if (n > 0) el.textContent = `${n} soul${n === 1 ? '' : 's'} have crossed the threshold`;
+  } catch {}
+}
+
+/* ----------  Oath Wall  ---------- */
+async function initOathWall() {
+  const feed = document.getElementById('oath-wall');
+  if (!feed) return;
+  const workerBase = REFLECTIONS_ENDPOINT.replace('/reflect', '');
+  try {
+    const res  = await fetch(workerBase + '/oaths', { headers: { 'X-Sanctuary-Key': SANCTUARY_KEY } });
+    const data = await res.json();
+    const oaths = data.oaths || [];
+    if (!oaths.length) {
+      feed.innerHTML = '<p class="font-cormorant italic text-aettam-bone/40 text-center py-8">No oaths yet. Be the first to speak it.</p>';
+      return;
+    }
+    feed.innerHTML = oaths.map(o => `
+      <div class="reveal ritual-card text-center py-6 px-8">
+        <p class="font-cormorant italic text-xl text-aettam-bone/90 leading-relaxed mb-4">"${o.oath}"</p>
+        <p class="font-cinzel text-aettam-gold text-xs tracking-[0.3em]">${o.sigil ? o.sigil + '  ' : ''}${o.name || 'A Mattea'}</p>
+      </div>`).join('');
+    if (window._revealObserver) feed.querySelectorAll('.reveal').forEach(el => window._revealObserver.observe(el));
+  } catch {
+    feed.innerHTML = '<p class="font-cormorant italic text-aettam-bone/40 text-center py-8">The wall is silent tonight.</p>';
+  }
+}
+
+async function submitOath(e) {
+  e.preventDefault();
+  const oathEl  = document.getElementById('oath-input');
+  const nameEl  = document.getElementById('oath-name');
+  const errEl   = document.getElementById('oath-error');
+  const btn     = document.getElementById('oath-submit');
+  const oath    = (oathEl?.value || '').trim();
+  const name    = (nameEl?.value || '').trim() || 'A Mattea';
+  if (oath.length < 5) { if (errEl) errEl.textContent = 'Speak it fully.'; return; }
+  if (oath.length > 300) { if (errEl) errEl.textContent = 'Too long — distill it.'; return; }
+  if (errEl) errEl.textContent = '';
+  if (btn) { btn.disabled = true; btn.querySelector('span').textContent = 'Sealing…'; }
+  const sigil = sigilFor(name + oath);
+  const workerBase = REFLECTIONS_ENDPOINT.replace('/reflect', '');
+  try {
+    const res = await fetch(workerBase + '/oath', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Sanctuary-Key': SANCTUARY_KEY },
+      body: JSON.stringify({ name, oath, sigil }),
+    });
+    if (res.ok) {
+      if (oathEl) oathEl.value = '';
+      if (nameEl) nameEl.value = '';
+      await initOathWall();
+    }
+  } catch {}
+  if (btn) { btn.disabled = false; btn.querySelector('span').textContent = 'Seal the Vow ⛤'; }
+}
+
 /* ----------  Boot  ---------- */
 document.addEventListener('DOMContentLoaded', () => {
   initReveal();
@@ -457,9 +523,11 @@ document.addEventListener('DOMContentLoaded', () => {
   initSigilGenerator();
   initAmbientButton();
   initMoonPhase();
+  initSoulCounter();
   if (document.getElementById('ritual-calendar'))   initRitualCalendar();
   if (document.getElementById('members-grid'))      initMembersDirectory();
   if (document.getElementById('reflections-feed'))  initReflectionsFeed();
+  if (document.getElementById('oath-wall'))         initOathWall();
 });
 
 /* small shake animation injected so we don't need another file */
