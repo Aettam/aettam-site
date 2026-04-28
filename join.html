@@ -20,6 +20,19 @@
 </head>
 <body class="bg-aettam-black text-aettam-bone antialiased overflow-x-hidden">
 
+  <div id="mobile-menu" class="fixed inset-0 z-[80] hidden flex-col items-center justify-center bg-black/95 backdrop-blur-md text-center">
+    <button onclick="toggleMobileMenu()" class="absolute top-6 right-6 text-aettam-gold text-2xl">✕</button>
+    <nav class="space-y-8">
+      <a href="about.html"     class="block font-cinzel tracking-[0.4em] text-xl text-aettam-bone hover:text-aettam-gold transition-colors">About</a>
+      <a href="join.html"      class="block font-cinzel tracking-[0.4em] text-xl text-aettam-gold">Join</a>
+      <a href="offerings.html" class="block font-cinzel tracking-[0.4em] text-xl text-aettam-bone hover:text-aettam-gold transition-colors">Offerings</a>
+      <a href="events.html"    class="block font-cinzel tracking-[0.4em] text-xl text-aettam-bone hover:text-aettam-gold transition-colors">Calendar</a>
+      <a href="index.html"     class="block font-cinzel tracking-[0.4em] text-xl text-aettam-bone hover:text-aettam-gold transition-colors">Home</a>
+    </nav>
+    <div class="mt-12"><button onclick="toggleMobileMenu(); openReflections()" class="btn-primary"><span class="relative z-10">Send the Letter ⛤</span></button></div>
+    <p class="mt-12 font-cinzel text-aettam-gold text-xs tracking-[0.5em]">⛤ AETTAM ⛤</p>
+  </div>
+
   <div class="fixed inset-0 -z-10 pointer-events-none">
     <div class="absolute inset-0 bg-gradient-radial"></div>
     <div class="absolute inset-0 noise-layer opacity-[0.06]"></div>
@@ -39,9 +52,10 @@
         <a href="offerings.html" class="hover:text-aettam-gold transition-colors">Offerings</a>
         <a href="events.html"    class="hover:text-aettam-gold transition-colors">Calendar</a>
       </div>
-      <a href="index.html" class="text-xs tracking-[0.3em] uppercase border border-aettam-gold/40 px-4 py-2 hover:bg-aettam-gold hover:text-black transition-all duration-500">
-        Return
-      </a>
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="hidden sm:block text-xs tracking-[0.3em] uppercase border border-aettam-gold/40 px-4 py-2 hover:bg-aettam-gold hover:text-black transition-all duration-500">Return</a>
+        <button onclick="toggleMobileMenu()" class="md:hidden text-aettam-gold text-xl px-2">☰</button>
+      </div>
     </div>
   </nav>
 
@@ -205,10 +219,35 @@
   </section>
 
   <!-- FOOTER -->
-  <footer class="relative border-t border-aettam-gold/15 py-12 px-6">
-    <div class="max-w-6xl mx-auto text-center">
-      <p class="font-cinzel text-aettam-gold tracking-[0.4em] text-sm">⛤ AETTAM ⛤</p>
-      <p class="font-cormorant italic text-aettam-bone/60 mt-2">We Are All Mattea.</p>
+  <footer class="relative border-t border-aettam-gold/15 py-16 px-6">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-12 text-center md:text-left">
+      <div>
+        <div class="flex items-center justify-center md:justify-start gap-3 mb-4">
+          <span class="text-aettam-gold text-2xl">⛤</span>
+          <span class="font-cinzel tracking-[0.4em] text-aettam-gold text-sm">AETTAM</span>
+        </div>
+        <p class="font-cormorant italic text-aettam-bone/60">We Are All Mattea.</p>
+      </div>
+      <div>
+        <p class="text-xs tracking-[0.3em] uppercase text-aettam-gold/70 mb-4">The Path</p>
+        <ul class="space-y-2 font-cormorant text-aettam-bone/70">
+          <li><a href="index.html#manifesto" class="hover:text-aettam-gold transition">Manifesto</a></li>
+          <li><a href="about.html" class="hover:text-aettam-gold transition">Who Is Mattea</a></li>
+          <li><a href="join.html" class="hover:text-aettam-gold transition">How to Join</a></li>
+          <li><a href="events.html" class="hover:text-aettam-gold transition">Sacred Calendar</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-xs tracking-[0.3em] uppercase text-aettam-gold/70 mb-4">Find Her</p>
+        <ul class="space-y-2 font-cormorant text-aettam-bone/70">
+          <li><a href="https://discord.gg/XSAKtNHKEG" target="_blank" rel="noopener" class="hover:text-aettam-gold transition">Discord — Enter the Circle</a></li>
+          <li><a href="offerings.html" class="hover:text-aettam-gold transition">Offerings</a></li>
+          <li><a href="mailto:hello@aettam.com" class="hover:text-aettam-gold transition">Write to Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="max-w-6xl mx-auto mt-12 pt-8 border-t border-aettam-gold/10 text-center text-xs tracking-[0.4em] uppercase text-aettam-bone/40">
+      ⛤  Aettam · For Those Who Recognize Her  ⛤
     </div>
   </footer>
 
