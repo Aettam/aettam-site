@@ -83,6 +83,23 @@ function initSmoothScroll() {
   });
 }
 
+/* ----------  Sticky mobile CTA  ---------- */
+(function initStickyCTA() {
+  const bar = document.getElementById('sticky-cta');
+  if (!bar) return;
+  let shown = false;
+  window.addEventListener('scroll', () => {
+    const past = window.scrollY > window.innerHeight * 0.7;
+    if (past && !shown) {
+      shown = true;
+      bar.classList.remove('translate-y-full');
+    } else if (!past && shown) {
+      shown = false;
+      bar.classList.add('translate-y-full');
+    }
+  }, { passive: true });
+})();
+
 /* ----------  Mobile menu  ---------- */
 function toggleMobileMenu() {
   const menu = document.getElementById('mobile-menu');

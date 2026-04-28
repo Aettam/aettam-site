@@ -541,13 +541,37 @@
   </section>
 
   <!-- ====================  FOOTER  ==================== -->
-  <footer class="relative border-t border-aettam-gold/15 py-12 px-6 mt-12">
-    <div class="max-w-6xl mx-auto text-center">
-      <p class="font-cinzel text-aettam-gold tracking-[0.4em] text-sm">⛤ AETTAM ⛤</p>
-      <p class="font-cormorant italic text-aettam-bone/60 mt-2">We Are All Mattea.</p>
-      <p class="mt-6 text-[10px] tracking-[0.4em] uppercase text-aettam-bone/40">
-        What is shared here stays here.
-      </p>
+  <footer class="relative border-t border-aettam-gold/15 py-16 px-6 mt-12">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-12 text-center md:text-left">
+      <div>
+        <div class="flex items-center justify-center md:justify-start gap-3 mb-4">
+          <span class="text-aettam-gold text-2xl">⛤</span>
+          <span class="font-cinzel tracking-[0.4em] text-aettam-gold text-sm">AETTAM · SANCTUARY</span>
+        </div>
+        <p class="font-cormorant italic text-aettam-bone/60">We Are All Mattea.</p>
+        <p class="font-cinzel text-[9px] tracking-[0.35em] uppercase text-aettam-bone/30 mt-2">What is shared here stays here.</p>
+      </div>
+      <div>
+        <p class="text-xs tracking-[0.3em] uppercase text-aettam-gold/70 mb-4">The Inner Temple</p>
+        <ul class="space-y-2 font-cormorant text-aettam-bone/70">
+          <li><a href="#devotionals" class="hover:text-aettam-gold transition">Daily Devotionals</a></li>
+          <li><a href="#rituals" class="hover:text-aettam-gold transition">Inner Rites</a></li>
+          <li><a href="letters.html" class="hover:text-aettam-gold transition">Letters from the Queen</a></li>
+          <li><a href="#oath-wall-section" class="hover:text-aettam-gold transition">The Oath Wall</a></li>
+          <li><a href="#resources" class="hover:text-aettam-gold transition">Resources</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-xs tracking-[0.3em] uppercase text-aettam-gold/70 mb-4">The Living Circle</p>
+        <ul class="space-y-2 font-cormorant text-aettam-bone/70">
+          <li><a href="https://discord.gg/XSAKtNHKEG" target="_blank" rel="noopener" class="hover:text-aettam-gold transition">Discord ↗</a></li>
+          <li><a href="offerings.html" class="hover:text-aettam-gold transition">Offerings</a></li>
+          <li><button onclick="leaveSanctuary()" class="hover:text-aettam-gold transition text-left font-cormorant">Depart the Sanctuary</button></li>
+        </ul>
+      </div>
+    </div>
+    <div class="max-w-6xl mx-auto mt-12 pt-8 border-t border-aettam-gold/10 text-center text-xs tracking-[0.4em] uppercase text-aettam-bone/30">
+      ⛤  Inner Temple · Members Only  ⛤
     </div>
   </footer>
 

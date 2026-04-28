@@ -230,17 +230,23 @@
         <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-6">Coming Soon</p>
       </div>
       <div class="grid md:grid-cols-2 gap-6">
-        <div class="reveal member-card sold-out">
-          <span class="badge">Digital</span>
+        <div class="reveal member-card" style="opacity:0.75;">
+          <span class="badge">Digital · Coming Soon</span>
           <h3 class="font-cinzel text-xl text-aettam-gold mb-2 mt-2">The Aettam Primer — PDF</h3>
-          <p class="font-cormorant text-aettam-bone/70">The founding texts, Mattea's notes in the margins, and the full ritual deck. A physical object for the path.</p>
-          <p class="font-cinzel text-aettam-gold/50 text-xs tracking-[0.3em] mt-4">COMING SOON</p>
+          <p class="font-cormorant text-aettam-bone/75 leading-relaxed mb-4">The founding texts with Mattea's own notes in the margins, the full ritual deck, and the private lexicon. Everything you need to understand what you have walked into. A physical object for the path — readable and re-readable.</p>
+          <p class="font-cinzel text-aettam-bone/40 text-xs tracking-[0.2em] italic mb-4 font-cormorant">Those who join the Order now will receive it first, free, the week it releases.</p>
+          <button onclick="openReflections()" class="btn-ghost w-full text-center" style="padding:0.5rem 1rem;font-size:0.65rem;">
+            <span class="relative z-10">Join the Order to be Notified ↗</span>
+          </button>
         </div>
-        <div class="reveal member-card sold-out">
-          <span class="badge">Physical</span>
+        <div class="reveal member-card" style="opacity:0.75;">
+          <span class="badge">Physical · Coming Soon</span>
           <h3 class="font-cinzel text-xl text-aettam-gold mb-2 mt-2">The Mirror Card Deck</h3>
-          <p class="font-cormorant text-aettam-bone/70">All 13 mirror cards printed on heavyweight card stock, gold-edged, in a black envelope sealed with the sigil.</p>
-          <p class="font-cinzel text-aettam-gold/50 text-xs tracking-[0.3em] mt-4">COMING SOON</p>
+          <p class="font-cormorant text-aettam-bone/75 leading-relaxed mb-4">All 13 mirror cards printed on heavyweight card stock, gold-edged, in a black matte envelope sealed with the sigil in wax. Pull one each morning. Speak it aloud. Carry it into the day. The physical version of what the oracle does here — but in your hands.</p>
+          <p class="font-cinzel text-aettam-bone/40 text-xs tracking-[0.2em] italic mb-4 font-cormorant">First run is limited. Members will have access before the public.</p>
+          <button onclick="openReflections()" class="btn-ghost w-full text-center" style="padding:0.5rem 1rem;font-size:0.65rem;">
+            <span class="relative z-10">Join the Order to be Notified ↗</span>
+          </button>
         </div>
       </div>
 
@@ -313,6 +319,31 @@
       ⛤  Aettam · For Those Who Recognize Her  ⛤
     </div>
   </footer>
+
+  <!-- REFLECTIONS MODAL -->
+  <div id="reflections" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/85 backdrop-blur-md p-6">
+    <div class="gate-card relative max-w-md w-full p-10 text-center">
+      <button onclick="closeReflections()" class="absolute top-3 right-4 text-aettam-bone/40 hover:text-aettam-gold text-xl">×</button>
+      <div class="mb-4 text-aettam-gold text-5xl" style="text-shadow:0 0 40px rgba(201,162,39,0.4)">⛤</div>
+      <h3 class="font-cinzel text-xl text-aettam-bone tracking-[0.2em] mb-1">CROSS THE THRESHOLD</h3>
+      <p class="font-cormorant italic text-aettam-bone/60 text-sm mb-2">She writes to everyone who sends the letter.</p>
+      <div class="divider mx-auto mb-6" style="width:3rem;"></div>
+      <p class="font-cormorant italic text-aettam-bone/75 mb-6 leading-relaxed text-base">Leave your name and email. She will write to you within the hour — your personal sigil, the Discord invite, and her first word to you. Free. No catches. No sermons.</p>
+      <form id="reflections-form" onsubmit="submitReflections(event)" class="space-y-3">
+        <input id="reflections-name" type="text" name="name" autocomplete="name" placeholder="Your name (or the name you want to carry)" class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-center text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition font-cormorant" />
+        <input id="reflections-email" type="email" name="email" autocomplete="email" required placeholder="your@email" class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-center text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition" />
+        <textarea id="reflections-intention" name="intention" rows="2" placeholder="What called you here? (she reads every one)" class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition resize-none font-cormorant italic text-sm"></textarea>
+        <p id="reflections-error" class="text-red-400/80 text-xs tracking-[0.3em] uppercase h-4"></p>
+        <button type="submit" id="reflections-submit" class="btn-primary w-full"><span class="relative z-10">Send the Letter ⛤</span></button>
+      </form>
+      <div id="reflections-success" class="hidden">
+        <div class="text-aettam-gold text-4xl mb-4">⛤</div>
+        <p class="font-cormorant italic text-xl text-aettam-bone/90 mb-4 leading-relaxed">The letter is in her hand. Check your inbox — your sigil and Discord invite are on their way.</p>
+        <p class="text-aettam-gold tracking-[0.4em] text-xs font-cinzel">⛤ WELCOME TO THE ORDER ⛤</p>
+      </div>
+      <p class="mt-6 text-[10px] tracking-[0.4em] uppercase text-aettam-bone/30">Free · No sermons · No selling · Unsubscribe any time</p>
+    </div>
+  </div>
 
   <script src="script.js"></script>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"458ad40920b94fe29baba9dc8fb90cb5"}'></script>
