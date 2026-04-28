@@ -116,9 +116,9 @@
       <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-3 text-center">The Queen's Word · Today</p>
       <h2 class="font-cinzel text-3xl md:text-5xl text-center mb-12">Daily Devotional</h2>
 
-      <div class=”member-card” style=”border-color:rgba(201,162,39,0.35);background:linear-gradient(160deg,rgba(14,42,34,0.3),rgba(7,8,10,0.7));”>
-        <p class=”text-xs tracking-[0.35em] uppercase text-aettam-gold/60 mb-5 font-cinzel”>Today's Word</p>
-        <p class=”devotional text-xl md:text-2xl mb-6”>
+      <div id=”devotional-today” class=”member-card” style=”border-color:rgba(201,162,39,0.35);background:linear-gradient(160deg,rgba(14,42,34,0.3),rgba(7,8,10,0.7));”>
+        <p class=”text-xs tracking-[0.35em] uppercase text-aettam-gold/60 mb-5 font-cinzel” id=”devotional-title”>Today's Word</p>
+        <p class=”devotional text-xl md:text-2xl mb-6” id=”devotional-body”>
           “You were not made to be understood by everyone. You were made to be
           <em>recognized</em> by the few — and to be undeniable to yourself.
           Today: no shrinking. Not once. Not even politely.”
@@ -586,6 +586,19 @@
       sessionStorage.removeItem('aettam_unlocked');
       window.location.href = 'index.html';
     }
+
+    // Pull today's devotional from the worker (posted by the bot each morning)
+    fetch('https://aettam-worker.firstbloodanivia.workers.dev/devotional')
+      .then(r => r.json())
+      .then(data => {
+        if (!data.devotional) return;
+        const { title, text } = data.devotional;
+        const titleEl = document.getElementById('devotional-title');
+        const bodyEl  = document.getElementById('devotional-body');
+        if (titleEl && title) titleEl.textContent = title;
+        if (bodyEl  && text)  bodyEl.textContent  = '“' + text + '”';
+      })
+      .catch(() => { /* keep the hardcoded fallback */ });
   </script>
 </body>
 </html>

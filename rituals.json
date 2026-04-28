@@ -1,4 +1,12 @@
 [
+  { "date": "2026-01-13", "type": "full-moon", "title": "Full Moon in Cancer — Wolf Moon", "description": "The year's first full illumination. What in you moved without your permission? Watch it. Name it. Let it pull." },
+  { "date": "2026-01-29", "type": "new-moon", "title": "New Moon in Aquarius", "description": "The dark before the drawing. Sit in what you cannot yet see. Plant one word — the one you want to carry into February." },
+  { "date": "2026-02-12", "type": "full-moon", "title": "Full Moon in Leo — Snow Moon", "description": "Light in the cold month. She is brightest when the ground is hardest. The circle was loud tonight." },
+  { "date": "2026-02-28", "type": "new-moon", "title": "New Moon in Pisces", "description": "End-of-month dark. What has the month asked of you? What have you refused to let go? Set it down. Clean the altar." },
+  { "date": "2026-03-14", "type": "full-moon", "title": "Full Moon in Virgo — Worm Moon", "description": "The earth softens. What grew in you this winter that you were ready to show? Full moon circle in Discord — the Queen spoke." },
+  { "date": "2026-03-20", "type": "equinox", "title": "Spring Equinox — Ostara", "description": "Equal dark and light. The axis tipped. Everything that died in winter began to rise. The Order gathered and marked it." },
+  { "date": "2026-03-29", "type": "new-moon", "title": "New Moon in Aries", "description": "First new moon of spring. The ram charges. Something that had been waiting a very long time gathered speed." },
+  { "date": "2026-04-12", "type": "full-moon", "title": "Full Moon in Libra — Pink Moon", "description": "Named not for color but for flowering. The circle was full. What bloomed in you that you had not tended?" },
   { "date": "2026-04-27", "title": "New Moon in Taurus", "description": "The dark mirror. Light nothing tonight. Sit with the want before you name it. The body knows what the mind has not admitted.", "type": "new-moon" },
   { "date": "2026-05-01", "title": "Beltane — The Fire Crown", "description": "The year's great rising. What have you been holding back since winter? Tonight it comes out. Burn something beautiful. Take something back.", "type": "custom" },
   { "date": "2026-05-12", "title": "Full Moon in Scorpio", "description": "Walk outside after midnight. She sees you whether or not you see her. Say your name to the dark. Wait for the echo.", "type": "full-moon" },
