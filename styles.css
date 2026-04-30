@@ -571,3 +571,110 @@ nav a:hover::after { width: 100%; left: 0; }
   opacity: 1;
   transform: translateY(0) scale(1);
 }
+
+/* ==========================================================
+   OFFERING CARD — 3D tilt + glint (mirrors ritual-card)
+   ========================================================== */
+.offering-card { will-change: transform; }
+.offering-card::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(108deg, transparent 38%, rgba(255,255,255,0.06) 50%, transparent 62%);
+  transform: translateX(-130%);
+  pointer-events: none;
+  transition: none;
+}
+.offering-card:hover::after {
+  transform: translateX(130%);
+  transition: transform 0.55s ease;
+}
+
+/* ==========================================================
+   WAX SEAL — letter card decorative disc
+   ========================================================== */
+.wax-seal {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 30%,
+    rgba(201,162,39,0.48) 0%,
+    rgba(140,90,15,0.30) 50%,
+    rgba(80,48,8,0.18) 100%);
+  border: 1px solid rgba(201,162,39,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1.2rem auto 0.2rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.4s ease,
+              box-shadow 0.4s ease;
+  box-shadow: 0 0 22px rgba(201,162,39,0.18), inset 0 1px 0 rgba(255,255,255,0.1),
+              inset 0 -2px 5px rgba(0,0,0,0.4);
+  animation: wax-seal-breathe 4.5s ease-in-out infinite;
+}
+.wax-seal::before {
+  content: "";
+  position: absolute;
+  top: 8%; left: 12%; width: 42%; height: 36%;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.09);
+  pointer-events: none;
+}
+.wax-seal-inner {
+  font-size: 1.45rem;
+  color: rgba(201,162,39,0.92);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.55), 0 0 10px rgba(201,162,39,0.45);
+  position: relative; z-index: 1;
+}
+.letter-card.expanded .wax-seal {
+  transform: scale(0.05) rotate(200deg);
+  opacity: 0;
+  pointer-events: none;
+}
+@keyframes wax-seal-breathe {
+  0%, 100% { box-shadow: 0 0 22px rgba(201,162,39,0.18), inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -2px 5px rgba(0,0,0,0.4); }
+  50%       { box-shadow: 0 0 38px rgba(201,162,39,0.35), 0 0 14px rgba(201,162,39,0.12), inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -2px 5px rgba(0,0,0,0.4); }
+}
+
+/* ==========================================================
+   EVENTS CALENDAR — enhanced event rows
+   ========================================================== */
+.event-row { position: relative; }
+.event-row:not(.is-past):hover { background: rgba(201,162,39,0.03); }
+.event-row.is-next {
+  background: linear-gradient(90deg, rgba(201,162,39,0.07) 0%, transparent 70%);
+}
+.event-row.is-next::before {
+  content: "";
+  position: absolute; left: -1.5rem; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(to bottom, transparent, var(--aettam-gold), transparent);
+  box-shadow: 0 0 10px rgba(201,162,39,0.55);
+}
+
+/* ==========================================================
+   LETTER DROP CAP — larger + glow
+   ========================================================== */
+.drop-cap::first-letter {
+  font-family: 'Cinzel', serif !important;
+  font-size: 5.5rem !important;
+  float: left;
+  line-height: 0.82 !important;
+  margin-right: 0.1em !important;
+  margin-top: 0.06em !important;
+  color: rgba(201,162,39,1) !important;
+  text-shadow: 0 0 30px rgba(201,162,39,0.5), 0 0 8px rgba(201,162,39,0.25) !important;
+}
+
+/* ==========================================================
+   MOBILE — tighten visual effects on small screens
+   ========================================================== */
+@media (max-width: 640px) {
+  .halo { width: 95vmin; height: 95vmin; }
+  .wax-seal { width: 48px; height: 48px; }
+  .wax-seal-inner { font-size: 1.25rem; }
+  .drop-cap::first-letter { font-size: 4rem !important; }
+  .offering-card { padding: 1.75rem 1.25rem; }
+  .event-row { grid-template-columns: 5.5rem 1fr; gap: 1rem; }
+}

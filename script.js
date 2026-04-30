@@ -744,7 +744,7 @@ function initPageCurtain() {
 function initCardTilt() {
   if (!window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
   if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
-  document.querySelectorAll('.ritual-card').forEach(card => {
+  document.querySelectorAll('.ritual-card, .offering-card').forEach(card => {
     card.addEventListener('mousemove', e => {
       const rect = card.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width  - 0.5;
@@ -766,6 +766,7 @@ function initCardTilt() {
    ========================================================== */
 function initAmbientSigils() {
   if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  if (window.matchMedia('(pointer:coarse)').matches) return; // desktop only — prevents "following ghost" on mobile
   const CHARS = ['⛤', '☽', '✶', '☾', '⚜', '♆'];
   const wrap  = document.createElement('div');
   wrap.setAttribute('aria-hidden', 'true');
@@ -914,6 +915,78 @@ function _countUp(el, target, duration) {
   })();
 }
 
+/* ==========================================================
+   PARALLAX HALO
+   Hero halo wrapper drifts opposite scroll direction for depth.
+   ========================================================== */
+function initParallaxHalo() {
+  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  if (window.matchMedia('(pointer:coarse)').matches) return;
+  const wrappers = Array.from(document.querySelectorAll('.halo')).map(h => h.parentElement);
+  if (!wrappers.length) return;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    wrappers.forEach(w => {
+      w.style.transform = `translateY(${y * -0.14}px)`;
+    });
+  }, { passive: true });
+}
+
+/* ==========================================================
+   GATE TYPING INDICATOR
+   Three animated dots appear below the password input while typing.
+   ========================================================== */
+function initGateTypingIndicator() {
+  const input = document.getElementById('gate-input');
+  if (!input) return;
+  const dots = document.createElement('div');
+  dots.setAttribute('aria-hidden', 'true');
+  dots.style.cssText = 'display:flex;justify-content:center;gap:5px;height:14px;margin-top:6px;' +
+    'opacity:0;transition:opacity 0.3s ease;pointer-events:none;';
+  for (let i = 0; i < 3; i++) {
+    const d = document.createElement('span');
+    d.style.cssText = `width:4px;height:4px;border-radius:50%;background:rgba(201,162,39,0.65);` +
+      `display:inline-block;animation:typing-dot 1.1s ease-in-out ${i * 0.18}s infinite;`;
+    dots.appendChild(d);
+  }
+  input.parentNode.insertBefore(dots, input.nextSibling);
+  input.addEventListener('input', () => {
+    dots.style.opacity = input.value.length > 0 ? '1' : '0';
+  });
+}
+
+/* ==========================================================
+   LETTER CARD WAX SEALS
+   Inject a decorative wax-seal disc into each letter card.
+   CSS handles show/hide based on .expanded state.
+   ========================================================== */
+function initLetterCards() {
+  document.querySelectorAll('.letter-card.open-letter').forEach(card => {
+    const seal = document.createElement('div');
+    seal.className = 'wax-seal';
+    seal.setAttribute('aria-hidden', 'true');
+    seal.innerHTML = '<span class="wax-seal-inner">⛤</span>';
+    const toggle = card.querySelector('.read-toggle');
+    if (toggle) card.insertBefore(seal, toggle);
+  });
+  // 3D tilt on letter cards too
+  if (!window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  document.querySelectorAll('.letter-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width  - 0.5;
+      const y = (e.clientY - rect.top)  / rect.height - 0.5;
+      card.style.transition = 'transform 0.1s ease, border-color 0.6s ease';
+      card.style.transform = `perspective(900px) rotateX(${-y * 4}deg) rotateY(${x * 4}deg) translateY(-4px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transition = 'transform 0.65s ease, border-color 0.6s ease';
+      card.style.transform = '';
+    });
+  });
+}
+
 /* ----------  Boot  ---------- */
 document.addEventListener('DOMContentLoaded', () => {
   initReveal();
@@ -932,6 +1005,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initRipple();
   initHeroShimmer();
   initCardTilt();
+  initParallaxHalo();
+  initGateTypingIndicator();
+  initLetterCards();
   initSoulCounter();
   if (document.getElementById('ritual-calendar'))   initRitualCalendar();
   if (document.getElementById('members-grid'))      initMembersDirectory();
@@ -950,5 +1026,9 @@ _styleTag.textContent = `
   80% { transform: translateX(4px); }
 }
 .animate-shake { animation: shake 0.45s ease; border-color: rgba(248, 113, 113, 0.7) !important; }
+@keyframes typing-dot {
+  0%, 60%, 100% { transform: translateY(0) scale(1);   opacity: 0.35; }
+  30%            { transform: translateY(-4px) scale(1.2); opacity: 1;    }
+}
 `;
 document.head.appendChild(_styleTag);

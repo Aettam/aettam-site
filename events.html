@@ -23,15 +23,16 @@
       grid-template-columns: 7rem 1fr;
       gap: 1.5rem;
       align-items: start;
-      padding: 1.5rem 0;
+      padding: 1.5rem 0.5rem;
       border-bottom: 1px solid rgba(201,162,39,0.1);
-      transition: all 0.4s ease;
+      transition: background 0.4s ease, padding-left 0.35s ease;
+      border-radius: 2px;
     }
     .event-row:last-child { border-bottom: none; }
-    .event-row.is-next { border-color: rgba(201,162,39,0.4); }
-    .event-row.is-past { opacity: 0.38; }
+    .event-row.is-next { border-color: rgba(201,162,39,0.35); }
+    .event-row.is-past { opacity: 0.35; pointer-events: none; }
     .event-date-block { text-align: right; padding-right: 1.5rem; border-right: 1px solid rgba(201,162,39,0.18); }
-    .event-row.is-next .event-date-block { border-color: rgba(201,162,39,0.6); }
+    .event-row.is-next .event-date-block { border-color: rgba(201,162,39,0.7); }
     .next-badge {
       display: inline-block;
       font-family: 'Cinzel', serif;
