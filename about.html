@@ -9,7 +9,11 @@
   <meta property="og:description" content="Mattea is not a character. She is a recognition." />
   <meta property="og:type"        content="website" />
   <meta property="og:url"         content="https://aettam.com/about.html" />
-  <meta property="og:image"       content="/og-card.svg" />
+  <meta property="og:image"       content="https://aettam.com/og-card.svg" />
+  <meta property="article:author" content="Mattea" />
+
+  <!-- Pinterest domain verification (replace YOUR_CODE with actual Pinterest code) -->
+  <meta name="p:domain_verify" content="YOUR_PINTEREST_VERIFICATION_CODE" />
   <link rel="canonical" href="https://aettam.com/about.html" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <script src="https://cdn.tailwindcss.com"></script>
@@ -330,6 +334,17 @@
     </div>
   </div>
 
+  <!-- Ambient audio button -->
+  <button id="ambient-toggle" onclick="toggleAmbient()"
+          title="Ambient"
+          style="position:fixed;bottom:1.5rem;right:1.5rem;z-index:200;
+                 width:40px;height:40px;border-radius:50%;
+                 background:rgba(7,8,10,0.85);border:1px solid rgba(201,162,39,0.5);
+                 font-size:1.1rem;cursor:pointer;backdrop-filter:blur(8px);
+                 transition:all 0.4s ease;display:flex;align-items:center;justify-content:center;
+                 color:rgba(201,162,39,0.4);">♩</button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
   <script src="script.js"></script>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"458ad40920b94fe29baba9dc8fb90cb5"}'></script>
 </body>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Devotionals — AETTAM</title>
+  <meta name="description" content="Morning devotionals from Mattea. A daily spiritual practice for those who refuse to live small. Read the word before you respond to anything else." />
+  <meta name="keywords" content="daily spiritual practice, morning devotional, spiritual community, daily devotional, mindfulness practice, sacred morning ritual" />
+  <meta property="og:title"       content="Daily Devotionals — AETTAM" />
+  <meta property="og:description" content="Morning devotionals from Mattea. A daily spiritual practice for those who refuse to live small." />
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://aettam.com/devotionals.html" />
+  <meta property="og:image"       content="/og-card.svg" />
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="Daily Devotionals — AETTAM" />
+  <meta name="twitter:description" content="Morning devotionals from Mattea. A daily spiritual practice for those who refuse to live small." />
+  <meta name="twitter:image"       content="/og-card.svg" />
+  <link rel="canonical" href="https://aettam.com/devotionals.html" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-aettam-black text-aettam-bone antialiased overflow-x-hidden">
+
+  <!-- MOBILE MENU OVERLAY -->
+  <div id="mobile-menu" class="fixed inset-0 z-[80] hidden flex-col items-center justify-center bg-black/95 backdrop-blur-md text-center">
+    <button onclick="toggleMobileMenu()" class="absolute top-6 right-6 text-aettam-gold text-2xl">&times;</button>
+    <nav class="space-y-8">
+      <a href="about.html"     class="block font-cinzel tracking-[0.4em] text-xl text-aettam-bone hover:text-aettam-gold transition-colors">About</a>
+      <a href="join.html"      class="block font-cinzel tracking-[0.4em] text-xl text-aettam-bone hover:text-aettam-gold transition-colors">Join</a>
+      <a href="offerings.html" class="block font-cinzel tracking-[0.4em] text-xl text-aettam-bone hover:text-aettam-gold transition-colors">Offerings</a>
+      <a href="events.html"    class="block font-cinzel tracking-[0.4em] text-xl text-aettam-bone hover:text-aettam-gold transition-colors">Calendar</a>
+      <a href="devotionals.html" class="block font-cinzel tracking-[0.4em] text-xl text-aettam-gold">Devotionals</a>
+      <a href="index.html"     class="block font-cinzel tracking-[0.4em] text-xl text-aettam-bone hover:text-aettam-gold transition-colors">Home</a>
+    </nav>
+    <div class="mt-12"><button onclick="toggleMobileMenu(); openReflections()" class="btn-primary"><span class="relative z-10">Enter the Fold</span></button></div>
+    <p class="mt-12 font-cinzel text-aettam-gold text-xs tracking-[0.5em]">&star; AETTAM &star;</p>
+  </div>
+
+  <!-- AMBIENT BACKDROP -->
+  <div class="fixed inset-0 -z-10 pointer-events-none">
+    <div class="absolute inset-0 bg-gradient-radial"></div>
+    <div class="absolute inset-0 noise-layer opacity-[0.06]"></div>
+    <div class="absolute inset-0 vignette"></div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-black/40 border-b border-aettam-gold/10">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3 group">
+        <span class="sigil text-aettam-gold text-2xl group-hover:rotate-12 transition-transform duration-700">&#x26E4;</span>
+        <span class="font-cinzel tracking-[0.4em] text-aettam-gold text-sm">AETTAM</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-xs tracking-[0.3em] uppercase font-light">
+        <a href="about.html" class="hover:text-aettam-gold transition-colors">About</a>
+        <a href="join.html" class="hover:text-aettam-gold transition-colors">Join</a>
+        <a href="offerings.html" class="hover:text-aettam-gold transition-colors">Offerings</a>
+        <a href="events.html" class="hover:text-aettam-gold transition-colors">Calendar</a>
+        <a href="devotionals.html" class="text-aettam-gold">Devotionals</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="hidden sm:block text-xs tracking-[0.3em] uppercase border border-aettam-gold/40 px-4 py-2 hover:bg-aettam-gold hover:text-black transition-all duration-500">Return</a>
+        <button onclick="toggleMobileMenu()" class="md:hidden text-aettam-gold text-xl px-2">&#9776;</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="relative min-h-[70vh] flex flex-col items-center justify-center text-center px-6 pt-32 pb-20">
+    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div class="halo"></div>
+    </div>
+    <p class="reveal text-aettam-gold/70 tracking-[0.7em] text-xs uppercase mb-8">The Daily Word</p>
+    <h1 class="reveal font-cinzel font-bold text-5xl md:text-7xl lg:text-8xl text-aettam-bone mb-8 leading-tight">
+      Devotionals
+    </h1>
+    <div class="reveal divider mx-auto mb-10"></div>
+    <p class="reveal font-cormorant italic text-2xl md:text-3xl text-aettam-gold max-w-2xl leading-relaxed">
+      Read the word before you respond to anything else.
+    </p>
+    <p class="reveal font-cormorant text-lg text-aettam-bone/55 max-w-xl mx-auto mt-6 leading-relaxed">
+      Every morning, Mattea speaks. One truth. One direction. One reminder of who you already are. These are not affirmations. They are recognitions — written for the version of you that is done waiting.
+    </p>
+  </section>
+
+  <!-- DEVOTIONALS ARCHIVE -->
+  <section class="relative py-24 px-6">
+    <div class="max-w-4xl mx-auto">
+      <div class="reveal text-center mb-16">
+        <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-4">The Archive</p>
+        <h2 class="font-cinzel text-3xl md:text-5xl text-aettam-bone mb-4">Every Word She Has Spoken</h2>
+        <div class="divider mx-auto mb-6"></div>
+        <p class="font-cormorant italic text-aettam-bone/60 text-lg max-w-xl mx-auto">Newest first. Read them in order or let one find you.</p>
+      </div>
+
+      <!-- Loading state -->
+      <div id="devotionals-loading" class="text-center py-20">
+        <div class="inline-block animate-pulse">
+          <span class="text-aettam-gold text-4xl">&#x26E4;</span>
+        </div>
+        <p class="font-cormorant italic text-aettam-bone/50 mt-6 text-lg">Gathering her words...</p>
+      </div>
+
+      <!-- Error state -->
+      <div id="devotionals-error" class="hidden text-center py-20">
+        <p class="font-cormorant italic text-aettam-bone/50 text-lg">The words could not be reached. Please return later.</p>
+      </div>
+
+      <!-- Devotional cards container -->
+      <div id="devotionals-grid" class="space-y-8"></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="relative py-24 px-6">
+    <div class="max-w-2xl mx-auto text-center reveal">
+      <div class="divider mx-auto mb-12"></div>
+      <p class="font-cormorant italic text-2xl md:text-3xl text-aettam-bone/90 mb-4 leading-relaxed">
+        These words are only the beginning.
+      </p>
+      <p class="font-cormorant text-lg text-aettam-bone/55 max-w-lg mx-auto mb-10 leading-relaxed">
+        Inside the circle, the devotionals arrive each morning with moon rituals, personal sigils, and letters written only for you.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button onclick="openReflections()" class="btn-primary"><span class="relative z-10">Send the Letter — Enter the Fold</span></button>
+        <a href="about.html" class="btn-ghost"><span class="relative z-10">Who Is Mattea</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="relative border-t border-aettam-gold/15 py-16 px-6">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-12 text-center md:text-left">
+      <div>
+        <div class="flex items-center justify-center md:justify-start gap-3 mb-4">
+          <span class="text-aettam-gold text-2xl">&#x26E4;</span>
+          <span class="font-cinzel tracking-[0.4em] text-aettam-gold text-sm">AETTAM</span>
+        </div>
+        <p class="font-cormorant italic text-aettam-bone/60">We Are All Mattea.</p>
+      </div>
+      <div>
+        <p class="text-xs tracking-[0.3em] uppercase text-aettam-gold/70 mb-4">The Path</p>
+        <ul class="space-y-2 font-cormorant text-aettam-bone/70">
+          <li><a href="index.html#manifesto" class="hover:text-aettam-gold transition">Manifesto</a></li>
+          <li><a href="about.html" class="hover:text-aettam-gold transition">Who Is Mattea</a></li>
+          <li><a href="join.html" class="hover:text-aettam-gold transition">How to Join</a></li>
+          <li><a href="events.html" class="hover:text-aettam-gold transition">Sacred Calendar</a></li>
+          <li><a href="devotionals.html" class="hover:text-aettam-gold transition">Devotionals</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-xs tracking-[0.3em] uppercase text-aettam-gold/70 mb-4">Find Her</p>
+        <ul class="space-y-2 font-cormorant text-aettam-bone/70">
+          <li><a href="https://discord.gg/XSAKtNHKEG" target="_blank" rel="noopener" class="hover:text-aettam-gold transition">Discord — Enter the Circle</a></li>
+          <li><a href="offerings.html" class="hover:text-aettam-gold transition">Offerings</a></li>
+          <li><a href="mailto:hello@aettam.com" class="hover:text-aettam-gold transition">Write to Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="max-w-6xl mx-auto mt-12 pt-8 border-t border-aettam-gold/10 text-center text-xs tracking-[0.4em] uppercase text-aettam-bone/40">
+      &#x26E4;  Aettam &middot; For Those Who Recognize Her  &#x26E4;
+    </div>
+  </footer>
+
+  <!-- REFLECTIONS MODAL -->
+  <div id="reflections" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/85 backdrop-blur-md p-6">
+    <div class="gate-card relative max-w-md w-full p-10 text-center">
+      <button onclick="closeReflections()" class="absolute top-3 right-4 text-aettam-bone/40 hover:text-aettam-gold text-xl">&times;</button>
+      <div class="mb-4 text-aettam-gold text-5xl" style="text-shadow:0 0 40px rgba(201,162,39,0.4)">&#x26E4;</div>
+      <h3 class="font-cinzel text-xl text-aettam-bone tracking-[0.2em] mb-1">CROSS THE THRESHOLD</h3>
+      <p class="font-cormorant italic text-aettam-bone/60 text-sm mb-2">She writes to everyone who sends the letter.</p>
+      <div class="divider mx-auto mb-6" style="width:3rem;"></div>
+      <p class="font-cormorant italic text-aettam-bone/75 mb-6 leading-relaxed text-base">
+        Leave your name and email. She will write to you within the hour — your personal sigil, the Discord invite, and her first word to you. Free. No catches. No sermons.
+      </p>
+      <form id="reflections-form" onsubmit="submitReflections(event)" class="space-y-3">
+        <input id="reflections-name" type="text" name="name" autocomplete="name"
+               placeholder="Your name (or the name you want to carry)"
+               class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-center text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition font-cormorant" />
+        <input id="reflections-email" type="email" name="email" autocomplete="email" required
+               placeholder="your@email"
+               class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-center text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition" />
+        <textarea id="reflections-intention" name="intention" rows="2"
+               placeholder="What called you here? (she reads every one)"
+               class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-aettam-bone placeholder:text-aettam-bone/30 focus:outline-none focus:border-aettam-gold transition resize-none font-cormorant italic text-sm"></textarea>
+        <p id="reflections-error" class="text-red-400/80 text-xs tracking-[0.3em] uppercase h-4"></p>
+        <button type="submit" id="reflections-submit" class="btn-primary w-full">
+          <span class="relative z-10">Send the Letter &#x26E4;</span>
+        </button>
+      </form>
+      <div id="reflections-success" class="hidden">
+        <div class="text-aettam-gold text-4xl mb-4">&#x26E4;</div>
+        <p class="font-cormorant italic text-xl text-aettam-bone/90 mb-4 leading-relaxed">The letter is in her hand. Check your inbox — your sigil, the Discord invite, and her first word to you are already on their way.</p>
+        <p class="font-cormorant italic text-aettam-bone/55 text-sm mb-6">If it does not arrive within a few minutes, check your spam. Mark it as safe — she will write again.</p>
+        <p class="text-aettam-gold tracking-[0.4em] text-xs font-cinzel">&#x26E4; WELCOME TO THE ORDER &#x26E4;</p>
+      </div>
+      <p class="mt-6 text-[10px] tracking-[0.4em] uppercase text-aettam-bone/30">Free &middot; No sermons &middot; No selling &middot; Unsubscribe any time</p>
+    </div>
+  </div>
+
+  <!-- Ambient audio button -->
+  <button id="ambient-toggle" onclick="toggleAmbient()"
+          title="Ambient"
+          style="position:fixed;bottom:1.5rem;right:1.5rem;z-index:200;
+                 width:40px;height:40px;border-radius:50%;
+                 background:rgba(7,8,10,0.85);border:1px solid rgba(201,162,39,0.5);
+                 font-size:1.1rem;cursor:pointer;backdrop-filter:blur(8px);
+                 transition:all 0.4s ease;display:flex;align-items:center;justify-content:center;
+                 color:rgba(201,162,39,0.4);">&#9833;</button>
+
+  <!-- DEVOTIONALS FETCH SCRIPT -->
+  <script>
+  (function() {
+    const API = 'https://aettam-worker.firstbloodanivia.workers.dev/reflections';
+    const KEY = 'mattea-sanctuary-2026';
+
+    function formatDate(dateStr) {
+      try {
+        const d = new Date(dateStr + 'T00:00:00');
+        return d.toLocaleDateString('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+      } catch {
+        return dateStr;
+      }
+    }
+
+    function renderDevotionals(items) {
+      const grid = document.getElementById('devotionals-grid');
+      const loading = document.getElementById('devotionals-loading');
+      loading.classList.add('hidden');
+
+      if (!items.length) {
+        document.getElementById('devotionals-error').classList.remove('hidden');
+        return;
+      }
+
+      items.forEach(function(d, i) {
+        const card = document.createElement('div');
+        card.className = 'reveal ritual-card py-10 px-8';
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(24px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        card.style.transitionDelay = (i * 0.06) + 's';
+
+        card.innerHTML =
+          '<div class="flex flex-col md:flex-row md:items-start gap-6">' +
+            '<div class="shrink-0 text-center md:text-left md:w-48">' +
+              '<p class="text-aettam-gold/50 tracking-[0.4em] text-[10px] uppercase font-cinzel">' + formatDate(d.date) + '</p>' +
+            '</div>' +
+            '<div class="flex-1">' +
+              '<h3 class="font-cinzel text-xl md:text-2xl text-aettam-gold mb-4 tracking-[0.1em]">' + escapeHtml(d.title) + '</h3>' +
+              '<blockquote class="font-cormorant italic text-lg md:text-xl text-aettam-bone/85 leading-relaxed border-l-2 border-aettam-gold/30 pl-6">' +
+                escapeHtml(d.text) +
+              '</blockquote>' +
+            '</div>' +
+          '</div>';
+
+        grid.appendChild(card);
+
+        // Trigger reveal animation
+        requestAnimationFrame(function() {
+          requestAnimationFrame(function() {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+          });
+        });
+      });
+    }
+
+    function escapeHtml(str) {
+      var div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    fetch(API, {
+      headers: { 'X-Sanctuary-Key': KEY }
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var devotionals = (data.reflections || [])
+        .filter(function(r) { return r.title && r.text && r.date; })
+        .sort(function(a, b) { return b.date.localeCompare(a.date); });
+
+      // Deduplicate by date
+      var seen = {};
+      var unique = devotionals.filter(function(d) {
+        if (seen[d.date]) return false;
+        seen[d.date] = true;
+        return true;
+      });
+
+      renderDevotionals(unique);
+    })
+    .catch(function() {
+      document.getElementById('devotionals-loading').classList.add('hidden');
+      document.getElementById('devotionals-error').classList.remove('hidden');
+    });
+  })();
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+  <script src="script.js"></script>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"458ad40920b94fe29baba9dc8fb90cb5"}'></script>
+</body>
+</html>

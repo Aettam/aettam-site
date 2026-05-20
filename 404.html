@@ -51,9 +51,35 @@
       <a href="/index.html" class="btn-primary">
         <span class="relative z-10">Return to Aettam</span>
       </a>
-      <a href="/private.html" class="btn-ghost">
+      <button onclick="openGate('sanctuary')" class="btn-ghost">
         <span class="relative z-10">Enter the Sanctuary</span>
-      </a>
+      </button>
+    </div>
+  </div>
+
+  <!-- GATE MODAL -->
+  <div id="gate" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/85 backdrop-blur-md p-6">
+    <div class="gate-card relative max-w-md w-full p-10 text-center">
+      <button onclick="closeGate()" class="absolute top-3 right-4 text-aettam-bone/40 hover:text-aettam-gold text-xl">×</button>
+      <div class="mb-4 text-aettam-gold" style="font-size:4rem;text-shadow:0 0 50px rgba(201,162,39,0.5)">⛤</div>
+      <h3 class="font-cinzel text-xl text-aettam-bone tracking-[0.25em] mb-1">THE SANCTUARY</h3>
+      <p class="font-cinzel text-[9px] tracking-[0.4em] uppercase text-aettam-gold/40 mb-5">Members Only · Inner Temple</p>
+      <div class="divider mx-auto mb-6" style="width:3rem;"></div>
+      <p class="font-cormorant italic text-aettam-bone/65 mb-8 leading-relaxed">
+        Speak the word. If you do not yet have the word — <a href="/join.html" class="text-aettam-gold hover:underline">send the letter first</a>.
+      </p>
+      <form onsubmit="tryEnter(event)" class="space-y-4">
+        <input id="gate-input" type="password" autocomplete="off"
+               placeholder="• • • • • • • • • •"
+               class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-center tracking-[0.5em] text-aettam-bone placeholder:text-aettam-bone/20 focus:outline-none focus:border-aettam-gold transition" />
+        <p id="gate-error" class="text-red-400/80 text-xs tracking-[0.3em] uppercase h-4"></p>
+        <button type="submit" class="btn-primary w-full">
+          <span class="relative z-10">Enter the Sanctuary</span>
+        </button>
+      </form>
+      <p class="mt-6 text-[10px] tracking-[0.4em] uppercase text-aettam-bone/25">
+        The password is shared in Discord after you join.
+      </p>
     </div>
   </div>
 
