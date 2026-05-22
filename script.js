@@ -24,7 +24,7 @@ const PRIVATE_PAGE       = "private.html";
 const REFLECTIONS_ENDPOINT = "https://aettam-worker.firstbloodanivia.workers.dev/reflect";
 // Sanctuary key must match the SANCTUARY_KEY worker secret (default: mattea-sanctuary-2026)
 const SANCTUARY_KEY = "mattea-sanctuary-2026";
-const MEMBERS_URL   = "https://146-190-119-77.sslip.io/aettam-members";
+const MEMBERS_URL   = "https://mattea.24-199-123-34.nip.io";
 
 /* ----------  Tailwind palette extension  ---------- */
 if (window.tailwind) {
@@ -234,9 +234,14 @@ async function submitReflections(e) {
   btn.querySelector('span').textContent = 'Send the Letter';
 }
 
-/* close on ESC */
+/* close on ESC + lightbox keyboard nav */
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') { closeGate(); closeReflections(); }
+  if (e.key === 'Escape') { closeGate(); closeReflections(); closeLightbox(); }
+  const lb = document.getElementById('gallery-lightbox');
+  if (lb && lb.classList.contains('flex')) {
+    if (e.key === 'ArrowLeft')  lightboxNav(-1);
+    if (e.key === 'ArrowRight') lightboxNav(1);
+  }
 });
 
 /* ----------  Daily Mirror Card  ---------- */
@@ -559,6 +564,139 @@ async function submitOath(e) {
     }
   } catch {}
   if (btn) { btn.disabled = false; btn.querySelector('span').textContent = 'Seal the Vow ⛤'; }
+}
+
+/* ----------  Sanctuary Content Feed  ---------- */
+async function initSanctuaryFeed() {
+  const container = document.getElementById('sanctuary-feed');
+  if (!container) return;
+  try {
+    const res = await fetch('/sanctuary-feed.json');
+    const data = await res.json();
+    const posts = data.posts || [];
+    if (!posts.length) {
+      container.innerHTML = '<p class="font-cormorant italic text-aettam-bone/40 text-center py-8">No transmissions yet.</p>';
+      return;
+    }
+    container.innerHTML = posts.map(post => {
+      const pinned = post.pinned ? '<span class="text-aettam-gold text-[9px] tracking-[0.4em] uppercase font-cinzel ml-2">⛤ Pinned</span>' : '';
+      const dateStr = new Date(post.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+      return `<div class="feed-card reveal${post.pinned ? ' feed-card-pinned' : ''}">
+        <div class="flex items-start gap-4">
+          <span class="text-2xl text-aettam-gold/70 mt-1 shrink-0" style="text-shadow:0 0 15px rgba(201,162,39,0.4)">${post.glyph || '⛤'}</span>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-1 flex-wrap mb-2">
+              <span class="font-cinzel text-aettam-gold text-sm tracking-[0.15em]">${post.title}</span>
+              ${pinned}
+            </div>
+            <p class="font-cormorant italic text-aettam-bone/85 text-lg leading-relaxed mb-3">${post.body}</p>
+            <div class="flex items-center gap-4 text-[10px] tracking-[0.3em] uppercase text-aettam-bone/35">
+              <span>${post.author}</span>
+              <span>&middot;</span>
+              <span>${dateStr}</span>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+    if (window._revealObserver) container.querySelectorAll('.reveal').forEach(el => window._revealObserver.observe(el));
+  } catch {
+    container.innerHTML = '<p class="font-cormorant italic text-aettam-bone/40 text-center py-8">The feed is quiet tonight.</p>';
+  }
+}
+
+/* ----------  Member Spotlight  ---------- */
+async function initMemberSpotlight() {
+  const container = document.getElementById('spotlight-card');
+  if (!container) return;
+  try {
+    const res = await fetch('/sanctuary-feed.json');
+    const data = await res.json();
+    const spotlights = data.spotlight || [];
+    if (!spotlights.length) return;
+    const idx = Math.floor(Date.now() / 86400000) % spotlights.length;
+    const m = spotlights[idx];
+    container.innerHTML = `
+      <div class="spotlight-card-inner text-center">
+        <div class="spotlight-sigil mb-6">${m.sigil}</div>
+        <h3 class="font-cinzel text-3xl text-aettam-gold tracking-[0.3em] mb-2">${m.name}</h3>
+        <p class="font-cinzel text-xs tracking-[0.4em] uppercase text-aettam-gold/50 mb-6">${m.title}</p>
+        <div class="divider mx-auto mb-6" style="width:4rem;"></div>
+        <p class="font-cormorant italic text-xl text-aettam-bone/90 leading-relaxed mb-8 max-w-lg mx-auto">&ldquo;${m.quote}&rdquo;</p>
+        <div class="flex items-center justify-center gap-6 text-[10px] tracking-[0.3em] uppercase text-aettam-bone/40">
+          <span>Joined ${m.joined}</span>
+          <span class="text-aettam-gold/60">⛤</span>
+          <span>${m.badge}</span>
+        </div>
+      </div>`;
+  } catch {
+    container.innerHTML = '<p class="font-cormorant italic text-aettam-bone/40 text-center py-8">The spotlight turns&hellip;</p>';
+  }
+}
+
+/* ----------  Exclusive Gallery  ---------- */
+let _galleryItems = [];
+let _lightboxIdx = 0;
+
+const _MOOD_COLORS = {
+  'forest': 'rgba(14,42,34,0.5)',
+  'violet': 'rgba(42,26,58,0.5)',
+  'gold':   'rgba(100,80,15,0.3)',
+  'blood':  'rgba(58,13,18,0.5)',
+  'black':  'rgba(7,8,10,0.8)'
+};
+
+async function initExclusiveGallery() {
+  const grid = document.getElementById('gallery-grid');
+  if (!grid) return;
+  try {
+    const res = await fetch('/sanctuary-feed.json');
+    const data = await res.json();
+    _galleryItems = data.gallery || [];
+    if (!_galleryItems.length) return;
+    grid.innerHTML = _galleryItems.map((item, i) => {
+      const bg = _MOOD_COLORS[item.mood] || _MOOD_COLORS.forest;
+      return `<div class="gallery-tile reveal" onclick="openLightbox(${i})" role="button" tabindex="0"
+        style="background:linear-gradient(160deg,${bg},rgba(7,8,10,0.9))">
+        <div class="gallery-tile-inner">
+          <span class="gallery-tile-glyph">${item.glyph}</span>
+          <p class="gallery-tile-title">${item.title}</p>
+          <p class="gallery-tile-caption">${item.caption}</p>
+        </div>
+      </div>`;
+    }).join('');
+    if (window._revealObserver) grid.querySelectorAll('.reveal').forEach(el => window._revealObserver.observe(el));
+  } catch {}
+}
+
+function openLightbox(idx) {
+  _lightboxIdx = idx;
+  const item = _galleryItems[idx];
+  if (!item) return;
+  const lb = document.getElementById('gallery-lightbox');
+  if (!lb) return;
+  const bg = _MOOD_COLORS[item.mood] || _MOOD_COLORS.forest;
+  document.getElementById('lightbox-image').innerHTML =
+    `<div class="lightbox-glyph-card" style="background:linear-gradient(160deg,${bg},rgba(7,8,10,0.95))">
+      <span style="font-size:6rem;color:rgba(201,162,39,0.85);text-shadow:0 0 60px rgba(201,162,39,0.6)">${item.glyph}</span>
+    </div>`;
+  document.getElementById('lightbox-title').textContent = item.title;
+  document.getElementById('lightbox-caption').textContent = item.caption;
+  lb.classList.remove('hidden');
+  lb.classList.add('flex');
+}
+
+function closeLightbox() {
+  const lb = document.getElementById('gallery-lightbox');
+  if (!lb) return;
+  lb.classList.add('hidden');
+  lb.classList.remove('flex');
+}
+
+function lightboxNav(dir) {
+  if (!_galleryItems.length) return;
+  _lightboxIdx = (_lightboxIdx + dir + _galleryItems.length) % _galleryItems.length;
+  openLightbox(_lightboxIdx);
 }
 
 /* ==========================================================
@@ -1013,6 +1151,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (document.getElementById('members-grid'))      initMembersDirectory();
   if (document.getElementById('reflections-feed'))  initReflectionsFeed();
   if (document.getElementById('oath-wall'))         initOathWall();
+  if (document.getElementById('sanctuary-feed'))    initSanctuaryFeed();
+  if (document.getElementById('spotlight-card'))    initMemberSpotlight();
+  if (document.getElementById('gallery-grid'))      initExclusiveGallery();
 });
 
 /* small shake animation injected so we don't need another file */

@@ -21,7 +21,7 @@ You're picking up the Aettam project — a mystical/spiritual community site (We
 ## Project layout
 
 ```
-D:\Claw empire\
+D:\Claw empire\naughty-alliance\
 ├── aettam-site\             ← static website
 │   ├── index.html           ← public landing
 │   ├── private.html         ← password-gated sanctuary
@@ -33,7 +33,7 @@ D:\Claw empire\
 │   ├── bot.js               ← discord.js + DeepSeek, "Mattea-the-Queen" persona
 │   ├── package.json
 │   └── .env                 ← DISCORD_TOKEN, DEEPSEEK_API_KEY (do not commit)
-└── CLAW_EMPIRE_CREDENTIALS.md  ← VPS SSH details (do not display, do not commit)
+└── aettam-worker\           ← Cloudflare Worker for reflections
 ```
 
 ---
@@ -56,13 +56,13 @@ D:\Claw empire\
 
 **Site changes:**
 ```bash
-cd "D:/Claw empire/aettam-site" && git add . && git commit -m "..." && git push
+cd "D:/Claw empire/naughty-alliance/aettam-site" && git add . && git commit -m "..." && git push
 ```
 Cloudflare auto-rebuilds in ~30s. Do not change the remote URL. Do not commit .env.
 
 **Bot changes:**
 ```bash
-scp -i ~/.ssh/claw_empire_do "D:/Claw empire/mattea-bot/bot.js" root@146.190.119.77:/opt/mattea-bot/bot.js
+scp -i ~/.ssh/claw_empire_do "D:/Claw empire/naughty-alliance/mattea-bot/bot.js" root@146.190.119.77:/opt/mattea-bot/bot.js
 ssh -i ~/.ssh/claw_empire_do root@146.190.119.77 'systemctl restart mattea-bot'
 ```
 
@@ -88,7 +88,7 @@ Replace Formspree with a Cloudflare Worker that:
 4. Logs to Cloudflare KV
 
 **Steps:**
-- Create `D:\Claw empire\aettam-worker\` with wrangler.toml, src/index.js, package.json. `npm install -D wrangler`.
+- Create `D:\Claw empire\naughty-alliance\aettam-worker\` with wrangler.toml, src/index.js, package.json. `npm install -D wrangler`.
 - Single endpoint `POST /reflect`. CORS allow-list `aettam-site.pages.dev`.
 - Bind KV namespace `REFLECTIONS_LOG`. Secrets: `RESEND_API_KEY`, `OWNER_EMAIL`, `DISCORD_INVITE_URL`.
 - Worker logic: validate, generate sigil from email (same hash as sigil generator in script.js), send 2 emails via Resend, log to KV, return `{ ok: true }`.

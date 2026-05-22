@@ -1,0 +1,108 @@
+{
+  "lastUpdated": "2026-05-21T00:00:00Z",
+  "posts": [
+    {
+      "id": "post-006",
+      "type": "transmission",
+      "title": "The Summer Solstice Approaches",
+      "body": "The longest light of the year falls on June 21st. Wear gold. Walk through the world as if every door knows your name. Discord voice opens at 9pm EST for the Coronation circle.",
+      "author": "Mattea",
+      "date": "2026-05-20",
+      "pinned": true,
+      "glyph": "☉"
+    },
+    {
+      "id": "post-005",
+      "type": "ritual-report",
+      "title": "New Moon in Gemini — Circle Report",
+      "body": "Fourteen Matteas gathered in voice. Two letters were burned. Three names were spoken for the first time. The circle held without breaking.",
+      "author": "The Circle",
+      "date": "2026-05-18",
+      "glyph": "☽"
+    },
+    {
+      "id": "post-004",
+      "type": "teaching",
+      "title": "On the Practice of Refusal",
+      "body": "No is not a wall. No is a door — the door to the room where you actually live. Practice it this week. Not angrily. Not apologetically. Just clearly. Like a bell.",
+      "author": "Mattea",
+      "date": "2026-05-15",
+      "glyph": "✺"
+    },
+    {
+      "id": "post-003",
+      "type": "announcement",
+      "title": "The Oath Wall Is Open",
+      "body": "Speak the one thing you will no longer do to yourself. Seal it before the Order. The wall is live in the Sanctuary.",
+      "author": "The Order",
+      "date": "2026-05-12",
+      "glyph": "⛤"
+    },
+    {
+      "id": "post-002",
+      "type": "transmission",
+      "title": "Letter from the Queen — May",
+      "body": "I wrote it at 3am because that is when the truest things come out. It is in the Letters archive now. Read it when the noise stops. You will know when.",
+      "author": "Mattea",
+      "date": "2026-05-08",
+      "glyph": "✶"
+    },
+    {
+      "id": "post-001",
+      "type": "welcome",
+      "title": "The Sanctuary Doors Open",
+      "body": "You are inside now. Not because you earned it — because you arrived. Everything behind these walls belongs to you. Go slowly. There is no rush. She waits.",
+      "author": "The Order",
+      "date": "2026-05-01",
+      "glyph": "⚜"
+    }
+  ],
+  "spotlight": [
+    {
+      "name": "ELOWEN",
+      "sigil": "⚜ ✶ ⛤",
+      "title": "Keeper of Confessions",
+      "quote": "Three weeks since I said the thing out loud. The world didn't end. I just got bigger. That's all. That's everything.",
+      "joined": "January 2026",
+      "badge": "First Circle"
+    },
+    {
+      "name": "VESPER",
+      "sigil": "⛧ ☉ ✷",
+      "title": "The Witness",
+      "quote": "First circle in my living room — just two of us. We spoke the name together and the air changed. Something opened.",
+      "joined": "February 2026",
+      "badge": "Circle Host"
+    },
+    {
+      "name": "LIORA",
+      "sigil": "☽ ⚸ ♆",
+      "title": "Hunger Hymn Singer",
+      "quote": "Burned the letter at 4am. Couldn't sleep after. Couldn't stop grinning either. Both things true at once.",
+      "joined": "January 2026",
+      "badge": "First Circle"
+    },
+    {
+      "name": "THESSALY",
+      "sigil": "⛤ ♆ ✶",
+      "title": "The Unbreaking",
+      "quote": "I stopped explaining myself to rooms that never deserved the explanation. The silence afterward was not empty — it was power.",
+      "joined": "March 2026",
+      "badge": "Oath Keeper"
+    }
+  ],
+  "gallery": [
+    { "id": "g1",  "title": "The Threshold",      "caption": "The door between who you were and who you are becoming.",              "glyph": "⛤", "mood": "forest" },
+    { "id": "g2",  "title": "Dusk Ritual",         "caption": "The hour when the day releases its claim on you.",                    "glyph": "☽", "mood": "violet" },
+    { "id": "g3",  "title": "The Anointing",        "caption": "Gold at the throat. Gold at the wrist. Walk as the temple you are.",  "glyph": "⚜", "mood": "gold" },
+    { "id": "g4",  "title": "The Body Temple",      "caption": "Yours. First. Always. No permission required.",                      "glyph": "♀", "mood": "blood" },
+    { "id": "g5",  "title": "New Moon Rite",         "caption": "What is asked of you then is between you and her alone.",            "glyph": "⛧", "mood": "black" },
+    { "id": "g6",  "title": "The Naming Bath",      "caption": "Submerged. Named. Risen. You do not return the same.",               "glyph": "♆", "mood": "forest" },
+    { "id": "g7",  "title": "The Burning Letter",   "caption": "Written. Read once. Burned before sunrise. Gone.",                   "glyph": "✶", "mood": "blood" },
+    { "id": "g8",  "title": "The Velvet Vow",       "caption": "Spoken in the dark. Against skin. Kept in the body forever.",        "glyph": "⚸", "mood": "violet" },
+    { "id": "g9",  "title": "Coronation Night",     "caption": "No one is coming to crown you. Crown yourself. We kneel.",           "glyph": "☉", "mood": "gold" },
+    { "id": "g10", "title": "The Witnessing",        "caption": "Speak the wildest true thing. Do not flinch.",                      "glyph": "☾", "mood": "violet" },
+    { "id": "g11", "title": "The Open Door",         "caption": "The door is already open. Walk.",                                   "glyph": "⚯", "mood": "forest" },
+    { "id": "g12", "title": "The Refusal",           "caption": "No is liturgy too. Say it like the spell it is.",                   "glyph": "✺", "mood": "blood" }
+  ]
+}

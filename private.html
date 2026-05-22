@@ -66,11 +66,13 @@
         <span class="font-cinzel tracking-[0.4em] text-aettam-gold text-sm">AETTAM · SANCTUARY</span>
       </a>
       <div class="hidden md:flex items-center gap-8 text-xs tracking-[0.3em] uppercase font-light">
-        <a href="#devotionals"  class="hover:text-aettam-gold">Devotionals</a>
-        <a href="#circle"       class="hover:text-aettam-gold">Circle</a>
-        <a href="#rituals"      class="hover:text-aettam-gold">Private Rites</a>
-        <a href="letters.html"  class="hover:text-aettam-gold">Letters</a>
-        <a href="#resources"    class="hover:text-aettam-gold">Resources</a>
+        <a href="#devotionals"    class="hover:text-aettam-gold">Devotionals</a>
+        <a href="#feed"           class="hover:text-aettam-gold">Feed</a>
+        <a href="#spotlight"      class="hover:text-aettam-gold">Spotlight</a>
+        <a href="#gallery"        class="hover:text-aettam-gold">Gallery</a>
+        <a href="#rites-calendar" class="hover:text-aettam-gold">Calendar</a>
+        <a href="#rituals"        class="hover:text-aettam-gold">Rites</a>
+        <a href="letters.html"   class="hover:text-aettam-gold">Letters</a>
       </div>
       <button onclick="leaveSanctuary()"
               class="text-xs tracking-[0.3em] uppercase border border-aettam-gold/40 px-4 py-2 hover:bg-aettam-gold hover:text-black transition-all duration-500">
@@ -172,6 +174,23 @@
     </div>
   </section>
 
+  <!-- ====================  CONTENT FEED  ==================== -->
+  <section id="feed" class="relative py-24 px-6 bg-gradient-to-b from-transparent via-aettam-blood/8 to-transparent">
+    <div class="max-w-2xl mx-auto">
+      <div class="reveal text-center mb-12">
+        <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-3">Transmissions</p>
+        <h2 class="font-cinzel text-3xl md:text-5xl">The Inner Feed</h2>
+        <div class="divider mx-auto mt-4"></div>
+        <p class="font-cormorant italic text-aettam-bone/60 text-lg mt-6">
+          Words, announcements, and dispatches from within the walls.
+        </p>
+      </div>
+      <div id="sanctuary-feed" class="space-y-4 reveal">
+        <p class="font-cormorant italic text-aettam-bone/40 text-center py-8">The feed is being gathered&hellip;</p>
+      </div>
+    </div>
+  </section>
+
   <!-- ====================  RITUAL CALENDAR (Task 16)  ==================== -->
   <section id="rites-calendar" class="relative py-24 px-6 bg-gradient-to-b from-transparent via-aettam-violet/10 to-transparent">
     <div class="max-w-3xl mx-auto">
@@ -206,6 +225,23 @@
       <p id="members-empty" class="hidden text-center font-cormorant italic text-aettam-bone/50 py-12 text-lg">
         The circle keeps no center because every center is holy.
       </p>
+    </div>
+  </section>
+
+  <!-- ====================  MEMBER SPOTLIGHT  ==================== -->
+  <section id="spotlight" class="relative py-24 px-6 bg-gradient-to-b from-transparent via-aettam-forest/12 to-transparent">
+    <div class="max-w-3xl mx-auto">
+      <div class="reveal text-center mb-12">
+        <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-3">Honored</p>
+        <h2 class="font-cinzel text-3xl md:text-5xl">Member Spotlight</h2>
+        <div class="divider mx-auto mt-4"></div>
+        <p class="font-cormorant italic text-aettam-bone/60 text-lg mt-6">
+          The circle turns. Each moon, one Mattea is named.
+        </p>
+      </div>
+      <div id="spotlight-card" class="reveal">
+        <p class="font-cormorant italic text-aettam-bone/40 text-center py-8">The spotlight turns&hellip;</p>
+      </div>
     </div>
   </section>
 
@@ -374,59 +410,34 @@
     </div>
   </section>
 
-  <!-- ====================  GALLERY  ==================== -->
+  <!-- ====================  EXCLUSIVE GALLERY  ==================== -->
   <section id="gallery" class="relative py-24 px-6">
     <div class="max-w-6xl mx-auto">
       <div class="reveal text-center mb-12">
-        <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-3">Sacred Images</p>
-        <h2 class="font-cinzel text-3xl md:text-5xl">Media Gallery</h2>
+        <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-3">Sacred Images &middot; Members Only</p>
+        <h2 class="font-cinzel text-3xl md:text-5xl">The Exclusive Gallery</h2>
         <div class="divider mx-auto mt-4"></div>
+        <p class="font-cormorant italic text-aettam-bone/60 text-lg mt-6">
+          What is seen here stays here. These images belong to the circle alone.
+        </p>
       </div>
-
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="aspect-square member-card flex flex-col items-center justify-center text-center gap-3 p-4">
-          <span class="text-4xl text-aettam-gold" style="text-shadow:0 0 20px rgba(201,162,39,0.5)">⛤</span>
-          <p class="font-cinzel text-aettam-bone text-xs tracking-[0.15em]">THE THRESHOLD</p>
-          <p class="font-cormorant italic text-aettam-bone/60 text-sm leading-snug">The door between who you were and who you are becoming.</p>
-        </div>
-        <div class="aspect-square member-card flex flex-col items-center justify-center text-center gap-3 p-4">
-          <span class="text-4xl text-aettam-gold" style="text-shadow:0 0 20px rgba(201,162,39,0.5)">☽</span>
-          <p class="font-cinzel text-aettam-bone text-xs tracking-[0.15em]">DUSK RITUAL</p>
-          <p class="font-cormorant italic text-aettam-bone/60 text-sm leading-snug">The hour when the day releases its claim on you.</p>
-        </div>
-        <div class="aspect-square member-card flex flex-col items-center justify-center text-center gap-3 p-4">
-          <span class="text-4xl text-aettam-gold" style="text-shadow:0 0 20px rgba(201,162,39,0.5)">⚜</span>
-          <p class="font-cinzel text-aettam-bone text-xs tracking-[0.15em]">THE ANOINTING</p>
-          <p class="font-cormorant italic text-aettam-bone/60 text-sm leading-snug">Gold at the throat. Gold at the wrist. Walk as the temple you are.</p>
-        </div>
-        <div class="aspect-square member-card flex flex-col items-center justify-center text-center gap-3 p-4">
-          <span class="text-4xl text-aettam-gold" style="text-shadow:0 0 20px rgba(201,162,39,0.5)">♀</span>
-          <p class="font-cinzel text-aettam-bone text-xs tracking-[0.15em]">THE BODY TEMPLE</p>
-          <p class="font-cormorant italic text-aettam-bone/60 text-sm leading-snug">Yours. First. Always. No permission required.</p>
-        </div>
-        <div class="aspect-square member-card flex flex-col items-center justify-center text-center gap-3 p-4">
-          <span class="text-4xl text-aettam-gold" style="text-shadow:0 0 20px rgba(201,162,39,0.5)">⛧</span>
-          <p class="font-cinzel text-aettam-bone text-xs tracking-[0.15em]">NEW MOON</p>
-          <p class="font-cormorant italic text-aettam-bone/60 text-sm leading-snug">What is asked of you then is between you and her alone.</p>
-        </div>
-        <div class="aspect-square member-card flex flex-col items-center justify-center text-center gap-3 p-4">
-          <span class="text-4xl text-aettam-gold" style="text-shadow:0 0 20px rgba(201,162,39,0.5)">♆</span>
-          <p class="font-cinzel text-aettam-bone text-xs tracking-[0.15em]">THE BATH</p>
-          <p class="font-cormorant italic text-aettam-bone/60 text-sm leading-snug">Submerged. Named. Risen. You do not return the same.</p>
-        </div>
-        <div class="aspect-square member-card flex flex-col items-center justify-center text-center gap-3 p-4">
-          <span class="text-4xl text-aettam-gold" style="text-shadow:0 0 20px rgba(201,162,39,0.5)">✶</span>
-          <p class="font-cinzel text-aettam-bone text-xs tracking-[0.15em]">THE LETTER</p>
-          <p class="font-cormorant italic text-aettam-bone/60 text-sm leading-snug">Written. Read once. Burned before sunrise. Gone.</p>
-        </div>
-        <div class="aspect-square member-card flex flex-col items-center justify-center text-center gap-3 p-4">
-          <span class="text-4xl text-aettam-gold" style="text-shadow:0 0 20px rgba(201,162,39,0.5)">⚸</span>
-          <p class="font-cinzel text-aettam-bone text-xs tracking-[0.15em]">THE VOW</p>
-          <p class="font-cormorant italic text-aettam-bone/60 text-sm leading-snug">Spoken in the dark. Against skin. Kept in the body forever.</p>
-        </div>
+      <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <!-- populated by JS from sanctuary-feed.json -->
       </div>
     </div>
   </section>
+
+  <!-- Gallery lightbox -->
+  <div id="gallery-lightbox" class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/92 backdrop-blur-lg p-6 cursor-pointer" onclick="if(event.target===this)closeLightbox()">
+    <button onclick="closeLightbox()" class="absolute top-6 right-6 text-aettam-gold/60 hover:text-aettam-gold text-3xl z-10 cursor-pointer">&times;</button>
+    <div class="max-w-3xl w-full text-center pointer-events-none">
+      <div id="lightbox-image" class="mx-auto mb-6"></div>
+      <p id="lightbox-title" class="font-cinzel text-aettam-gold text-lg tracking-[0.2em]"></p>
+      <p id="lightbox-caption" class="font-cormorant italic text-aettam-bone/70 text-lg mt-2"></p>
+    </div>
+    <button onclick="lightboxNav(-1)" class="absolute left-4 top-1/2 -translate-y-1/2 text-aettam-gold/40 hover:text-aettam-gold text-5xl cursor-pointer">&lsaquo;</button>
+    <button onclick="lightboxNav(1)" class="absolute right-4 top-1/2 -translate-y-1/2 text-aettam-gold/40 hover:text-aettam-gold text-5xl cursor-pointer">&rsaquo;</button>
+  </div>
 
   <!-- ====================  REFLECTIONS FEED (Task 20)  ==================== -->
   <section id="mirror-speaks" class="relative py-24 px-6">
@@ -555,10 +566,12 @@
         <p class="text-xs tracking-[0.3em] uppercase text-aettam-gold/70 mb-4">The Inner Temple</p>
         <ul class="space-y-2 font-cormorant text-aettam-bone/70">
           <li><a href="#devotionals" class="hover:text-aettam-gold transition">Daily Devotionals</a></li>
+          <li><a href="#feed" class="hover:text-aettam-gold transition">The Inner Feed</a></li>
+          <li><a href="#spotlight" class="hover:text-aettam-gold transition">Member Spotlight</a></li>
+          <li><a href="#gallery" class="hover:text-aettam-gold transition">Exclusive Gallery</a></li>
+          <li><a href="#rites-calendar" class="hover:text-aettam-gold transition">Rituals Calendar</a></li>
           <li><a href="#rituals" class="hover:text-aettam-gold transition">Inner Rites</a></li>
           <li><a href="letters.html" class="hover:text-aettam-gold transition">Letters from the Queen</a></li>
-          <li><a href="#oath-wall-section" class="hover:text-aettam-gold transition">The Oath Wall</a></li>
-          <li><a href="#resources" class="hover:text-aettam-gold transition">Resources</a></li>
         </ul>
       </div>
       <div>
