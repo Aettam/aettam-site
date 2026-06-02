@@ -1,7 +1,7 @@
 # TODO: AETTAM Community
 
-**Last audited:** 2026-05-24
-**Status:** All 3 projects live and active. aettam-worker has v2.0 overhaul (rate-limiting, admin auth, content/events API) uncommitted on master. aettam-site deployed Cloudflare Pages. mattea-bot v2.0.0 running as systemd service on VPS.
+**Last audited:** 2026-06-02
+**Status:** All 3 projects live and active. aettam-worker has v2.0 overhaul (rate-limiting, admin auth, content/events API) uncommitted on master. aettam-site deployed Cloudflare Pages. mattea-bot v2.0.0 running as systemd service on VPS. Sanctuary upgraded with content feed, member spotlight, exclusive gallery + lightbox, join page social proof + testimonials.
 **Path:** naughty-alliance/{aettam-site, aettam-worker, mattea-bot}
 
 ## 🚧 BOTTLENECKS — Need from Stockton
@@ -21,12 +21,8 @@
 
 ### aettam-site (Static HTML)
 - [ ] **Task 11** — Wire reflections form to aettam-worker endpoint (swap Formspree URL) — **M**
-- [ ] **Task 14** — Members directory in private.html (requires bot members.json export + Caddy proxy) — **L**
-- [ ] **Task 15** — Moon phase widget (client-side lunar calc, SVG glyph) — **S**
-- [ ] **Task 16** — Ritual calendar from rituals.json (12 months lunar/solar events) — **M**
-- [ ] **Task 19** — Animated sigil on load (SVG stroke-dasharray animation) — **S**
-- [ ] **Task 20** — /reflections archive viewer in sanctuary (Worker endpoint + feed UI) — **M**
 - [ ] **Task 21** — 404.html custom error page — **S**
+- [ ] **Populate sanctuary-feed.json via aettam-worker** — Worker /api/content endpoint should push updates to this file or serve it dynamically — **M**
 
 ### aettam-worker (Cloudflare Worker)
 - [ ] **Commit v2.0 overhaul** — src/index.js (606 lines, rate-limiting, admin auth, API endpoints) ready to deploy — **S**
@@ -43,6 +39,8 @@
 
 ## ✅ Recently shipped
 
+- **Sanctuary feed, spotlight, gallery upgrade (2026-06-02)** — sanctuary-feed.json data file; Inner Feed section (6 posts, pinned support); Member Spotlight (day-based rotation from 4 members); Exclusive Gallery (12 mood-colored glyph tiles + lightbox with arrow/ESC keyboard nav); join.html social proof bar (soul count, 365 devotionals, 13 rites) + 4 testimonial cards; hero copy upgraded; duplicate CSS cleaned up
+- **Tasks 14-16, 19-20 completed** — Members directory, moon phase widget, ritual calendar, animated sigil, reflections archive
 - aettam-site v1.0 — public landing + password-gated sanctuary (GitHub Pages, Cloudflare CDN)
 - aettam-worker initial `/reflect` + `/reflections` endpoints (2024, v1.0)
 - mattea-bot v2.0.0 with discord.js 14, DeepSeek AI, hierarchy roles, decorative badges
