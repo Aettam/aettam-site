@@ -656,7 +656,7 @@ async function initExclusiveGallery() {
     if (!_galleryItems.length) return;
     grid.innerHTML = _galleryItems.map((item, i) => {
       const bg = _MOOD_COLORS[item.mood] || _MOOD_COLORS.forest;
-      return `<div class="gallery-tile reveal" onclick="openLightbox(${i})" role="button" tabindex="0"
+      return `<div class="gallery-tile reveal" data-mood="${item.mood || 'forest'}" onclick="openLightbox(${i})" role="button" tabindex="0"
         style="background:linear-gradient(160deg,${bg},rgba(7,8,10,0.9))">
         <div class="gallery-tile-inner">
           <span class="gallery-tile-glyph">${item.glyph}</span>
@@ -1125,6 +1125,536 @@ function initLetterCards() {
   });
 }
 
+/* ==========================================================
+   SACRED GEOMETRY CANVAS
+   Rotating Flower of Life + Metatron's Cube overlay.
+   Fixed behind all content — felt more than seen.
+   ========================================================== */
+function initSacredGeometry() {
+  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  if (window.matchMedia('(pointer:coarse)').matches) return;
+
+  const canvas = document.createElement('canvas');
+  canvas.id = 'sacred-geometry-canvas';
+  canvas.setAttribute('aria-hidden', 'true');
+  document.body.prepend(canvas);
+
+  const ctx = canvas.getContext('2d');
+  let W, H, dpr;
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+  }
+  window.addEventListener('resize', resize, { passive: true });
+  resize();
+
+  function arc(x, y, r) { ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.stroke(); }
+
+  (function draw() {
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+
+    const t = Date.now() * 0.00004;
+    const cx = W / 2, cy = H / 2;
+    const r = Math.min(W, H) * 0.19;
+    const breath = 0.5 + Math.sin(Date.now() * 0.0003) * 0.35;
+
+    // Outer containment rings
+    ctx.strokeStyle = `rgba(201,162,39,${0.035 * breath})`;
+    ctx.lineWidth = 0.5;
+    arc(cx, cy, r * 2.8);
+    arc(cx, cy, r * 3.05);
+
+    // Flower of Life — clockwise
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(t);
+    ctx.strokeStyle = `rgba(201,162,39,${0.032 * breath})`;
+    ctx.lineWidth = 0.5;
+    arc(0, 0, r);
+    for (let i = 0; i < 6; i++) {
+      const a = (i / 6) * Math.PI * 2;
+      arc(Math.cos(a) * r, Math.sin(a) * r, r);
+    }
+    for (let i = 0; i < 6; i++) {
+      const a = (i / 6) * Math.PI * 2 + Math.PI / 6;
+      const d = r * 1.732;
+      arc(Math.cos(a) * d, Math.sin(a) * d, r);
+    }
+    ctx.restore();
+
+    // Metatron's Cube — counter-clockwise
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(-t * 1.4);
+    const mr = r * 0.52;
+    const pts = [{ x: 0, y: 0 }];
+    for (let i = 0; i < 6; i++) {
+      const a = (i / 6) * Math.PI * 2;
+      pts.push({ x: Math.cos(a) * mr, y: Math.sin(a) * mr });
+    }
+    for (let i = 0; i < 6; i++) {
+      const a = (i / 6) * Math.PI * 2 + Math.PI / 6;
+      pts.push({ x: Math.cos(a) * mr * 1.732, y: Math.sin(a) * mr * 1.732 });
+    }
+    ctx.strokeStyle = `rgba(201,162,39,${0.02 * breath})`;
+    ctx.lineWidth = 0.3;
+    for (let i = 0; i < pts.length; i++) {
+      for (let j = i + 1; j < pts.length; j++) {
+        ctx.beginPath();
+        ctx.moveTo(pts[i].x, pts[i].y);
+        ctx.lineTo(pts[j].x, pts[j].y);
+        ctx.stroke();
+      }
+    }
+    ctx.strokeStyle = `rgba(201,162,39,${0.04 * breath})`;
+    for (const p of pts) arc(p.x, p.y, mr * 0.07);
+    ctx.restore();
+
+    // Inner pulsing ring
+    const pulseR = r * 0.35 + Math.sin(Date.now() * 0.001) * r * 0.03;
+    ctx.strokeStyle = `rgba(201,162,39,${0.05 * breath})`;
+    ctx.lineWidth = 0.4;
+    arc(cx, cy, pulseR);
+
+    requestAnimationFrame(draw);
+  })();
+}
+
+/* ==========================================================
+   GOLDEN ORBS — floating warm light sources
+   ========================================================== */
+function initGoldenOrbs() {
+  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  if (window.matchMedia('(pointer:coarse)').matches) return;
+
+  const wrap = document.createElement('div');
+  wrap.className = 'golden-orb-wrap';
+  wrap.setAttribute('aria-hidden', 'true');
+  document.body.prepend(wrap);
+
+  const ORBS = [
+    { x: '15%', y: '20%', size: 220, anim: 'orb-float-1', dur: 28 },
+    { x: '75%', y: '35%', size: 180, anim: 'orb-float-2', dur: 34 },
+    { x: '50%', y: '65%', size: 260, anim: 'orb-float-3', dur: 40 },
+    { x: '25%', y: '80%', size: 160, anim: 'orb-float-2', dur: 32 },
+    { x: '85%', y: '70%', size: 200, anim: 'orb-float-1', dur: 36 },
+  ];
+
+  ORBS.forEach((o, i) => {
+    const el = document.createElement('div');
+    el.className = 'golden-orb';
+    el.style.cssText =
+      `left:${o.x};top:${o.y};width:${o.size}px;height:${o.size}px;` +
+      `animation:${o.anim} ${o.dur}s ease-in-out ${-i * 5}s infinite;`;
+    wrap.appendChild(el);
+  });
+}
+
+/* ==========================================================
+   SHOOTING STARS — occasional golden streaks
+   ========================================================== */
+function initShootingStars() {
+  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+
+  function spawn() {
+    const el = document.createElement('div');
+    el.className = 'shooting-star';
+    el.style.left = (10 + Math.random() * 60) + '%';
+    el.style.top  = (5 + Math.random() * 30) + '%';
+    el.style.transform = `rotate(${25 + Math.random() * 20}deg)`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1600);
+  }
+
+  (function scheduleNext() {
+    setTimeout(() => { spawn(); scheduleNext(); }, 4000 + Math.random() * 6000);
+  })();
+}
+
+/* ==========================================================
+   INCENSE SMOKE — drifting wisps rising through the page
+   ========================================================== */
+function initIncenseSmoke() {
+  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  if (window.matchMedia('(pointer:coarse)').matches) return;
+
+  const wrap = document.createElement('div');
+  wrap.className = 'smoke-wrap';
+  wrap.setAttribute('aria-hidden', 'true');
+  document.body.prepend(wrap);
+
+  const ANIMS = ['smoke-rise-1', 'smoke-rise-2', 'smoke-rise-3'];
+
+  function spawnWisp() {
+    const el = document.createElement('div');
+    el.className = 'smoke-wisp';
+    const size = 200 + Math.random() * 300;
+    const dur = 18 + Math.random() * 14;
+    el.style.cssText =
+      `width:${size}px;height:${size * 1.4}px;` +
+      `left:${Math.random() * 100}%;bottom:-${size}px;` +
+      `animation:${ANIMS[Math.floor(Math.random() * ANIMS.length)]} ${dur}s ease-out forwards;`;
+    wrap.appendChild(el);
+    setTimeout(() => el.remove(), dur * 1000 + 100);
+  }
+
+  setInterval(spawnWisp, 3000);
+  for (let i = 0; i < 4; i++) setTimeout(spawnWisp, i * 800);
+}
+
+/* ==========================================================
+   SECTION VEILS — golden curtain dividers (sanctuary only)
+   ========================================================== */
+function initSectionVeils() {
+  if (!document.body.classList.contains('sanctuary-bg')) return;
+  const SIGILS = ['⛤', '☽', '✶', '⚜', '♆', '☉', '⛧', '☾'];
+  const sections = document.querySelectorAll('section');
+  let si = 0;
+  sections.forEach((sec, i) => {
+    if (i === 0) return;
+    if (sec.previousElementSibling && sec.previousElementSibling.tagName === 'SECTION') {
+      const veil = document.createElement('div');
+      veil.className = 'section-veil';
+      veil.setAttribute('aria-hidden', 'true');
+      veil.innerHTML = `<span class="veil-sigil">${SIGILS[si++ % SIGILS.length]}</span>`;
+      sec.parentNode.insertBefore(veil, sec);
+    }
+  });
+}
+
+/* ==========================================================
+   AURORA BOREALIS — ethereal colored light bands
+   ========================================================== */
+function initAurora() {
+  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  if (window.matchMedia('(pointer:coarse)').matches) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'aurora-wrap';
+  wrap.setAttribute('aria-hidden', 'true');
+  const BANDS = [
+    { color: 'rgba(201,162,39,0.07)', top: '5%',  left: '-10%', w: '65%', h: '160px', anim: 1, dur: 22 },
+    { color: 'rgba(100,40,140,0.05)', top: '20%', left: '25%',  w: '55%', h: '140px', anim: 2, dur: 30 },
+    { color: 'rgba(100,18,25,0.04)',  top: '10%', left: '45%',  w: '60%', h: '180px', anim: 1, dur: 26 },
+    { color: 'rgba(20,80,55,0.04)',   top: '28%', left: '5%',   w: '50%', h: '130px', anim: 2, dur: 34 },
+    { color: 'rgba(201,162,39,0.05)', top: '15%', left: '60%',  w: '45%', h: '150px', anim: 1, dur: 28 },
+  ];
+  BANDS.forEach((b, i) => {
+    const el = document.createElement('div');
+    el.className = 'aurora-band';
+    el.style.cssText = `top:${b.top};left:${b.left};width:${b.w};height:${b.h};` +
+      `background:${b.color};animation:aurora-drift-${b.anim} ${b.dur}s ease-in-out ${-i*4}s infinite;`;
+    wrap.appendChild(el);
+  });
+  document.body.prepend(wrap);
+}
+
+/* ==========================================================
+   GOLDEN RAIN — gentle falling gold drops
+   ========================================================== */
+function initGoldenRain() {
+  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  function drop() {
+    const el = document.createElement('div');
+    el.className = 'gold-drop';
+    const h = 12 + Math.random() * 22;
+    const dur = 4 + Math.random() * 5;
+    el.style.cssText = `left:${Math.random()*100}%;top:-30px;height:${h}px;` +
+      `animation-duration:${dur}s;opacity:${0.1 + Math.random()*0.2};`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), dur * 1000 + 200);
+  }
+  (function schedule() {
+    setTimeout(() => { drop(); schedule(); }, 250 + Math.random() * 150);
+  })();
+  for (let i = 0; i < 12; i++) setTimeout(drop, i * 200);
+}
+
+/* ==========================================================
+   CLICK RITUAL — sigil + sparks burst on click
+   ========================================================== */
+function initClickRitual() {
+  const GLYPHS = ['⛤','☽','✶','⚜','♀','⚸','♆','⛧','☉','☾','✷','⚯','✺'];
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('a,button,input,textarea,select,[onclick]')) return;
+    const g = document.createElement('span');
+    g.className = 'click-sigil';
+    g.textContent = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+    g.style.left = (e.clientX - 12) + 'px';
+    g.style.top = (e.clientY - 12) + 'px';
+    document.body.appendChild(g);
+    setTimeout(() => g.remove(), 900);
+    for (let i = 0; i < 7; i++) {
+      const s = document.createElement('div');
+      s.style.cssText = 'position:fixed;width:3px;height:3px;border-radius:50%;' +
+        'background:rgba(201,162,39,0.75);pointer-events:none;z-index:9998;' +
+        'box-shadow:0 0 6px rgba(201,162,39,0.5);' +
+        `left:${e.clientX}px;top:${e.clientY}px;transition:all 0.55s ease-out;`;
+      document.body.appendChild(s);
+      const a = (i / 7) * Math.PI * 2;
+      const d = 22 + Math.random() * 28;
+      requestAnimationFrame(() => {
+        s.style.left = (e.clientX + Math.cos(a) * d) + 'px';
+        s.style.top = (e.clientY + Math.sin(a) * d - 12) + 'px';
+        s.style.opacity = '0';
+        s.style.transform = 'scale(0.15)';
+      });
+      setTimeout(() => s.remove(), 600);
+    }
+  });
+}
+
+/* ==========================================================
+   CURSOR GOLDEN THREAD — trail of fading dots
+   ========================================================== */
+function initCursorThread() {
+  if (!window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  let lx = -99, ly = -99;
+  document.addEventListener('mousemove', (e) => {
+    const dx = e.clientX - lx, dy = e.clientY - ly;
+    if (dx * dx + dy * dy < 100) return;
+    lx = e.clientX; ly = e.clientY;
+    const d = document.createElement('div');
+    d.className = 'cursor-dot';
+    d.style.left = e.clientX + 'px';
+    d.style.top = e.clientY + 'px';
+    document.body.appendChild(d);
+    requestAnimationFrame(() => { d.style.opacity = '0'; d.style.transform = 'scale(0.3)'; });
+    setTimeout(() => d.remove(), 750);
+  });
+}
+
+/* ==========================================================
+   CARD CORNER ORNAMENTS — golden filigree on every card
+   ========================================================== */
+function initCardCornerOrnaments() {
+  document.querySelectorAll('.ritual-card, .member-card').forEach(card => {
+    if (card.querySelector('.corner-ornament')) return;
+    ['tl','tr','bl','br'].forEach(pos => {
+      const c = document.createElement('div');
+      c.className = 'corner-ornament corner-ornament-' + pos;
+      c.setAttribute('aria-hidden', 'true');
+      card.appendChild(c);
+    });
+  });
+}
+
+/* ==========================================================
+   EDGE GLOW — golden light framing the viewport
+   ========================================================== */
+function initEdgeGlow() {
+  const el = document.createElement('div');
+  el.className = 'edge-glow';
+  el.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(el);
+}
+
+/* ==========================================================
+   PENTAGRAM SVG DRAW — hero sacred geometry on load
+   ========================================================== */
+function initPentagramDraw() {
+  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  const hero = document.querySelector('section:first-of-type');
+  if (!hero) return;
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', '0 0 200 200');
+  svg.setAttribute('class', 'pentagram-svg');
+  svg.style.cssText = 'width:min(450px,80vw);height:min(450px,80vw);position:absolute;top:50%;left:50%;' +
+    'transform:translate(-50%,-50%);opacity:0.35;';
+  svg.innerHTML =
+    '<circle cx="100" cy="100" r="92"/>' +
+    '<circle cx="100" cy="100" r="80"/>' +
+    '<path d="M100,8 L155.9,172.6 L12.2,70.5 L187.8,70.5 L44.1,172.6 Z"/>' +
+    '<circle cx="100" cy="100" r="36"/>';
+  const anchor = hero.querySelector('.halo')?.parentElement;
+  if (anchor) anchor.appendChild(svg);
+  else hero.prepend(svg);
+}
+
+/* ==========================================================
+   ACTIVE NAV INDICATOR — highlights current section
+   ========================================================== */
+function initActiveNavIndicator() {
+  const links = document.querySelectorAll('nav a[href^="#"]');
+  if (!links.length) return;
+  const map = [];
+  links.forEach(l => {
+    const el = document.querySelector(l.getAttribute('href'));
+    if (el) map.push({ el, link: l });
+  });
+  if (!map.length) return;
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(ent => {
+      const m = map.find(s => s.el === ent.target);
+      if (m) m.link.classList.toggle('nav-active', ent.isIntersecting);
+    });
+  }, { threshold: 0.15, rootMargin: '-80px 0px -35% 0px' });
+  map.forEach(s => io.observe(s.el));
+}
+
+/* ==========================================================
+   CANDLE FLICKER — ambient light near section headings
+   ========================================================== */
+function initCandleFlicker() {
+  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  if (window.matchMedia('(pointer:coarse)').matches) return;
+  document.querySelectorAll('section h2').forEach(h2 => {
+    const glow = document.createElement('div');
+    glow.className = 'candle-glow';
+    glow.setAttribute('aria-hidden', 'true');
+    const sz = 100 + Math.random() * 80;
+    glow.style.cssText = `width:${sz}px;height:${sz}px;top:-${sz*0.4}px;left:50%;margin-left:-${sz/2}px;`;
+    h2.style.position = 'relative';
+    h2.appendChild(glow);
+  });
+}
+
+/* ==========================================================
+   NAV BLUR INTENSITY — darkens on scroll
+   ========================================================== */
+function initNavBlurIntensity() {
+  const nav = document.querySelector('nav');
+  if (!nav) return;
+  let scrolled = false;
+  window.addEventListener('scroll', () => {
+    const past = window.scrollY > 80;
+    if (past !== scrolled) { scrolled = past; nav.classList.toggle('nav-scrolled', past); }
+  }, { passive: true });
+}
+
+/* ==========================================================
+   CARD HOVER PARTICLE BURST — sparks erupt on hover
+   ========================================================== */
+function initCardParticleBurst() {
+  if (window.matchMedia('(pointer:coarse)').matches) return;
+  document.querySelectorAll('.ritual-card, .member-card, .feed-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      const rect = card.getBoundingClientRect();
+      for (let i = 0; i < 8; i++) {
+        const p = document.createElement('div');
+        p.className = 'card-particle';
+        const startX = Math.random() * rect.width;
+        const startY = rect.height * 0.3 + Math.random() * rect.height * 0.4;
+        p.style.cssText = `left:${startX}px;top:${startY}px;` +
+          `transition:all 0.7s ease-out ${i*0.03}s;`;
+        card.appendChild(p);
+        requestAnimationFrame(() => {
+          p.style.top = (startY - 25 - Math.random() * 20) + 'px';
+          p.style.left = (startX + (Math.random() - 0.5) * 40) + 'px';
+          p.style.opacity = '0';
+          p.style.transform = 'scale(0.2)';
+        });
+        setTimeout(() => p.remove(), 800);
+      }
+    });
+  });
+}
+
+/* ==========================================================
+   GALLERY WAVE — neighbor tiles react to hover
+   ========================================================== */
+function initGalleryWave() {
+  const grid = document.getElementById('gallery-grid');
+  if (!grid) return;
+  if (window.matchMedia('(pointer:coarse)').matches) return;
+  const tiles = () => Array.from(grid.querySelectorAll('.gallery-tile'));
+  grid.addEventListener('mouseenter', (e) => {
+    const tile = e.target.closest('.gallery-tile');
+    if (!tile) return;
+    const all = tiles();
+    const idx = all.indexOf(tile);
+    const cols = window.innerWidth >= 1024 ? 4 : window.innerWidth >= 768 ? 3 : 2;
+    [idx-1, idx+1, idx-cols, idx+cols].forEach(ni => {
+      if (ni >= 0 && ni < all.length) {
+        all[ni].style.transition = 'transform 0.4s ease, border-color 0.4s ease';
+        all[ni].style.transform = 'translateY(-3px) scale(1.01)';
+        all[ni].style.borderColor = 'rgba(201,162,39,0.35)';
+      }
+    });
+  }, true);
+  grid.addEventListener('mouseleave', () => {
+    tiles().forEach(t => { t.style.transform = ''; t.style.borderColor = ''; });
+  }, true);
+}
+
+/* ==========================================================
+   DYNAMIC FOG DENSITY — thickens as you scroll deeper
+   ========================================================== */
+function initDynamicFog() {
+  const wrap = document.querySelector('.smoke-wrap');
+  if (!wrap) return;
+  window.addEventListener('scroll', () => {
+    const maxS = document.documentElement.scrollHeight - window.innerHeight;
+    const depth = maxS > 0 ? Math.min(window.scrollY / maxS, 1) : 0;
+    wrap.style.opacity = (0.4 + depth * 0.6).toFixed(2);
+  }, { passive: true });
+}
+
+/* ==========================================================
+   MORPHING BACKDROP — gradients shift over time
+   ========================================================== */
+function initMorphingBackdrop() {
+  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  const isSanctuary = document.body.classList.contains('sanctuary-bg');
+  if (!isSanctuary) return;
+  let t = 0;
+  (function tick() {
+    t += 0.0006;
+    const x1 = 50 + Math.sin(t * 0.7) * 18;
+    const y1 = Math.sin(t * 0.4) * 12;
+    const x2 = 50 + Math.sin(t * 0.3 + 1.5) * 22;
+    const y2 = 60 + Math.sin(t * 0.55) * 15;
+    document.body.style.backgroundPosition = `${x1}% ${y1}%, ${x2}% ${y2}%, 100% 80%`;
+    requestAnimationFrame(tick);
+  })();
+}
+
+/* ==========================================================
+   FEED CARD STAGGER — assign delay indices for entrance
+   ========================================================== */
+function initFeedCardStagger() {
+  document.querySelectorAll('.feed-card.reveal').forEach((c, i) => {
+    c.style.setProperty('--feed-i', i);
+  });
+}
+
+/* ==========================================================
+   MAGNETIC CURSOR — elements subtly pull toward mouse
+   ========================================================== */
+function initMagneticCursor() {
+  if (!window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+  document.querySelectorAll('.btn-primary, .btn-ghost').forEach(el => {
+    el.addEventListener('mousemove', (e) => {
+      const r = el.getBoundingClientRect();
+      const dx = (e.clientX - r.left - r.width / 2) * 0.12;
+      const dy = (e.clientY - r.top - r.height / 2) * 0.12;
+      el.style.transform = `translate(${dx}px, ${dy}px) translateY(-2px)`;
+    });
+    el.addEventListener('mouseleave', () => {
+      el.style.transition = 'transform 0.4s ease';
+      el.style.transform = '';
+      setTimeout(() => { el.style.transition = ''; }, 400);
+    });
+  });
+}
+
+/* ==========================================================
+   SCROLL PROGRESS DOT — golden orb at end of progress bar
+   ========================================================== */
+function initScrollProgressDot() {
+  const bar = document.getElementById('scroll-progress');
+  if (!bar) return;
+  const dot = document.createElement('div');
+  dot.style.cssText = 'position:absolute;right:-4px;top:-3px;width:8px;height:8px;border-radius:50%;' +
+    'background:var(--aettam-gold);box-shadow:0 0 12px rgba(201,162,39,0.9),0 0 25px rgba(201,162,39,0.4);';
+  bar.appendChild(dot);
+}
+
 /* ----------  Boot  ---------- */
 document.addEventListener('DOMContentLoaded', () => {
   initReveal();
@@ -1147,6 +1677,26 @@ document.addEventListener('DOMContentLoaded', () => {
   initGateTypingIndicator();
   initLetterCards();
   initSoulCounter();
+  initSacredGeometry();
+  initGoldenOrbs();
+  initShootingStars();
+  initIncenseSmoke();
+  initSectionVeils();
+  initAurora();
+  initGoldenRain();
+  initClickRitual();
+  initCursorThread();
+  initEdgeGlow();
+  initPentagramDraw();
+  initActiveNavIndicator();
+  initCandleFlicker();
+  initNavBlurIntensity();
+  initCardParticleBurst();
+  initDynamicFog();
+  initMorphingBackdrop();
+  initFeedCardStagger();
+  initMagneticCursor();
+  initScrollProgressDot();
   if (document.getElementById('ritual-calendar'))   initRitualCalendar();
   if (document.getElementById('members-grid'))      initMembersDirectory();
   if (document.getElementById('reflections-feed'))  initReflectionsFeed();
@@ -1154,6 +1704,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (document.getElementById('sanctuary-feed'))    initSanctuaryFeed();
   if (document.getElementById('spotlight-card'))    initMemberSpotlight();
   if (document.getElementById('gallery-grid'))      initExclusiveGallery();
+  setTimeout(() => {
+    initCardCornerOrnaments();
+    initGalleryWave();
+  }, 2000);
 });
 
 /* small shake animation injected so we don't need another file */
