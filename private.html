@@ -148,6 +148,15 @@
             <p class="font-cinzel text-aettam-gold/80 tracking-[0.3em] uppercase text-sm mb-2">The Window Is Dark</p>
             <p class="font-cormorant italic text-aettam-bone/50">She is away from the chamber. Return soon — the light always comes back.</p>
           </div>
+          <!-- verify-your-identity veil (live, but viewer not yet approved/signed in) -->
+          <div id="cam-verify" class="absolute inset-0 hidden flex-col items-center justify-center text-center px-6 bg-gradient-to-b from-black/55 to-black/90">
+            <span class="text-aettam-gold/70 text-4xl mb-4">⛤</span>
+            <p class="font-cinzel text-aettam-gold/80 tracking-[0.3em] uppercase text-sm mb-2">For Approved Eyes</p>
+            <p class="font-cormorant italic text-aettam-bone/60 mb-6 max-w-sm">Only those the Queen has named may look upon her chamber. Verify your email to be recognized.</p>
+            <button id="cam-verify-btn" onclick="camVerify()"
+                    class="btn-primary"><span class="relative z-10">Verify My Email to Watch</span></button>
+            <p id="cam-verify-note" class="font-cormorant italic text-aettam-bone/40 text-sm mt-4 h-5"></p>
+          </div>
         </div>
         <p class="mt-4 text-[10px] tracking-[0.35em] uppercase text-aettam-bone/25 text-center">⛤ What is seen here stays here ⛤</p>
       </div>
@@ -659,74 +668,95 @@
       .catch(() => { /* keep the hardcoded fallback */ });
 
     /* ==========================================================
-       MATTEA · LIVE FEED
-       Members are already past the password gate to reach this page.
-       Flow: ask the worker for a short-lived signed token -> /unlock the
-       cam host (sets a same-site cookie so iOS native HLS segments pass)
-       -> play HLS. The token refreshes itself before it expires.
+       MATTEA · LIVE FEED  (gated by Cloudflare Access)
+       cam.aettam.com is locked at Cloudflare's edge to an email allowlist.
+       The page holds NO secret that can unlock it — it only asks the cam
+       host "is this viewer already verified?" (/authed). If yes, it plays
+       the HLS feed (the viewer's Access cookie authorizes it). If no, it
+       shows a button that opens the email one-time-PIN login.
+       The LIVE/offline badge comes from the worker's public /cam-status.
        ========================================================== */
     (function () {
       const CAM_WORKER = 'https://aettam-worker.firstbloodanivia.workers.dev';
       const CAM_HOST   = 'https://cam.aettam.com';
-      const CAM_SKEY   = 'mattea-sanctuary-2026';   // matches the SANCTUARY_KEY worker secret
       const video = document.getElementById('cam-video');
       if (!video) return;
-      let camHls = null, refreshTimer = null;
+      const elDot   = document.getElementById('cam-dot');
+      const elTxt   = document.getElementById('cam-badge-text');
+      const veilOff = document.getElementById('cam-offline');
+      const veilVer = document.getElementById('cam-verify');
+      const verNote = document.getElementById('cam-verify-note');
+      let camHls = null, verified = false, feedUp = false, lastLive = null;
 
-      function badge(state) {
-        const dot = document.getElementById('cam-dot');
-        const txt = document.getElementById('cam-badge-text');
-        const veil = document.getElementById('cam-offline');
-        if (!dot) return;
-        if (state === 'live') {
-          dot.className = 'inline-block w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse';
-          txt.textContent = 'Live Now';
-          txt.className = 'font-cinzel text-xs tracking-[0.35em] uppercase text-aettam-gold';
-          veil.style.display = 'none';
-        } else if (state === 'connecting') {
-          dot.className = 'inline-block w-2.5 h-2.5 rounded-full bg-aettam-gold/60 animate-pulse';
-          txt.textContent = 'Connecting…';
-          txt.className = 'font-cinzel text-xs tracking-[0.35em] uppercase text-aettam-bone/60';
+      function badge(kind) {
+        if (kind === 'live') {
+          elDot.className = 'inline-block w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse';
+          elTxt.textContent = 'Live Now';
+          elTxt.className = 'font-cinzel text-xs tracking-[0.35em] uppercase text-aettam-gold';
+        } else if (kind === 'connecting') {
+          elDot.className = 'inline-block w-2.5 h-2.5 rounded-full bg-aettam-gold/60 animate-pulse';
+          elTxt.textContent = 'Connecting…';
+          elTxt.className = 'font-cinzel text-xs tracking-[0.35em] uppercase text-aettam-bone/60';
         } else {
-          dot.className = 'inline-block w-2.5 h-2.5 rounded-full bg-aettam-bone/30';
-          txt.textContent = 'Offline';
-          txt.className = 'font-cinzel text-xs tracking-[0.35em] uppercase text-aettam-bone/40';
-          veil.style.display = 'flex';
+          elDot.className = 'inline-block w-2.5 h-2.5 rounded-full bg-aettam-bone/30';
+          elTxt.textContent = 'Offline';
+          elTxt.className = 'font-cinzel text-xs tracking-[0.35em] uppercase text-aettam-bone/40';
         }
       }
-
-      async function getToken() {
-        const r = await fetch(CAM_WORKER + '/cam-token', { headers: { 'X-Sanctuary-Key': CAM_SKEY } });
-        if (!r.ok) throw new Error('token ' + r.status);
-        return r.json();   // { token, exp, ttl }
-      }
-      async function unlock(token) {
-        try { await fetch(CAM_HOST + '/unlock?token=' + encodeURIComponent(token), { credentials: 'include' }); } catch (e) {}
+      function showVeil(which) {  // 'off' | 'verify' | 'none'
+        veilOff.style.display = which === 'off' ? 'flex' : 'none';
+        veilVer.style.display = which === 'verify' ? 'flex' : 'none';
       }
 
-      async function start() {
-        let t;
-        try { t = await getToken(); }
-        catch (e) { badge('offline'); scheduleRetry(20); return; }
-        await unlock(t.token);
-        const url = CAM_HOST + '/cam/index.m3u8?token=' + encodeURIComponent(t.token);
+      // Is this browser already an approved, signed-in Access viewer?
+      async function isVerified() {
+        try { const r = await fetch(CAM_HOST + '/authed', { credentials: 'include' }); return r.ok; }
+        catch (e) { return false; }   // CORS/redirect failure = not signed in
+      }
+
+      function startFeed() {
+        if (feedUp) return;
+        feedUp = true;
+        const url = CAM_HOST + '/cam/index.m3u8';
         if (window.Hls && Hls.isSupported()) {
           if (camHls) camHls.destroy();
           camHls = new Hls({ lowLatencyMode: false, backBufferLength: 10,
-            xhrSetup: (xhr) => { xhr.withCredentials = true; } });
+            xhrSetup: (xhr) => { xhr.withCredentials = true; } });   // send the Access cookie
           camHls.loadSource(url);
           camHls.attachMedia(video);
-          camHls.on(Hls.Events.ERROR, (ev, d) => { if (d && d.fatal) { badge('offline'); scheduleRetry(10); } });
+          camHls.on(Hls.Events.ERROR, (ev, d) => { if (d && d.fatal) { feedUp = false; } });
         } else {
-          video.src = url;   // native HLS (iOS Safari) — cookie authorizes segments
+          video.src = url;   // native HLS (iOS Safari); crossorigin=use-credentials sends the cookie
         }
         video.play().catch(() => {});
-        // refresh the token + cookie ~2 min before expiry
-        clearTimeout(refreshTimer);
-        refreshTimer = setTimeout(start, Math.max((t.ttl || 900) - 120, 60) * 1000);
       }
 
-      function scheduleRetry(sec) { clearTimeout(refreshTimer); refreshTimer = setTimeout(start, sec * 1000); }
+      // Decide what to show based on (live?) + (verified?)
+      async function reconcile() {
+        if (lastLive === false) { showVeil('off'); return; }
+        if (!verified) verified = await isVerified();
+        if (!verified) { showVeil('verify'); return; }
+        showVeil('none');
+        startFeed();
+      }
+
+      window.camVerify = function () {
+        verNote.textContent = 'Opening the email check…';
+        const w = window.open(CAM_HOST + '/verify', 'aettam-verify', 'width=480,height=660');
+        let tries = 0;
+        const iv = setInterval(async () => {
+          tries++;
+          if (await isVerified()) {
+            clearInterval(iv); verified = true;
+            try { w && w.close(); } catch (e) {}
+            verNote.textContent = '';
+            reconcile();
+          } else if (tries > 90) {           // ~3 min
+            clearInterval(iv);
+            verNote.textContent = 'Still not verified — try again.';
+          }
+        }, 2000);
+      };
 
       window.camToggleMute = function () {
         const b = document.getElementById('cam-mute');
@@ -737,18 +767,16 @@
 
       video.addEventListener('playing', () => badge('live'));
 
-      // Authoritative LIVE/offline from the Pi's heartbeat (covers the gap
-      // before the first frame, and reflects the kill switch).
+      // LIVE/offline from the Pi heartbeat (public; also reflects the kill switch)
       async function poll() {
         try {
           const d = await (await fetch(CAM_WORKER + '/cam-status')).json();
-          if (d.live) { if (video.paused || video.readyState < 2) badge('live'); }
-          else badge('offline');
-        } catch (e) {}
+          if (d.live) { badge(feedUp ? 'live' : 'connecting'); if (lastLive !== true) { lastLive = true; reconcile(); } }
+          else { badge('offline'); lastLive = false; showVeil('off'); }
+        } catch (e) { /* leave last state */ }
       }
 
       badge('connecting');
-      start();
       poll();
       setInterval(poll, 30000);
     })();
