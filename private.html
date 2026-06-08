@@ -66,6 +66,7 @@
         <span class="font-cinzel tracking-[0.4em] text-aettam-gold text-sm">AETTAM · SANCTUARY</span>
       </a>
       <div class="hidden md:flex items-center gap-8 text-xs tracking-[0.3em] uppercase font-light">
+        <a href="#livefeed"       class="hover:text-aettam-gold text-aettam-gold/90">● Live</a>
         <a href="#devotionals"    class="hover:text-aettam-gold">Devotionals</a>
         <a href="#feed"           class="hover:text-aettam-gold">Feed</a>
         <a href="#spotlight"      class="hover:text-aettam-gold">Spotlight</a>
@@ -110,6 +111,47 @@
       and the resources we share only with one another. Stay as long as you
       need. Return as often as you must.
     </p>
+  </section>
+
+  <!-- ====================  MATTEA · LIVE FEED  ==================== -->
+  <section id="livefeed" class="relative py-24 px-6">
+    <div class="max-w-4xl mx-auto">
+      <div class="reveal text-center mb-10">
+        <p class="text-aettam-gold/60 tracking-[0.5em] text-xs uppercase mb-3">Her Chamber · In Real Time</p>
+        <h2 class="font-cinzel text-3xl md:text-5xl">The Living Window</h2>
+        <div class="divider mx-auto mt-4"></div>
+        <p class="font-cormorant italic text-aettam-bone/60 text-lg mt-6 max-w-xl mx-auto">
+          A window into the Queen's sanctum, open only to the circle. What you
+          witness here is hers, and yours, and no one else's.
+        </p>
+      </div>
+
+      <div class="reveal member-card relative overflow-hidden" style="border-color:rgba(201,162,39,0.35);background:linear-gradient(160deg,rgba(14,42,34,0.25),rgba(7,8,10,0.75));">
+        <!-- LIVE / offline badge + audio toggle -->
+        <div class="flex items-center justify-between mb-4">
+          <div id="cam-badge" class="flex items-center gap-2">
+            <span id="cam-dot" class="inline-block w-2.5 h-2.5 rounded-full bg-aettam-bone/30"></span>
+            <span id="cam-badge-text" class="font-cinzel text-xs tracking-[0.35em] uppercase text-aettam-bone/50">Connecting…</span>
+          </div>
+          <button id="cam-mute" onclick="camToggleMute()"
+                  class="text-xs tracking-[0.3em] uppercase border border-aettam-gold/40 px-3 py-1.5 hover:bg-aettam-gold hover:text-black transition-all duration-500">
+            Unmute ♪
+          </button>
+        </div>
+
+        <!-- the feed -->
+        <div class="relative bg-black/70 overflow-hidden" style="aspect-ratio:16/9;">
+          <video id="cam-video" class="w-full h-full object-cover" playsinline muted autoplay crossorigin="use-credentials"></video>
+          <!-- dark veil when she's away -->
+          <div id="cam-offline" class="absolute inset-0 flex flex-col items-center justify-center text-center px-6 bg-gradient-to-b from-black/40 to-black/85">
+            <span class="text-aettam-gold/70 text-4xl mb-4">☾</span>
+            <p class="font-cinzel text-aettam-gold/80 tracking-[0.3em] uppercase text-sm mb-2">The Window Is Dark</p>
+            <p class="font-cormorant italic text-aettam-bone/50">She is away from the chamber. Return soon — the light always comes back.</p>
+          </div>
+        </div>
+        <p class="mt-4 text-[10px] tracking-[0.35em] uppercase text-aettam-bone/25 text-center">⛤ What is seen here stays here ⛤</p>
+      </div>
+    </div>
   </section>
 
   <!-- ====================  DEVOTIONAL OF THE DAY  ==================== -->
@@ -590,6 +632,9 @@
 
   <script src="script.js"></script>
 
+  <!-- hls.js for the live feed (desktop/Android); iOS Safari uses native HLS -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"></script>
+
   <!-- Cloudflare Web Analytics -->
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
           data-cf-beacon='{"token": "458ad40920b94fe29baba9dc8fb90cb5"}'></script>
@@ -612,6 +657,101 @@
         if (bodyEl  && text)  bodyEl.textContent  = '“' + text + '”';
       })
       .catch(() => { /* keep the hardcoded fallback */ });
+
+    /* ==========================================================
+       MATTEA · LIVE FEED
+       Members are already past the password gate to reach this page.
+       Flow: ask the worker for a short-lived signed token -> /unlock the
+       cam host (sets a same-site cookie so iOS native HLS segments pass)
+       -> play HLS. The token refreshes itself before it expires.
+       ========================================================== */
+    (function () {
+      const CAM_WORKER = 'https://aettam-worker.firstbloodanivia.workers.dev';
+      const CAM_HOST   = 'https://cam.aettam.com';
+      const CAM_SKEY   = 'mattea-sanctuary-2026';   // matches the SANCTUARY_KEY worker secret
+      const video = document.getElementById('cam-video');
+      if (!video) return;
+      let camHls = null, refreshTimer = null;
+
+      function badge(state) {
+        const dot = document.getElementById('cam-dot');
+        const txt = document.getElementById('cam-badge-text');
+        const veil = document.getElementById('cam-offline');
+        if (!dot) return;
+        if (state === 'live') {
+          dot.className = 'inline-block w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse';
+          txt.textContent = 'Live Now';
+          txt.className = 'font-cinzel text-xs tracking-[0.35em] uppercase text-aettam-gold';
+          veil.style.display = 'none';
+        } else if (state === 'connecting') {
+          dot.className = 'inline-block w-2.5 h-2.5 rounded-full bg-aettam-gold/60 animate-pulse';
+          txt.textContent = 'Connecting…';
+          txt.className = 'font-cinzel text-xs tracking-[0.35em] uppercase text-aettam-bone/60';
+        } else {
+          dot.className = 'inline-block w-2.5 h-2.5 rounded-full bg-aettam-bone/30';
+          txt.textContent = 'Offline';
+          txt.className = 'font-cinzel text-xs tracking-[0.35em] uppercase text-aettam-bone/40';
+          veil.style.display = 'flex';
+        }
+      }
+
+      async function getToken() {
+        const r = await fetch(CAM_WORKER + '/cam-token', { headers: { 'X-Sanctuary-Key': CAM_SKEY } });
+        if (!r.ok) throw new Error('token ' + r.status);
+        return r.json();   // { token, exp, ttl }
+      }
+      async function unlock(token) {
+        try { await fetch(CAM_HOST + '/unlock?token=' + encodeURIComponent(token), { credentials: 'include' }); } catch (e) {}
+      }
+
+      async function start() {
+        let t;
+        try { t = await getToken(); }
+        catch (e) { badge('offline'); scheduleRetry(20); return; }
+        await unlock(t.token);
+        const url = CAM_HOST + '/cam/index.m3u8?token=' + encodeURIComponent(t.token);
+        if (window.Hls && Hls.isSupported()) {
+          if (camHls) camHls.destroy();
+          camHls = new Hls({ lowLatencyMode: false, backBufferLength: 10,
+            xhrSetup: (xhr) => { xhr.withCredentials = true; } });
+          camHls.loadSource(url);
+          camHls.attachMedia(video);
+          camHls.on(Hls.Events.ERROR, (ev, d) => { if (d && d.fatal) { badge('offline'); scheduleRetry(10); } });
+        } else {
+          video.src = url;   // native HLS (iOS Safari) — cookie authorizes segments
+        }
+        video.play().catch(() => {});
+        // refresh the token + cookie ~2 min before expiry
+        clearTimeout(refreshTimer);
+        refreshTimer = setTimeout(start, Math.max((t.ttl || 900) - 120, 60) * 1000);
+      }
+
+      function scheduleRetry(sec) { clearTimeout(refreshTimer); refreshTimer = setTimeout(start, sec * 1000); }
+
+      window.camToggleMute = function () {
+        const b = document.getElementById('cam-mute');
+        video.muted = !video.muted;
+        b.textContent = video.muted ? 'Unmute ♪' : 'Mute ♪';
+        if (!video.muted) video.play().catch(() => {});
+      };
+
+      video.addEventListener('playing', () => badge('live'));
+
+      // Authoritative LIVE/offline from the Pi's heartbeat (covers the gap
+      // before the first frame, and reflects the kill switch).
+      async function poll() {
+        try {
+          const d = await (await fetch(CAM_WORKER + '/cam-status')).json();
+          if (d.live) { if (video.paused || video.readyState < 2) badge('live'); }
+          else badge('offline');
+        } catch (e) {}
+      }
+
+      badge('connecting');
+      start();
+      poll();
+      setInterval(poll, 30000);
+    })();
   </script>
 </body>
 </html>
