@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Initiation — The Sanctuary</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="nav">
+    <a href="https://aettam.com" class="nav-logo">AETTAM</a>
+    <div class="nav-right">
+      <span class="nav-user" id="navUser"></span>
+      <button class="btn btn-ghost btn-sm" id="logoutBtn">Leave</button>
+    </div>
+  </nav>
+
+  <main class="upgrade-page">
+    <div class="container">
+      <div class="upgrade-header">
+        <span class="upgrade-symbol" aria-hidden="true">⛤</span>
+        <h1>You Stand at the Threshold</h1>
+        <p>The oath is taken — your name is in the book. But the Inner Temple, the Queen's stream, and the Circle are sealed to the Initiated. The Queen herself grants passage.</p>
+      </div>
+
+      <div class="tier-grid">
+        <div class="tier-card">
+          <span class="tier-emoji" aria-hidden="true">☽</span>
+          <h3>Seeker</h3>
+          <div class="tier-price">Free, always</div>
+          <ul class="tier-perks">
+            <li>✓ Your name in the book</li>
+            <li>✓ Letters from the Order</li>
+            <li class="locked">✗ The Queen's live stream</li>
+            <li class="locked">✗ The Circle</li>
+          </ul>
+          <span class="tier-current">Where You Stand</span>
+        </div>
+
+        <div class="tier-card featured">
+          <span class="tier-emoji" aria-hidden="true">⛤</span>
+          <h3>Initiate</h3>
+          <div class="tier-price">By the Queen's hand</div>
+          <ul class="tier-perks">
+            <li>✓ Everything the Seeker holds</li>
+            <li>✓ The Queen's live stream</li>
+            <li>✓ The Circle — speak with her live</li>
+            <li>✓ The Oath Wall</li>
+          </ul>
+          <a href="https://discord.gg/aettam" target="_blank" rel="noopener" class="btn btn-primary btn-full">Request Initiation</a>
+        </div>
+
+        <div class="tier-card">
+          <span class="tier-emoji" aria-hidden="true">👑</span>
+          <h3>Anointed</h3>
+          <div class="tier-price">When she sees you</div>
+          <ul class="tier-perks">
+            <li>✓ Everything the Initiate holds</li>
+            <li>✓ The Anointed mark in the Circle</li>
+            <li>✓ The Queen's gaze first</li>
+            <li>✓ Rites kept for the few</li>
+          </ul>
+          <span class="tier-locked">She chooses the Anointed</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    fetch('/api/auth/me').then(r => r.ok ? r.json() : null).then(data => {
+      if (data && data.user) {
+        document.getElementById('navUser').textContent = data.user.avatar + ' ' + data.user.displayName;
+        if (data.user.tier !== 'free') window.location.href = '/sanctuary';
+      } else {
+        window.location.href = '/login';
+      }
+    });
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      window.location.href = '/';
+    });
+  </script>
+</body>
+</html>

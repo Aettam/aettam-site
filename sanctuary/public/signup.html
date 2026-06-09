@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Take the Oath — The Sanctuary</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="nav">
+    <a href="https://aettam.com" class="nav-logo">AETTAM</a>
+  </nav>
+
+  <main class="auth-page">
+    <div class="auth-card">
+      <h1 class="auth-title">Take the Oath</h1>
+      <p class="auth-desc">Cross the threshold into the Order</p>
+
+      <div class="auth-error" id="authError" hidden></div>
+
+      <form id="signupForm" class="auth-form">
+        <div class="form-group">
+          <label for="displayName">Your Name in the Circle</label>
+          <input type="text" id="displayName" name="displayName" required maxlength="30" placeholder="What the Circle will call you">
+        </div>
+        <div class="form-group">
+          <label for="email">Your Mark (Email)</label>
+          <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@email.com">
+        </div>
+        <div class="form-group">
+          <label for="password">Choose the Word (Password)</label>
+          <input type="password" id="password" name="password" required minlength="8" autocomplete="new-password" placeholder="At least 8 characters">
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" id="submitBtn">Cross the Threshold</button>
+      </form>
+
+      <p class="auth-switch">Already of the Order? <a href="/login">Speak the word</a></p>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      const err = document.getElementById('authError');
+      btn.disabled = true; btn.textContent = 'Crossing...';
+      err.hidden = true;
+
+      try {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            displayName: document.getElementById('displayName').value,
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'The threshold did not open');
+        window.location.href = '/upgrade';
+      } catch (error) {
+        err.textContent = error.message;
+        err.hidden = false;
+        btn.disabled = false; btn.textContent = 'Cross the Threshold';
+      }
+    });
+  </script>
+</body>
+</html>

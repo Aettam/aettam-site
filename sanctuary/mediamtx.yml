@@ -1,0 +1,33 @@
+# MediaMTX — AETTAM Sanctuary stream relay
+# Receives RTMP from the Raspberry Pi, serves HLS to viewers.
+
+logLevel: info
+logDestinations: [stdout]
+
+# ── RTMP ingest (the Pi pushes here) ──────────────────────────────
+rtmp: yes
+rtmpAddress: :1935
+
+# ── HLS output (the Sanctuary page reads this) ────────────────────
+hls: yes
+hlsAddress: :8888
+hlsAllowOrigin: '*'
+hlsAlwaysRemux: yes
+hlsVariant: lowLatency
+hlsSegmentCount: 7
+hlsSegmentDuration: 1s
+hlsPartDuration: 200ms
+
+# Disable the protocols we don't need
+rtsp: no
+webrtc: no
+srt: no
+
+# ── Paths ─────────────────────────────────────────────────────────
+paths:
+  # The Pi pushes to rtmp://VPS:1935/sanctuary with this key
+  sanctuary:
+    # Optional: require a key to publish (set on the Pi too)
+    # publishUser: aettam
+    # publishPass: CHANGE_ME
+    source: publisher

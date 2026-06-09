@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Queen's Hand — AETTAM</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="nav">
+    <a href="https://aettam.com" class="nav-logo">AETTAM</a>
+    <div class="nav-right">
+      <a href="/sanctuary" class="btn btn-ghost btn-sm">The Temple</a>
+      <button class="btn btn-ghost btn-sm" onclick="fetch('/api/auth/logout',{method:'POST'}).then(()=>location.href='/')">Leave</button>
+    </div>
+  </nav>
+
+  <main class="admin-page">
+    <div class="container">
+      <h1 class="admin-title">⛤ The Queen's Hand</h1>
+
+      <!-- Stats -->
+      <div class="admin-stats" id="adminStats">
+        <div class="stat-card"><span class="stat-num" id="totalUsers">-</span><span class="stat-label">Total Users</span></div>
+        <div class="stat-card"><span class="stat-num" id="sanctuaryUsers">-</span><span class="stat-label">Sanctuary</span></div>
+        <div class="stat-card"><span class="stat-num" id="vipUsers">-</span><span class="stat-label">VIP</span></div>
+        <div class="stat-card"><span class="stat-num" id="streamStatusStat">-</span><span class="stat-label">Stream</span></div>
+      </div>
+
+      <!-- Stream Config -->
+      <section class="admin-section">
+        <h2>Stream Settings</h2>
+        <form id="streamForm" class="admin-form">
+          <div class="form-group">
+            <label for="streamTitle">Stream Title</label>
+            <input type="text" id="streamTitle" placeholder="AETTAM Sanctuary Live">
+          </div>
+          <div class="form-group">
+            <label for="streamUrl">Stream URL (HLS/MP4)</label>
+            <input type="text" id="streamUrl" placeholder="https://your-stream/live.m3u8">
+          </div>
+          <div class="form-group">
+            <label for="streamStatusSelect">Status</label>
+            <select id="streamStatusSelect">
+              <option value="offline">Offline</option>
+              <option value="starting">Starting Soon</option>
+              <option value="live">Live</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="welcomeMsg">Chat Welcome Message</label>
+            <input type="text" id="welcomeMsg" placeholder="Welcome to the Sanctuary!">
+          </div>
+          <button type="submit" class="btn btn-primary">Save Stream Settings</button>
+        </form>
+      </section>
+
+      <!-- Users -->
+      <section class="admin-section">
+        <h2>Users</h2>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="usersTable">
+            <thead>
+              <tr><th>User</th><th>Email</th><th>Tier</th><th>Role</th><th>Joined</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="usersBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Chat Moderation -->
+      <section class="admin-section">
+        <h2>Chat</h2>
+        <button class="btn btn-ghost" id="clearChatBtn">Clear All Chat Messages</button>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    async function loadStats() {
+      const res = await fetch('/api/admin/stats');
+      const data = await res.json();
+      document.getElementById('totalUsers').textContent = data.total;
+      const sanc = data.byTier.find(t => t.tier === 'sanctuary');
+      const vip = data.byTier.find(t => t.tier === 'vip');
+      document.getElementById('sanctuaryUsers').textContent = sanc ? sanc.count : 0;
+      document.getElementById('vipUsers').textContent = vip ? vip.count : 0;
+      document.getElementById('streamStatusStat').textContent = data.stream.stream_status.toUpperCase();
+
+      // Fill stream form
+      document.getElementById('streamTitle').value = data.stream.stream_title;
+      document.getElementById('streamUrl').value = data.stream.stream_url;
+      document.getElementById('streamStatusSelect').value = data.stream.stream_status;
+      document.getElementById('welcomeMsg').value = data.stream.welcome_message;
+    }
+
+    async function loadUsers() {
+      const res = await fetch('/api/admin/users');
+      const data = await res.json();
+      const tbody = document.getElementById('usersBody');
+      tbody.innerHTML = data.users.map(u => `
+        <tr>
+          <td>${u.avatar_emoji} ${esc(u.display_name)} ${u.banned ? '🚫' : ''}</td>
+          <td>${esc(u.email)}</td>
+          <td>
+            <select onchange="changeTier('${u.id}', this.value)" ${u.role === 'admin' ? 'disabled' : ''}>
+              <option value="free" ${u.tier==='free'?'selected':''}>Free</option>
+              <option value="sanctuary" ${u.tier==='sanctuary'?'selected':''}>Sanctuary</option>
+              <option value="vip" ${u.tier==='vip'?'selected':''}>VIP</option>
+            </select>
+          </td>
+          <td>${u.role}</td>
+          <td>${new Date(u.created_at).toLocaleDateString()}</td>
+          <td>
+            ${u.role !== 'admin' ? `<button class="btn btn-ghost btn-xs" onclick="toggleBan('${u.id}', ${!u.banned})">${u.banned ? 'Unban' : 'Ban'}</button>` : '—'}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    async function changeTier(id, tier) {
+      await fetch('/api/admin/users/' + id + '/tier', {
+        method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify({tier})
+      });
+      loadStats();
+    }
+
+    async function toggleBan(id, banned) {
+      await fetch('/api/admin/users/' + id + '/ban', {
+        method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify({banned})
+      });
+      loadUsers();
+    }
+
+    document.getElementById('streamForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await fetch('/api/admin/stream', {
+        method: 'PUT',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          stream_title: document.getElementById('streamTitle').value,
+          stream_url: document.getElementById('streamUrl').value,
+          stream_status: document.getElementById('streamStatusSelect').value,
+          welcome_message: document.getElementById('welcomeMsg').value,
+        })
+      });
+      alert('Stream settings saved!');
+      loadStats();
+    });
+
+    document.getElementById('clearChatBtn').addEventListener('click', async () => {
+      if (!confirm('Clear ALL chat messages?')) return;
+      await fetch('/api/admin/chat', { method: 'DELETE' });
+      alert('Chat cleared');
+    });
+
+    function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+    loadStats();
+    loadUsers();
+  </script>
+</body>
+</html>
