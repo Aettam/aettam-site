@@ -35,3 +35,10 @@
 - [ ] Change the admin password from the default in `.env`
 - [ ] Decide payment/initiation flow (currently "request via Discord")
 - [ ] Consider rate-limiting chat messages per user
+
+## 🔍 Gap analysis — added by Claude 2026-06-08
+
+- [ ] **Add a tiny "is it alive?" health check** — Right now if the live site quietly crashes, nothing tells you — the catch-all just serves the homepage for any address, so a monitoring tool can't tell a working app from a dead one. Add a simple `/health` route in `server.js` that returns `{ ok: true }`, then point a free uptime monitor (UptimeRobot or the existing Uptime Kuma) at it so you get a text/email the moment the Sanctuary goes down.
+- [ ] **Back the code up to GitHub** — This project has NO online git home set up (`git remote -v` is empty). The only copies of the code are this PC and the VPS, so if either is lost the work is gone. Create a private repo and push it (matches how the other projects are stored), so there's a safe off-machine backup and a history you can roll back to.
+- [ ] **Add a couple of basic automated tests** — There are no tests at all (no `test` script in `package.json`), even though this handles real member logins, passwords, and paid tiers. Add a few small checks — e.g. "a free Seeker cannot reach the stream," "wrong password is rejected," "a banned user can't chat" — so a future tweak can't silently break the paywall or let the wrong people in.
+- [ ] **Write down how to roll back a bad deploy** — The README explains how to push new code up, but not how to undo it if a deploy breaks the live stream during a show. Note the one or two commands to restore the previous working version (and restart the service), so a bad update mid-stream can be reversed in seconds instead of debugged live.
