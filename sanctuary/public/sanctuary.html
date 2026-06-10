@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Inner Temple — AETTAM</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js"></script>
+</head>
+<body class="sanctuary-body">
+  <nav class="nav">
+    <a href="https://aettam.com" class="nav-logo">AETTAM</a>
+    <div class="nav-center">
+      <span class="stream-status" id="streamStatus">
+        <span class="status-dot"></span>
+        <span id="statusText">Entering...</span>
+      </span>
+      <span class="viewer-count" id="viewerCount">0 in the Circle</span>
+    </div>
+    <div class="nav-right">
+      <span class="nav-user" id="navUser"></span>
+      <button class="btn btn-ghost btn-sm" id="logoutBtn">Leave</button>
+    </div>
+  </nav>
+
+  <main class="sanctuary-layout">
+    <!-- The Queen's Stream -->
+    <div class="stream-panel">
+      <div class="video-wrapper">
+        <video id="videoPlayer" playsinline autoplay muted></video>
+        <div class="stream-overlay" id="streamOverlay">
+          <div class="offline-message">
+            <span class="offline-icon" aria-hidden="true">⛤</span>
+            <h2 id="streamTitle">The Sanctuary</h2>
+            <p id="offlineText">The Queen is not in the Temple right now. She will return.</p>
+          </div>
+        </div>
+        <div class="video-controls">
+          <button class="vc-btn" id="muteBtn" aria-label="Unmute">🔇</button>
+          <button class="vc-btn" id="fullscreenBtn" aria-label="Fullscreen">⛶</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- The Circle (Chat) -->
+    <div class="chat-panel">
+      <div class="chat-header">
+        <h3>♆ The Circle</h3>
+        <span class="chat-viewers" id="chatViewers">0 gathered</span>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-system" id="welcomeMsg">Entering the Circle...</div>
+      </div>
+      <form class="chat-input-bar" id="chatForm">
+        <input type="text" id="chatInput" placeholder="Speak to the Circle..." maxlength="500" autocomplete="off" aria-label="Message to the Circle">
+        <button type="submit" class="chat-send-btn" aria-label="Send">➤</button>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    let ws, user, reconnectTimer;
+
+    async function init() {
+      try {
+        const res = await fetch('/api/auth/me');
+        if (!res.ok) { window.location.href = '/login'; return; }
+        const data = await res.json();
+        user = data.user;
+        if (user.tier === 'free') { window.location.href = '/upgrade'; return; }
+        document.getElementById('navUser').textContent = user.avatar + ' ' + user.displayName;
+        loadStream();
+        connectChat();
+      } catch { window.location.href = '/login'; }
+    }
+
+    async function loadStream() {
+      const res = await fetch('/api/stream');
+      const data = await res.json();
+      document.getElementById('streamTitle').textContent = data.title;
+      document.getElementById('viewerCount').textContent = data.viewers + ' in the Circle';
+
+      if (data.status === 'live' && data.streamUrl) {
+        const video = document.getElementById('videoPlayer');
+        const overlay = document.getElementById('streamOverlay');
+
+        if (Hls.isSupported() && data.streamUrl.endsWith('.m3u8')) {
+          const hls = new Hls({ enableWorker: true, lowLatencyMode: true });
+          hls.loadSource(data.streamUrl);
+          hls.attachMedia(video);
+          hls.on(Hls.Events.MANIFEST_PARSED, () => { video.play().catch(()=>{}); overlay.classList.add('hidden'); });
+          hls.on(Hls.Events.ERROR, (_, d) => { if (d.fatal) overlay.classList.remove('hidden'); });
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+          video.src = data.streamUrl;
+          video.addEventListener('loadedmetadata', () => { video.play().catch(()=>{}); overlay.classList.add('hidden'); });
+        } else if (data.streamUrl) {
+          video.src = data.streamUrl;
+          video.addEventListener('loadeddata', () => { video.play().catch(()=>{}); overlay.classList.add('hidden'); });
+        }
+        document.getElementById('statusText').textContent = 'She Is Live';
+        document.querySelector('.status-dot').classList.add('live');
+      } else {
+        document.getElementById('statusText').textContent = 'The Temple Is Quiet';
+        document.getElementById('offlineText').textContent =
+          data.status === 'starting' ? 'The Queen approaches. The rite begins soon...' : 'The Queen is not in the Temple right now. She will return.';
+      }
+    }
+
+    document.getElementById('muteBtn').addEventListener('click', () => {
+      const video = document.getElementById('videoPlayer');
+      video.muted = !video.muted;
+      document.getElementById('muteBtn').textContent = video.muted ? '🔇' : '🔊';
+    });
+
+    document.getElementById('fullscreenBtn').addEventListener('click', () => {
+      const wrapper = document.querySelector('.video-wrapper');
+      if (document.fullscreenElement) document.exitFullscreen();
+      else wrapper.requestFullscreen().catch(()=>{});
+    });
+
+    function connectChat() {
+      const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+      ws = new WebSocket(proto + '//' + location.host + '/ws/chat');
+      ws.onopen = () => { document.getElementById('welcomeMsg').textContent = '⛤ You have entered the Circle'; clearTimeout(reconnectTimer); };
+      ws.onmessage = (e) => {
+        const data = JSON.parse(e.data);
+        if (data.type === 'history') { data.messages.forEach(renderMessage); scrollChat(); }
+        else if (data.type === 'chat') { renderMessage(data.message); scrollChat(); }
+        else if (data.type === 'viewers') {
+          document.getElementById('chatViewers').textContent = data.count + ' gathered';
+          document.getElementById('viewerCount').textContent = data.count + ' in the Circle';
+        }
+      };
+      ws.onclose = () => { document.getElementById('welcomeMsg').textContent = '☽ Rejoining the Circle...'; reconnectTimer = setTimeout(connectChat, 3000); };
+    }
+
+    function renderMessage(msg) {
+      const div = document.createElement('div');
+      div.className = 'chat-msg';
+      const badge = msg.tier === 'vip' ? '<span class="tier-badge vip">Anointed</span>' : '';
+      div.innerHTML = `<span class="msg-name" data-tier="${msg.tier}">${escapeHtml(msg.display_name)}</span>${badge}<span class="msg-text">${escapeHtml(msg.text)}</span>`;
+      document.getElementById('chatMessages').appendChild(div);
+    }
+
+    function scrollChat() { const el = document.getElementById('chatMessages'); el.scrollTop = el.scrollHeight; }
+    function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+    document.getElementById('chatForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text || !ws || ws.readyState !== 1) return;
+      ws.send(JSON.stringify({ type: 'chat', text }));
+      input.value = '';
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      window.location.href = '/';
+    });
+
+    setInterval(loadStream, 30000);
+    init();
+  </script>
+</body>
+</html>

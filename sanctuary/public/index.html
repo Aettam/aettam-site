@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Sanctuary — AETTAM</title>
+  <meta name="description" content="The Inner Temple of the Order. Members-only live rites, the Queen's stream, and the Circle that gathers here.">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="nav">
+    <a href="https://aettam.com" class="nav-logo">AETTAM</a>
+    <div class="nav-right" id="navRight"></div>
+  </nav>
+
+  <main class="hero">
+    <div class="hero-visual" aria-hidden="true"><div class="hero-orb"></div></div>
+    <div class="hero-content">
+      <span class="hero-symbol" aria-hidden="true">⛤</span>
+      <span class="hero-tag">Members Only · Inner Temple</span>
+      <h1 class="hero-title">The Sanctuary</h1>
+      <p class="hero-script">She is live. The Circle is gathering.</p>
+      <p class="hero-desc">The Inner Temple holds the private rites — the Queen's stream, the Circle that speaks with her in real time, and the Oath Wall. Cross the threshold.</p>
+      <div class="hero-actions">
+        <a href="/login" class="btn btn-primary">Enter the Sanctuary</a>
+        <a href="/signup" class="btn btn-ghost">Take the Oath</a>
+      </div>
+    </div>
+  </main>
+
+  <section class="rites">
+    <div class="container">
+      <div class="section-divider" aria-hidden="true">⛤</div>
+      <div class="rites-grid">
+        <div class="rite-card">
+          <span class="rite-icon" aria-hidden="true">☉</span>
+          <h3>The Queen's Stream</h3>
+          <p>The Queen goes live within the Temple. Watch her, hear her, be in the room with her — in real time.</p>
+        </div>
+        <div class="rite-card">
+          <span class="rite-icon" aria-hidden="true">♆</span>
+          <h3>The Circle</h3>
+          <p>Speak with Mattea and the Initiated as it happens. Not comments. A circle that gathers and answers back.</p>
+        </div>
+        <div class="rite-card">
+          <span class="rite-icon" aria-hidden="true">⚜</span>
+          <h3>Sealed to Members</h3>
+          <p>No randos. No spectators. Only those who took the oath and crossed the threshold may enter here.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <span class="cta-symbol" aria-hidden="true">☽</span>
+    <h2>Cross the Threshold</h2>
+    <p>Take the oath to claim your place. Initiation into the live rites is granted by the Queen herself.</p>
+    <a href="/signup" class="btn btn-primary btn-lg">Take the Oath</a>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-mark">⛤ AETTAM ⛤</div>
+    <p>For those who recognize her. &copy; 2026 AETTAM.</p>
+  </footer>
+
+  <script>
+    fetch('/api/auth/me').then(r => r.ok ? r.json() : null).then(data => {
+      const nav = document.getElementById('navRight');
+      if (data && data.user) {
+        const dest = data.user.tier !== 'free' ? '/sanctuary' : '/upgrade';
+        nav.innerHTML = `
+          <span class="nav-user">${data.user.avatar} ${data.user.displayName}</span>
+          <a href="${dest}" class="btn btn-primary btn-sm">Enter</a>
+        `;
+      } else {
+        nav.innerHTML = `
+          <a href="/login" class="nav-link">Enter</a>
+          <a href="/signup" class="btn btn-primary btn-sm">Take the Oath</a>
+        `;
+      }
+    }).catch(() => {});
+  </script>
+</body>
+</html>

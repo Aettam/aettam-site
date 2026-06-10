@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enter — The Sanctuary</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="nav">
+    <a href="https://aettam.com" class="nav-logo">AETTAM</a>
+  </nav>
+
+  <main class="auth-page">
+    <div class="auth-card">
+      <h1 class="auth-title">Speak the Word</h1>
+      <p class="auth-desc">Return to the Inner Temple</p>
+
+      <div class="auth-error" id="authError" hidden></div>
+
+      <form id="loginForm" class="auth-form">
+        <div class="form-group">
+          <label for="email">Your Mark (Email)</label>
+          <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@email.com">
+        </div>
+        <div class="form-group">
+          <label for="password">The Word (Password)</label>
+          <input type="password" id="password" name="password" required autocomplete="current-password" placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" id="submitBtn">Enter the Sanctuary</button>
+      </form>
+
+      <p class="auth-switch">Not yet of the Order? <a href="/signup">Take the oath</a></p>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      const err = document.getElementById('authError');
+      btn.disabled = true; btn.textContent = 'Crossing...';
+      err.hidden = true;
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'The word was not recognized');
+        window.location.href = data.user.tier !== 'free' ? '/sanctuary' : '/upgrade';
+      } catch (error) {
+        err.textContent = error.message;
+        err.hidden = false;
+        btn.disabled = false; btn.textContent = 'Enter the Sanctuary';
+      }
+    });
+  </script>
+</body>
+</html>
