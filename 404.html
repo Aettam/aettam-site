@@ -65,10 +65,22 @@
       <h3 class="font-cinzel text-xl text-aettam-bone tracking-[0.25em] mb-1">THE SANCTUARY</h3>
       <p class="font-cinzel text-[9px] tracking-[0.4em] uppercase text-aettam-gold/40 mb-5">Members Only · Inner Temple</p>
       <div class="divider mx-auto mb-6" style="width:3rem;"></div>
-      <p class="font-cormorant italic text-aettam-bone/65 mb-8 leading-relaxed">
+      <p id="gate-intro" class="font-cormorant italic text-aettam-bone/65 mb-8 leading-relaxed">
         Speak the word. If you do not yet have the word — <a href="/join.html" class="text-aettam-gold hover:underline">send the letter first</a>.
       </p>
-      <form onsubmit="tryEnter(event)" class="space-y-4">
+      <!-- Two doors — revealed once the word is spoken (see showGateDoors in script.js) -->
+      <div id="gate-doors" class="hidden text-left space-y-4">
+        <p class="font-cormorant italic text-aettam-bone/65 text-center mb-2">The word is true. Two doors stand open.</p>
+        <a href="/private.html" class="block border border-aettam-gold/40 hover:border-aettam-gold hover:bg-aettam-gold/5 transition-all duration-300 p-5">
+          <p class="font-cinzel text-aettam-gold tracking-[0.25em] text-sm mb-1">📜 THE LETTERS</p>
+          <p class="font-cormorant italic text-aettam-bone/60 text-sm leading-relaxed">The Queen's letters, the Oath Wall, the rites — the written temple.</p>
+        </a>
+        <a id="gate-door-live" href="https://sanctuary.24-199-123-34.nip.io" class="block border border-aettam-gold/40 hover:border-aettam-gold hover:bg-aettam-gold/5 transition-all duration-300 p-5">
+          <p class="font-cinzel text-aettam-gold tracking-[0.25em] text-sm mb-1">🕯 THE LIVE TEMPLE</p>
+          <p class="font-cormorant italic text-aettam-bone/60 text-sm leading-relaxed">Watch the Queen live and speak with her in the Circle.</p>
+        </a>
+      </div>
+      <form id="gate-form" onsubmit="tryEnter(event)" class="space-y-4">
         <input id="gate-input" type="password" autocomplete="off"
                placeholder="• • • • • • • • • •"
                class="w-full bg-transparent border border-aettam-gold/40 px-4 py-3 text-center tracking-[0.5em] text-aettam-bone placeholder:text-aettam-bone/20 focus:outline-none focus:border-aettam-gold transition" />
@@ -77,7 +89,7 @@
           <span class="relative z-10">Enter the Sanctuary</span>
         </button>
       </form>
-      <p class="mt-6 text-[10px] tracking-[0.4em] uppercase text-aettam-bone/25">
+      <p id="gate-hint" class="mt-6 text-[10px] tracking-[0.4em] uppercase text-aettam-bone/25">
         The password is shared in Discord after you join.
       </p>
     </div>

@@ -9,6 +9,9 @@
 const SANCTUARY_PASSWORD = "goldandflame";  // share only with members
 const SESSION_KEY        = "aettam_unlocked";
 const PRIVATE_PAGE       = "private.html";
+// The Live Temple — the members livestream + Circle chat app.
+// Switch to https://sanctuary.aettam.com once the DNS record is pointed.
+const SANCTUARY_APP_URL  = "https://sanctuary.24-199-123-34.nip.io";
 
 /* ----------------------------------------------------------
    REFLECTIONS form (email capture)
@@ -112,16 +115,44 @@ function toggleMobileMenu() {
 }
 
 /* ----------  Gate modal  ---------- */
+// After the word is spoken, two doors open: The Letters (private.html)
+// and The Live Temple (the livestream + Circle app).
+function showGateDoors() {
+  const doors = document.getElementById('gate-doors');
+  if (!doors) { window.location.href = PRIVATE_PAGE; return; } // old pages: keep old behavior
+  const live = document.getElementById('gate-door-live');
+  if (live) live.href = SANCTUARY_APP_URL;
+  ['gate-intro', 'gate-form', 'gate-hint'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('hidden');
+  });
+  doors.classList.remove('hidden');
+}
+
+function resetGateView() {
+  const doors = document.getElementById('gate-doors');
+  if (doors) doors.classList.add('hidden');
+  ['gate-intro', 'gate-form', 'gate-hint'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('hidden');
+  });
+}
+
 function openGate(intent) {
-  // If already unlocked, just go straight to the sanctuary.
-  if (sessionStorage.getItem(SESSION_KEY) === 'true') {
-    window.location.href = PRIVATE_PAGE;
+  const gate = document.getElementById('gate');
+  if (!gate) {
+    // Pages without the modal: fall back to the old direct redirect.
+    if (sessionStorage.getItem(SESSION_KEY) === 'true') window.location.href = PRIVATE_PAGE;
     return;
   }
-  const gate = document.getElementById('gate');
-  if (!gate) return;
   gate.classList.add('show');
   gate.dataset.intent = intent || 'sanctuary';
+  // Already unlocked → skip the password, show the two doors.
+  if (sessionStorage.getItem(SESSION_KEY) === 'true') {
+    showGateDoors();
+    return;
+  }
+  resetGateView();
   setTimeout(() => {
     const input = document.getElementById('gate-input');
     if (input) input.focus();
@@ -147,10 +178,8 @@ function tryEnter(e) {
   if (value === SANCTUARY_PASSWORD.toLowerCase()) {
     sessionStorage.setItem(SESSION_KEY, 'true');
     err.textContent = '';
-    // brief celebratory flash before redirect
-    document.body.style.transition = 'opacity 0.6s ease';
-    document.body.style.opacity = '0';
-    setTimeout(() => { window.location.href = PRIVATE_PAGE; }, 600);
+    // The word is true — reveal the two doors.
+    showGateDoors();
   } else {
     err.textContent = 'She does not know you yet.';
     input.classList.add('animate-shake');
