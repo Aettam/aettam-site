@@ -12,15 +12,15 @@ const PRIVATE_PAGE       = "private.html";
 
 /* ----------------------------------------------------------
    REFLECTIONS form (email capture)
-   To start receiving emails:
-     1. Sign up free at https://formspree.io
-     2. Create a new form, copy the endpoint URL
-        (looks like: https://formspree.io/f/abcdwxyz)
-     3. Paste it below replacing the placeholder.
-   Until then, submissions are saved to localStorage as a
-   fallback so nothing is lost.
+   Wired to the aettam-worker Cloudflare Worker:
+     POST {REFLECTIONS_ENDPOINT}  ->  src/index.js handleReflect
+   The worker sends the welcome + owner emails (Resend), logs
+   the reflection to KV, and pings the Discord webhook.
+   If the request fails for any reason, the submission is still
+   saved to localStorage below so nothing is lost.
+   To point at a different worker, swap the URL below (keep the
+   trailing /reflect — other endpoints are derived from it).
    ---------------------------------------------------------- */
-// After deploying the Cloudflare Worker (aettam-worker/), replace this with your worker URL.
 const REFLECTIONS_ENDPOINT = "https://aettam-worker.firstbloodanivia.workers.dev/reflect";
 // Sanctuary key must match the SANCTUARY_KEY worker secret (default: mattea-sanctuary-2026)
 const SANCTUARY_KEY = "mattea-sanctuary-2026";
@@ -566,13 +566,38 @@ async function submitOath(e) {
   if (btn) { btn.disabled = false; btn.querySelector('span').textContent = 'Seal the Vow ⛤'; }
 }
 
+/* ----------  Sanctuary feed loader  ----------
+   Prefer the live worker feed (/api/feed) so admin-posted
+   content shows without a redeploy; fall back to the static
+   sanctuary-feed.json file shipped with the site. The result
+   is cached for the page lifetime so the three sections
+   (feed, spotlight, gallery) only fetch once. */
+let _sanctuaryFeedPromise = null;
+function loadSanctuaryFeed() {
+  if (_sanctuaryFeedPromise) return _sanctuaryFeedPromise;
+  const workerBase = REFLECTIONS_ENDPOINT.replace('/reflect', '');
+  _sanctuaryFeedPromise = (async () => {
+    // Try the live worker feed first.
+    try {
+      const res = await fetch(workerBase + '/api/feed');
+      if (res.ok) {
+        const data = await res.json();
+        if (data && (data.posts || data.spotlight || data.gallery)) return data;
+      }
+    } catch (_) { /* fall through to static file */ }
+    // Fall back to the bundled static JSON.
+    const res = await fetch('/sanctuary-feed.json');
+    return res.json();
+  })();
+  return _sanctuaryFeedPromise;
+}
+
 /* ----------  Sanctuary Content Feed  ---------- */
 async function initSanctuaryFeed() {
   const container = document.getElementById('sanctuary-feed');
   if (!container) return;
   try {
-    const res = await fetch('/sanctuary-feed.json');
-    const data = await res.json();
+    const data = await loadSanctuaryFeed();
     const posts = data.posts || [];
     if (!posts.length) {
       container.innerHTML = '<p class="font-cormorant italic text-aettam-bone/40 text-center py-8">No transmissions yet.</p>';
@@ -610,8 +635,7 @@ async function initMemberSpotlight() {
   const container = document.getElementById('spotlight-card');
   if (!container) return;
   try {
-    const res = await fetch('/sanctuary-feed.json');
-    const data = await res.json();
+    const data = await loadSanctuaryFeed();
     const spotlights = data.spotlight || [];
     if (!spotlights.length) return;
     const idx = Math.floor(Date.now() / 86400000) % spotlights.length;
@@ -650,8 +674,7 @@ async function initExclusiveGallery() {
   const grid = document.getElementById('gallery-grid');
   if (!grid) return;
   try {
-    const res = await fetch('/sanctuary-feed.json');
-    const data = await res.json();
+    const data = await loadSanctuaryFeed();
     _galleryItems = data.gallery || [];
     if (!_galleryItems.length) return;
     grid.innerHTML = _galleryItems.map((item, i) => {
